@@ -11,11 +11,11 @@ export async function uploadFile(file: File, folder?: string): Promise<{ url: st
   const ext = path.extname(file.name) || ".jpg";
   const key = `${crypto.randomUUID()}${ext}`;
   const subDir = folder || "";
-  const uploadDir = path.join(process.cwd(), STORAGE_CONFIG.uploadDir, subDir);
+  const uploadDir = path.join(/*turbopackIgnore: true*/ process.cwd(), STORAGE_CONFIG.uploadDir, subDir);
   await mkdir(uploadDir, { recursive: true });
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(uploadDir, key), buffer);
+  await writeFile(path.join(/*turbopackIgnore: true*/ uploadDir, key), buffer);
 
   const urlPath = folder ? `${STORAGE_CONFIG.publicPath}/${folder}/${key}` : `${STORAGE_CONFIG.publicPath}/${key}`;
   return { url: urlPath, key };

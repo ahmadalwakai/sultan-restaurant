@@ -4,7 +4,7 @@ import { STORAGE_CONFIG } from "./constants";
 
 export async function deleteFile(key: string): Promise<void> {
   const sanitized = path.basename(key);
-  const filePath = path.join(process.cwd(), STORAGE_CONFIG.uploadDir, sanitized);
+  const filePath = path.join(/*turbopackIgnore: true*/ process.cwd(), STORAGE_CONFIG.uploadDir, sanitized);
   try {
     await unlink(filePath);
   } catch (err) {
