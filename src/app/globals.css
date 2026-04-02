@@ -16,10 +16,37 @@
   --font-heading: var(--font-heading);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* === Section header responsive typography === */
+.section-header-title {
+  font-size: 1.75rem;
+}
+.section-header-sub {
+  font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .section-header-title {
+    font-size: 2.25rem;
+  }
+  .section-header-sub {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-header-title {
+    font-size: 2.5rem;
+  }
 }

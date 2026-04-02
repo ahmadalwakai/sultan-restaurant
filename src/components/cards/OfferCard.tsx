@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { OfferPublic } from "@/types/offer";
+import { brandTypography, brandRadii, brandShadows, brandColors } from "@/theme/branding";
+import { cardStyles } from "@/lib/ui";
 
 interface OfferCardProps {
   offer: OfferPublic;
@@ -10,30 +12,76 @@ interface OfferCardProps {
 
 export function OfferCard({ offer }: OfferCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 p-6 text-white shadow-lg transition-all hover:shadow-xl hover:-translate-y-1">
+    <div
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: brandRadii.card,
+        background: cardStyles.offerGradient,
+        padding: "1.75rem",
+        color: "#FFFFFF",
+        boxShadow: brandShadows.card,
+        transition: "box-shadow 0.3s ease, transform 0.3s ease",
+      }}
+      className="offer-card"
+    >
       {offer.image && (
         <Image
           src={offer.image}
           alt={offer.title}
           fill
-          className="object-cover opacity-20"
+          className="object-cover"
+          style={{ opacity: 0.15 }}
           sizes="(max-width: 768px) 100vw, 50vw"
+          unoptimized
         />
       )}
-      <div className="relative z-10">
-        <div className="mb-2 inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider">
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <span
+          style={{
+            display: "inline-block",
+            background: "rgba(255,255,255,0.2)",
+            backdropFilter: "blur(4px)",
+            borderRadius: brandRadii.badge,
+            padding: "0.25rem 0.875rem",
+            fontSize: brandTypography.sizes.badge,
+            fontWeight: brandTypography.weights.bold,
+            letterSpacing: brandTypography.letterSpacing.badge,
+            textTransform: "uppercase",
+            marginBottom: "0.75rem",
+          }}
+        >
           {offer.discountType === "PERCENTAGE"
             ? `${offer.discount}% OFF`
             : `£${(offer.discount / 100).toFixed(2)} OFF`}
-        </div>
-        <h3 className="text-xl font-bold font-heading">{offer.title}</h3>
+        </span>
+        <h3
+          style={{
+            fontFamily: brandTypography.fonts.heading,
+            fontSize: "1.25rem",
+            fontWeight: brandTypography.weights.bold,
+            margin: 0,
+          }}
+        >
+          {offer.title}
+        </h3>
         {offer.description && (
-          <p className="mt-2 text-sm text-white/90 line-clamp-2">
+          <p
+            style={{
+              marginTop: "0.5rem",
+              fontSize: brandTypography.sizes.small,
+              opacity: 0.9,
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
             {offer.description}
           </p>
         )}
         {offer.validUntil && (
-          <p className="mt-3 text-xs text-white/70">
+          <p style={{ marginTop: "0.75rem", fontSize: brandTypography.sizes.xs, opacity: 0.7 }}>
             Valid until{" "}
             {new Date(offer.validUntil).toLocaleDateString("en-GB", {
               day: "numeric",
@@ -44,11 +92,28 @@ export function OfferCard({ offer }: OfferCardProps) {
         )}
         <Link
           href="/menu"
-          className="mt-4 inline-block rounded-lg bg-white px-4 py-2 text-sm font-semibold text-amber-600 transition-colors hover:bg-white/90"
+          style={{
+            display: "inline-block",
+            marginTop: "1rem",
+            background: "#FFFFFF",
+            color: brandColors.gold[600],
+            padding: "0.5rem 1.25rem",
+            borderRadius: brandRadii.button,
+            fontSize: brandTypography.sizes.small,
+            fontWeight: brandTypography.weights.semibold,
+            textDecoration: "none",
+            transition: "background 0.2s ease",
+          }}
         >
           Order Now
         </Link>
       </div>
+      <style>{`
+        .offer-card:hover {
+          box-shadow: ${brandShadows.cardHover};
+          transform: translateY(-4px);
+        }
+      `}</style>
     </div>
   );
 }

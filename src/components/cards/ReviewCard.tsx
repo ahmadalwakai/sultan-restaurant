@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { brandTypography, brandRadii, brandShadows, brandColors } from "@/theme/branding";
 
 interface ReviewCardProps {
   review: {
@@ -15,28 +16,69 @@ interface ReviewCardProps {
 
 export function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <div className="flex flex-col rounded-xl bg-white p-6 shadow-md">
-      <div className="flex items-center gap-3">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        borderRadius: brandRadii.card,
+        background: "#FFFFFF",
+        padding: "1.5rem",
+        boxShadow: brandShadows.card,
+        transition: "box-shadow 0.3s ease, transform 0.3s ease",
+        border: `1px solid ${brandColors.gold[100]}`,
+      }}
+      className="review-card"
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
         {review.userImage ? (
           <Image
             src={review.userImage}
             alt={review.userName}
-            width={40}
-            height={40}
+            width={44}
+            height={44}
             className="rounded-full object-cover"
+            style={{ borderRadius: "50%" }}
+            unoptimized
           />
         ) : (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-600 font-bold">
+          <div
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: "50%",
+              background: brandColors.gold[50],
+              color: brandColors.gold[600],
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: brandTypography.weights.bold,
+              fontFamily: brandTypography.fonts.heading,
+              fontSize: "1.1rem",
+            }}
+          >
             {review.userName.charAt(0).toUpperCase()}
           </div>
         )}
         <div>
-          <p className="font-semibold text-gray-900">{review.userName}</p>
-          <div className="flex gap-0.5">
+          <p
+            style={{
+              fontWeight: brandTypography.weights.semibold,
+              color: brandColors.charcoal,
+              fontFamily: brandTypography.fonts.body,
+              fontSize: brandTypography.sizes.body,
+              margin: 0,
+            }}
+          >
+            {review.userName}
+          </p>
+          <div style={{ display: "flex", gap: 2, marginTop: 2 }}>
             {Array.from({ length: 5 }).map((_, i) => (
               <span
                 key={i}
-                className={i < review.rating ? "text-amber-400" : "text-gray-200"}
+                style={{
+                  color: i < review.rating ? brandColors.gold[400] : "#E5E7EB",
+                  fontSize: "0.875rem",
+                }}
               >
                 ★
               </span>
@@ -44,16 +86,42 @@ export function ReviewCard({ review }: ReviewCardProps) {
           </div>
         </div>
       </div>
-      <p className="mt-4 flex-1 text-sm text-gray-600 line-clamp-4">
+      <p
+        style={{
+          marginTop: "1rem",
+          flex: 1,
+          fontSize: brandTypography.sizes.small,
+          color: "#4B5563",
+          lineHeight: brandTypography.lineHeights.relaxed,
+          fontFamily: brandTypography.fonts.body,
+          display: "-webkit-box",
+          WebkitLineClamp: 4,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+        }}
+      >
         {review.comment}
       </p>
-      <p className="mt-3 text-xs text-gray-400">
+      <p
+        style={{
+          marginTop: "0.75rem",
+          fontSize: brandTypography.sizes.xs,
+          color: "#9CA3AF",
+          fontFamily: brandTypography.fonts.body,
+        }}
+      >
         {new Date(review.createdAt).toLocaleDateString("en-GB", {
           day: "numeric",
           month: "short",
           year: "numeric",
         })}
       </p>
+      <style>{`
+        .review-card:hover {
+          box-shadow: ${brandShadows.cardHover};
+          transform: translateY(-3px);
+        }
+      `}</style>
     </div>
   );
 }

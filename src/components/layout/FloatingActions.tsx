@@ -5,6 +5,8 @@ import { Box, IconButton } from "@chakra-ui/react";
 import { HiShoppingCart } from "react-icons/hi";
 import { useCartStore } from "@/lib/cart";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { brandColors, brandShadows } from "@/theme/branding";
+import { zIndex } from "@/lib/design";
 
 export function FloatingActions() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -15,16 +17,16 @@ export function FloatingActions() {
 
   return (
     <>
-      <Box position="fixed" bottom={6} right={6} zIndex={30}>
+      <Box position="fixed" bottom={6} right={6} zIndex={zIndex.stickyBar}>
         <IconButton
           aria-label={`Cart (${cartCount} items)`}
           onClick={() => setIsCartOpen(true)}
-          bg="brand.600"
+          bg={brandColors.gold[600]}
           color="white"
           size="lg"
           borderRadius="full"
-          boxShadow="lg"
-          _hover={{ bg: "brand.700" }}
+          boxShadow={brandShadows.cta}
+          _hover={{ bg: brandColors.gold[700], boxShadow: brandShadows.ctaHover }}
         >
           <HiShoppingCart size={24} />
         </IconButton>
