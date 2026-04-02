@@ -26,8 +26,8 @@ export function AdminSignInForm() {
         setError(data.error ?? "Invalid credentials");
         return;
       }
-      router.push("/admin/dashboard");
-      router.refresh();
+      // Full page load ensures middleware reads the fresh session cookie
+      window.location.href = "/admin/dashboard";
     } catch {
       setError("Something went wrong");
     } finally {

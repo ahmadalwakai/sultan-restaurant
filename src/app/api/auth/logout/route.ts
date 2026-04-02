@@ -4,7 +4,7 @@ export async function POST() {
   const response = NextResponse.json({ success: true });
 
   // Clear admin session cookie if present
-  response.cookies.delete("admin-token");
+  response.cookies.delete("sultan-admin-session");
 
   return response;
 }

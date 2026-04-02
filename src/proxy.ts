@@ -5,7 +5,7 @@ import { jwtVerify } from "jose";
 const ADMIN_PATHS = ["/admin"];
 const PUBLIC_ADMIN_PATHS = ["/admin/signin", "/admin/auth/error"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Admin route protection
@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    const token = request.cookies.get("admin-token")?.value;
+    const token = request.cookies.get("sultan-admin-session")?.value;
     if (!token) {
       return NextResponse.redirect(new URL("/admin/signin", request.url));
     }
@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     } catch {
       const response = NextResponse.redirect(new URL("/admin/signin", request.url));
-      response.cookies.delete("admin-token");
+      response.cookies.delete("sultan-admin-session");
       return response;
     }
   }
