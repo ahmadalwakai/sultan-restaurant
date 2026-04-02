@@ -1,0 +1,6 @@
+[
+  { "id": "review-1", "name": "Sarah Johnson", "rating": 5, "comment": "Absolutely amazing food! The Chicken Tikka Masala was the best I've ever had.", "status": "APPROVED", "isVisible": true },
+  { "id": "review-2", "name": "Mike Thompson", "rating": 4, "comment": "Great flavours, generous portions. Will definitely come back.", "status": "APPROVED", "isVisible": true },
+  { "id": "review-3", "name": "Emily Davis", "rating": 3, "comment": "Food was good but service was a bit slow on a Friday evening.", "status": "PENDING", "isVisible": false },
+  { "id": "review-4", "name": "David Lee", "rating": 5, "comment": "Best Indian restaurant in the area. The Lamb Biryani is outstanding.", "status": "APPROVED", "isVisible": true }
+]

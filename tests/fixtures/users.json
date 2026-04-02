@@ -1,0 +1,5 @@
+[
+  { "id": "user-1", "name": "Test Customer", "email": "customer@test.com", "image": null, "role": "CUSTOMER", "googleId": "google-123" },
+  { "id": "user-2", "name": "Admin User", "email": "admin@sultan.com", "image": null, "role": "ADMIN", "googleId": "google-456" },
+  { "id": "user-3", "name": "Staff Member", "email": "staff@sultan.com", "image": null, "role": "CUSTOMER", "googleId": "google-789" }
+]

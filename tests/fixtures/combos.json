@@ -1,0 +1,38 @@
+[
+  {
+    "id": "combo-1",
+    "name": "Family Feast",
+    "slug": "family-feast",
+    "description": "Perfect meal for 4 — two mains, rice, naan and drinks",
+    "image": "/images/combos/family-feast.jpg",
+    "price": 39.95,
+    "originalPrice": 52.30,
+    "savings": 12.35,
+    "servesCount": 4,
+    "isAvailable": true,
+    "isActive": true,
+    "items": [
+      { "menuItemId": "menu-1", "quantity": 2 },
+      { "menuItemId": "menu-4", "quantity": 2 },
+      { "menuItemId": "menu-7", "quantity": 2 }
+    ]
+  },
+  {
+    "id": "combo-2",
+    "name": "Lunch Box",
+    "slug": "lunch-box",
+    "description": "Quick lunch — starter, main and drink",
+    "image": "/images/combos/lunch-box.jpg",
+    "price": 16.95,
+    "originalPrice": 23.40,
+    "savings": 6.45,
+    "servesCount": 1,
+    "isAvailable": true,
+    "isActive": true,
+    "items": [
+      { "menuItemId": "menu-3", "quantity": 1 },
+      { "menuItemId": "menu-6", "quantity": 1 },
+      { "menuItemId": "menu-7", "quantity": 1 }
+    ]
+  }
+]

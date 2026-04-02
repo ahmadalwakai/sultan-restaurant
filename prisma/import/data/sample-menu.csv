@@ -1,0 +1,11 @@
+name,description,price,category,vegetarian,vegan,spicy,allergens
+Hummus,Creamy chickpea dip with tahini,5.50,starters,true,true,false,sesame
+Falafel,Crispy chickpea fritters,6.50,starters,true,true,false,sesame
+Baba Ghanoush,Smoky aubergine dip,5.95,starters,true,true,false,sesame
+Mixed Grill,Selection of grilled meats,18.95,grills,false,false,false,
+Lamb Shish,Marinated lamb cubes,15.95,grills,false,false,false,
+Chicken Shish,Grilled chicken breast,13.95,grills,false,false,false,
+Chicken Shawarma Wrap,With garlic sauce,8.95,shawarma,false,false,false,gluten
+Lamb Shawarma Wrap,With tahini sauce,9.95,shawarma,false,false,false,gluten|sesame
+Fresh Lemonade,With mint,3.50,drinks,true,true,false,
+Coca-Cola,330ml,2.00,drinks,true,true,false,

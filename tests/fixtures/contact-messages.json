@@ -1,0 +1,4 @@
+[
+  { "id": "msg-1", "name": "Tom Hardy", "email": "tom@example.com", "phone": "07700900010", "subject": "Catering enquiry", "message": "Hi, I would like to enquire about catering for a corporate event of 50 people.", "status": "UNREAD" },
+  { "id": "msg-2", "name": "Lisa Park", "email": "lisa@example.com", "phone": null, "subject": "Feedback", "message": "Wonderful dinner last Saturday. Thank you for the excellent service!", "status": "READ" }
+]

@@ -1,0 +1,7 @@
+[
+  { "id": "cat-1", "name": "Main Course", "slug": "main-course", "description": "Signature main dishes", "image": "/images/categories/main.jpg", "sortOrder": 1, "isActive": true },
+  { "id": "cat-2", "name": "Starters", "slug": "starters", "description": "Appetisers and small plates", "image": "/images/categories/starters.jpg", "sortOrder": 2, "isActive": true },
+  { "id": "cat-3", "name": "Bread & Rice", "slug": "bread-rice", "description": "Naan, rice and sides", "image": "/images/categories/bread.jpg", "sortOrder": 3, "isActive": true },
+  { "id": "cat-4", "name": "Seafood", "slug": "seafood", "description": "Fresh seafood dishes", "image": "/images/categories/seafood.jpg", "sortOrder": 4, "isActive": true },
+  { "id": "cat-5", "name": "Drinks & Desserts", "slug": "drinks-desserts", "description": "Beverages and sweets", "image": "/images/categories/drinks.jpg", "sortOrder": 5, "isActive": false }
+]

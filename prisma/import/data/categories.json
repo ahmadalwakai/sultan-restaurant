@@ -1,0 +1,18 @@
+[
+  { "name": "Starters", "slug": "starters", "description": "Appetizers and meze", "sortOrder": 1 },
+  { "name": "Soups", "slug": "soups", "description": "Traditional soups", "sortOrder": 2 },
+  { "name": "Salads", "slug": "salads", "description": "Fresh salads", "sortOrder": 3 },
+  { "name": "Grills", "slug": "grills", "description": "Charcoal grilled meats", "sortOrder": 4 },
+  { "name": "Shawarma", "slug": "shawarma", "description": "Shawarma wraps and plates", "sortOrder": 5 },
+  { "name": "Syrian Dishes", "slug": "syrian", "description": "Traditional Syrian cuisine", "sortOrder": 6 },
+  { "name": "Lebanese Dishes", "slug": "lebanese", "description": "Lebanese specialties", "sortOrder": 7 },
+  { "name": "Indian Dishes", "slug": "indian", "description": "Indian curries and biryanis", "sortOrder": 8 },
+  { "name": "Iraqi Dishes", "slug": "iraqi", "description": "Iraqi traditional dishes", "sortOrder": 9 },
+  { "name": "Pizza", "slug": "pizza", "description": "Stone-baked pizzas", "sortOrder": 10 },
+  { "name": "Burgers", "slug": "burgers", "description": "Gourmet burgers", "sortOrder": 11 },
+  { "name": "Chicken", "slug": "chicken", "description": "Chicken dishes", "sortOrder": 12 },
+  { "name": "Kids Menu", "slug": "kids", "description": "For little ones", "sortOrder": 13 },
+  { "name": "Desserts", "slug": "desserts", "description": "Sweet treats", "sortOrder": 14 },
+  { "name": "Drinks", "slug": "drinks", "description": "Cold beverages", "sortOrder": 15 },
+  { "name": "Hot Drinks", "slug": "hot-drinks", "description": "Hot beverages", "sortOrder": 16 }
+]

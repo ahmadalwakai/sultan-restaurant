@@ -1,0 +1,17 @@
+export const EMAIL_TEMPLATES = {
+  WELCOME: "welcome",
+  ADMIN_LOGIN_ALERT: "admin-login-alert",
+  ORDER_CONFIRMATION: "order-confirmation",
+  ORDER_PREPARING: "order-preparing",
+  ORDER_READY: "order-ready",
+  ORDER_CANCELLED: "order-cancelled",
+  ORDER_REFUNDED: "order-refunded",
+  ORDER_PAYMENT_RECEIVED: "order-payment-received",
+  ORDER_ADMIN_ALERT: "order-admin-alert",
+  BOOKING_CONFIRMATION: "booking-confirmation",
+  BOOKING_CANCELLED: "booking-cancelled",
+  BOOKING_REMINDER: "booking-reminder",
+  BOOKING_ADMIN_ALERT: "booking-admin-alert",
+  CONTACT_ACKNOWLEDGEMENT: "contact-acknowledgement",
+  CONTACT_ADMIN_ALERT: "contact-admin-alert",
+} as const;

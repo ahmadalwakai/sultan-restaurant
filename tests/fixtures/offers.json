@@ -1,0 +1,5 @@
+[
+  { "id": "offer-1", "title": "20% Off Main Course", "discount": 20, "discountType": "PERCENTAGE", "code": "MAIN20", "image": "/images/offers/main20.jpg", "isActive": true, "validFrom": "2026-01-01T00:00:00Z", "validUntil": "2026-06-30T23:59:59Z", "minOrder": 15, "maxUses": 500, "usedCount": 120 },
+  { "id": "offer-2", "title": "£5 Off Orders Over £25", "discount": 5, "discountType": "FIXED", "code": "SAVE5", "image": "/images/offers/save5.jpg", "isActive": true, "validFrom": "2025-06-01T00:00:00Z", "validUntil": "2025-12-31T23:59:59Z", "minOrder": 25, "maxUses": 200, "usedCount": 200 },
+  { "id": "offer-3", "title": "Summer Special 15%", "discount": 15, "discountType": "PERCENTAGE", "code": "SUMMER15", "image": "/images/offers/summer.jpg", "isActive": false, "validFrom": "2026-06-01T00:00:00Z", "validUntil": "2026-08-31T23:59:59Z", "minOrder": 20, "maxUses": 300, "usedCount": 0 }
+]

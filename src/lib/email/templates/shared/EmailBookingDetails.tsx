@@ -1,0 +1,3 @@
+export function emailBookingDetails(data: { date: string; time: string; guests: number; name: string }) {
+  return `<table width="100%" style="font-size:14px;margin:16px 0"><tr><td style="padding:4px 0;color:#666">Date</td><td style="padding:4px 0;font-weight:bold">${data.date}</td></tr><tr><td style="padding:4px 0;color:#666">Time</td><td style="padding:4px 0;font-weight:bold">${data.time}</td></tr><tr><td style="padding:4px 0;color:#666">Guests</td><td style="padding:4px 0;font-weight:bold">${data.guests}</td></tr><tr><td style="padding:4px 0;color:#666">Name</td><td style="padding:4px 0;font-weight:bold">${data.name}</td></tr></table>`;
+}

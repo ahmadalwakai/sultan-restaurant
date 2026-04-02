@@ -1,0 +1,5 @@
+[
+  { "id": "coupon-1", "code": "WELCOME10", "discount": 10, "discountType": "PERCENTAGE", "minOrder": 15, "maxDiscount": 5, "maxUses": 100, "usedCount": 23, "isActive": true, "validFrom": "2026-01-01T00:00:00Z", "validUntil": "2026-12-31T23:59:59Z" },
+  { "id": "coupon-2", "code": "EXPIRED5", "discount": 5, "discountType": "FIXED", "minOrder": 10, "maxDiscount": null, "maxUses": 50, "usedCount": 50, "isActive": true, "validFrom": "2025-01-01T00:00:00Z", "validUntil": "2025-12-31T23:59:59Z" },
+  { "id": "coupon-3", "code": "MAXEDOUT", "discount": 20, "discountType": "PERCENTAGE", "minOrder": 20, "maxDiscount": 10, "maxUses": 10, "usedCount": 10, "isActive": true, "validFrom": "2026-01-01T00:00:00Z", "validUntil": "2026-12-31T23:59:59Z" }
+]

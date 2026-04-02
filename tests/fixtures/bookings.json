@@ -1,0 +1,7 @@
+[
+  { "id": "booking-1", "name": "John Doe", "email": "john@test.com", "phone": "07700900001", "date": "2026-04-10", "time": "19:00", "guests": 4, "status": "CONFIRMED", "specialRequests": "Window seat please" },
+  { "id": "booking-2", "name": "Jane Smith", "email": "jane@test.com", "phone": "07700900002", "date": "2026-04-11", "time": "20:00", "guests": 2, "status": "PENDING", "specialRequests": null },
+  { "id": "booking-3", "name": "Bob Wilson", "email": "bob@test.com", "phone": "07700900004", "date": "2026-04-12", "time": "18:30", "guests": 6, "status": "CANCELLED", "specialRequests": "Birthday celebration" },
+  { "id": "booking-4", "name": "Alice Brown", "email": "alice@test.com", "phone": "07700900005", "date": "2026-03-01", "time": "19:30", "guests": 3, "status": "COMPLETED", "specialRequests": null },
+  { "id": "booking-5", "name": "Charlie Green", "email": "charlie@test.com", "phone": "07700900006", "date": "2026-04-15", "time": "21:00", "guests": 8, "status": "PENDING", "specialRequests": "Highchair needed" }
+]

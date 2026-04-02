@@ -1,0 +1,14 @@
+{
+  "customerName": "Test Customer",
+  "customerEmail": "customer@test.com",
+  "customerPhone": "07700900001",
+  "type": "PICKUP",
+  "paymentMethod": "STRIPE",
+  "items": [
+    { "menuItemId": "menu-1", "quantity": 2 },
+    { "menuItemId": "menu-4", "quantity": 1 }
+  ],
+  "couponCode": null,
+  "pickupTime": "2026-04-01T18:30:00Z",
+  "specialRequests": "Extra spicy please"
+}

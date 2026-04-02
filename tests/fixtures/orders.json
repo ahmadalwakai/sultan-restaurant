@@ -1,0 +1,93 @@
+[
+  {
+    "id": "order-1",
+    "orderNumber": "ORD-20260101-ABC1",
+    "customerName": "John Doe",
+    "customerEmail": "john@test.com",
+    "customerPhone": "07700900001",
+    "type": "PICKUP",
+    "status": "COMPLETED",
+    "paymentMethod": "STRIPE",
+    "paymentStatus": "PAID",
+    "subtotal": 31.40,
+    "discount": 0,
+    "total": 31.40,
+    "pickupTime": "2026-01-01T18:30:00Z",
+    "items": [
+      { "id": "oi-1", "menuItemId": "menu-1", "name": "Chicken Tikka Masala", "price": 12.95, "quantity": 2, "subtotal": 25.90 },
+      { "id": "oi-2", "menuItemId": "menu-4", "name": "Garlic Naan", "price": 3.50, "quantity": 1, "subtotal": 3.50 }
+    ]
+  },
+  {
+    "id": "order-2",
+    "orderNumber": "ORD-20260102-DEF2",
+    "customerName": "Jane Smith",
+    "customerEmail": "jane@test.com",
+    "customerPhone": "07700900002",
+    "type": "PICKUP",
+    "status": "PENDING",
+    "paymentMethod": "CASH",
+    "paymentStatus": "PENDING",
+    "subtotal": 14.95,
+    "discount": 0,
+    "total": 14.95,
+    "pickupTime": "2026-01-02T19:00:00Z",
+    "items": [
+      { "id": "oi-3", "menuItemId": "menu-2", "name": "Lamb Biryani", "price": 14.95, "quantity": 1, "subtotal": 14.95 }
+    ]
+  },
+  {
+    "id": "order-3",
+    "orderNumber": "ORD-20260103-GHI3",
+    "customerName": "Test Customer",
+    "customerEmail": "customer@test.com",
+    "customerPhone": "07700900003",
+    "type": "PICKUP",
+    "status": "PREPARING",
+    "paymentMethod": "STRIPE",
+    "paymentStatus": "PAID",
+    "subtotal": 20.90,
+    "discount": 2.09,
+    "total": 18.81,
+    "couponCode": "WELCOME10",
+    "items": [
+      { "id": "oi-4", "menuItemId": "menu-5", "name": "Prawn Korma", "price": 15.95, "quantity": 1, "subtotal": 15.95 },
+      { "id": "oi-5", "menuItemId": "menu-3", "name": "Vegetable Samosa", "price": 4.95, "quantity": 1, "subtotal": 4.95 }
+    ]
+  },
+  {
+    "id": "order-4",
+    "orderNumber": "ORD-20260104-JKL4",
+    "customerName": "Bob Wilson",
+    "customerEmail": "bob@test.com",
+    "customerPhone": "07700900004",
+    "type": "PICKUP",
+    "status": "CANCELLED",
+    "paymentMethod": "STRIPE",
+    "paymentStatus": "REFUNDED",
+    "subtotal": 12.95,
+    "discount": 0,
+    "total": 12.95,
+    "items": [
+      { "id": "oi-6", "menuItemId": "menu-1", "name": "Chicken Tikka Masala", "price": 12.95, "quantity": 1, "subtotal": 12.95 }
+    ]
+  },
+  {
+    "id": "order-5",
+    "orderNumber": "ORD-20260105-MNO5",
+    "customerName": "Alice Brown",
+    "customerEmail": "alice@test.com",
+    "customerPhone": "07700900005",
+    "type": "PICKUP",
+    "status": "READY",
+    "paymentMethod": "CASH",
+    "paymentStatus": "PENDING",
+    "subtotal": 8.45,
+    "discount": 0,
+    "total": 8.45,
+    "items": [
+      { "id": "oi-7", "menuItemId": "menu-3", "name": "Vegetable Samosa", "price": 5.95, "quantity": 1, "subtotal": 5.95 },
+      { "id": "oi-8", "menuItemId": "menu-7", "name": "Mango Lassi", "price": 4.50, "quantity": 1, "subtotal": 4.50 }
+    ]
+  }
+]

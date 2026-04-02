@@ -1,0 +1,20 @@
+{
+  "starters": [
+    { "name": "Hummus", "description": "Creamy chickpea dip with tahini", "price": 5.50, "vegetarian": true, "allergens": ["sesame"] },
+    { "name": "Falafel", "description": "Crispy chickpea fritters", "price": 6.50, "vegetarian": true, "allergens": ["sesame"] },
+    { "name": "Baba Ghanoush", "description": "Smoky aubergine dip", "price": 5.95, "vegetarian": true }
+  ],
+  "grills": [
+    { "name": "Mixed Grill", "description": "Selection of grilled meats", "price": 18.95 },
+    { "name": "Lamb Shish", "description": "Marinated lamb cubes", "price": 15.95 },
+    { "name": "Chicken Shish", "description": "Grilled chicken breast", "price": 13.95 }
+  ],
+  "shawarma": [
+    { "name": "Chicken Shawarma Wrap", "description": "With garlic sauce", "price": 8.95, "allergens": ["gluten"] },
+    { "name": "Lamb Shawarma Wrap", "description": "With tahini sauce", "price": 9.95, "allergens": ["gluten", "sesame"] }
+  ],
+  "drinks": [
+    { "name": "Fresh Lemonade", "description": "With mint", "price": 3.50, "vegetarian": true },
+    { "name": "Coca-Cola", "description": "330ml", "price": 2.00, "vegetarian": true }
+  ]
+}

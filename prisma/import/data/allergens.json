@@ -1,0 +1,24 @@
+{
+  "allergens": [
+    { "id": "gluten", "name": "Gluten", "icon": "🌾" },
+    { "id": "dairy", "name": "Dairy", "icon": "🥛" },
+    { "id": "eggs", "name": "Eggs", "icon": "🥚" },
+    { "id": "nuts", "name": "Nuts", "icon": "🥜" },
+    { "id": "sesame", "name": "Sesame", "icon": "🫅" },
+    { "id": "fish", "name": "Fish", "icon": "🐟" },
+    { "id": "crustaceans", "name": "Crustaceans", "icon": "🦐" },
+    { "id": "soy", "name": "Soy", "icon": "🧀" },
+    { "id": "celery", "name": "Celery", "icon": "🥦" },
+    { "id": "mustard", "name": "Mustard", "icon": "🌭" },
+    { "id": "sulphites", "name": "Sulphites", "icon": "🍷" },
+    { "id": "lupin", "name": "Lupin", "icon": "🌻" },
+    { "id": "molluscs", "name": "Molluscs", "icon": "🦪" }
+  ],
+  "dietaryLabels": [
+    { "id": "vegetarian", "name": "Vegetarian", "icon": "V", "color": "green" },
+    { "id": "vegan", "name": "Vegan", "icon": "VG", "color": "green" },
+    { "id": "halal", "name": "Halal", "icon": "H", "color": "teal" },
+    { "id": "gluten-free", "name": "Gluten Free", "icon": "GF", "color": "orange" },
+    { "id": "spicy", "name": "Spicy", "icon": "🌶️", "color": "red" }
+  ]
+}

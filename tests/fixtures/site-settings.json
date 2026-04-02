@@ -1,0 +1,20 @@
+{
+  "restaurantName": "Sultan Restaurant",
+  "tagline": "Authentic Flavours, Unforgettable Experience",
+  "phone": "+44 141 391 8883",
+  "email": "info@sultanrestaurant.co.uk",
+  "address": "577 Gallowgate, Glasgow G40 2PE",
+  "currency": "GBP",
+  "timezone": "Europe/London",
+  "socialLinks": {
+    "facebook": "https://facebook.com/sultanrestaurant",
+    "instagram": "https://instagram.com/sultanrestaurant",
+    "twitter": "https://twitter.com/sultanrest"
+  },
+  "deliveryPartners": [
+    { "name": "Deliveroo", "url": "https://deliveroo.co.uk/sultan", "logo": "/images/partners/deliveroo.png" },
+    { "name": "Uber Eats", "url": "https://ubereats.com/sultan", "logo": "/images/partners/uber-eats.png" }
+  ],
+  "maxBookingGuests": 20,
+  "bookingAdvanceDays": 30
+}
