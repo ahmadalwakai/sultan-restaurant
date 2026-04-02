@@ -7,7 +7,7 @@ import { LoadingState } from "@/components/shared/LoadingState";
 import { SectionHeader } from "@/components/sections/SectionHeader";
 
 export function PopularDishes() {
-  const { data: items, isLoading } = usePopularMenu();
+  const { data: items, isLoading, isError } = usePopularMenu();
 
   return (
     <section className="bg-gray-50 py-20">
@@ -17,10 +17,18 @@ export function PopularDishes() {
           subtitle="Our customers' all-time favourites"
         />
         {isLoading ? (
-          <LoadingState message="Loading popular dishes..." />
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-72 animate-pulse rounded-xl bg-gray-200" />
+            ))}
+          </div>
+        ) : isError || !items || items.length === 0 ? (
+          <p className="mt-10 text-center text-gray-500">
+            Our full menu is available on the menu page.
+          </p>
         ) : (
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {items?.slice(0, 8).map((item) => (
+            {items.slice(0, 8).map((item) => (
               <MenuItemCard key={item.id} item={item} />
             ))}
           </div>

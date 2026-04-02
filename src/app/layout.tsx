@@ -9,7 +9,29 @@ export const metadata: Metadata = {
     template: "%s | Sultan Restaurant",
   },
   description:
-    "Authentic Syrian, Lebanese, Indian & Iraqi cuisine. Order online for pickup or book a table.",
+    "Authentic Syrian, Lebanese, Indian & Iraqi cuisine. Order online for pickup or book a table at Sultan Restaurant.",
+  metadataBase: new URL("https://sultanrestaurant.co.uk"),
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    siteName: "Sultan Restaurant",
+    title: "Sultan Restaurant | Authentic Middle Eastern & Indian Cuisine",
+    description:
+      "Authentic Syrian, Lebanese, Indian & Iraqi cuisine. Order online for pickup or book a table.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sultan Restaurant",
+    description:
+      "Authentic Syrian, Lebanese, Indian & Iraqi cuisine. Order online for pickup or book a table.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "https://sultanrestaurant.co.uk",
+  },
 };
 
 export default function RootLayout({
