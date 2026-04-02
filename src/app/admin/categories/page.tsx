@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { AdminTableShell } from "@/components/admin/tables";
+import { adminTableStyles } from "@/lib/admin-ui";
+import { adminHeadings, adminActions } from "@/lib/admin-content";
 
 interface Category {
   id: string;
@@ -36,47 +37,44 @@ export default function AdminCategoriesPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Categories" actionLabel="Add Category" actionHref="/admin/categories/new" />
-            {loading ? (
-              <div className="space-y-3">{[...Array(4)].map((_, i) => <div key={i} className="h-14 bg-gray-100 rounded animate-pulse" />)}</div>
-            ) : (
-              <div className="bg-white border rounded-lg overflow-hidden">
-                <table className="min-w-full divide-y">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Slug</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Items</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order</th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {categories.map((cat) => (
-                      <tr key={cat.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 font-medium text-sm">{cat.name}</td>
-                        <td className="px-4 py-3 text-sm text-gray-500">{cat.slug}</td>
-                        <td className="px-4 py-3 text-sm">{cat._count?.menuItems ?? 0}</td>
-                        <td className="px-4 py-3 text-sm">{cat.sortOrder}</td>
-                        <td className="px-4 py-3 text-right space-x-2">
-                          <Link href={`/admin/categories/${cat.id}/edit`} className="text-sm text-amber-600 hover:underline">Edit</Link>
-                          <button onClick={() => deleteCategory(cat.id)} className="text-sm text-red-600 hover:underline">Delete</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </main>
-        </div>
-      </div>
-    </AdminAuthGuard>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.categories.title} description={adminHeadings.categories.description} actionLabel={adminActions.addCategory} actionHref="/admin/categories/new" />
+
+        {loading ? (
+          <AdminLoadingState rows={4} height="3.5rem" />
+        ) : (
+          <AdminTableShell>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={adminTableStyles.head}>
+                  <th style={adminTableStyles.headCell}>Name</th>
+                  <th style={adminTableStyles.headCell}>Slug</th>
+                  <th style={adminTableStyles.headCell}>Items</th>
+                  <th style={adminTableStyles.headCell}>Order</th>
+                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categories.map((cat) => (
+                  <tr key={cat.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                    <td style={{ ...adminTableStyles.cell, fontWeight: 500 }}>{cat.name}</td>
+                    <td style={{ ...adminTableStyles.cell, color: "#6B7280" }}>{cat.slug}</td>
+                    <td style={adminTableStyles.cell}>{cat._count?.menuItems ?? 0}</td>
+                    <td style={adminTableStyles.cell}>{cat.sortOrder}</td>
+                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
+                      <span style={{ display: "inline-flex", gap: "0.75rem" }}>
+                        <Link href={`/admin/categories/${cat.id}/edit`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>{adminActions.edit}</Link>
+                        <button onClick={() => deleteCategory(cat.id)} style={{ fontSize: "0.875rem", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>{adminActions.delete}</button>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </AdminTableShell>
+        )}
+      </AdminPageShell>
+    </AdminShell>
   );
 }

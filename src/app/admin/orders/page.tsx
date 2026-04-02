@@ -2,15 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
-import { AdminSearchInput } from "@/components/admin/shared/AdminSearchInput";
-import { AdminStatusFilter } from "@/components/admin/shared/AdminStatusFilter";
-import { AdminPagination } from "@/components/admin/shared/AdminPagination";
-import { AdminFilterBar } from "@/components/admin/shared/AdminFilterBar";
-import { AdminExportButton } from "@/components/admin/shared/AdminExportButton";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { AdminTableShell, AdminTableToolbar, AdminTableSearch, AdminTableFilters, AdminTablePagination, AdminStatusBadge } from "@/components/admin/tables";
+import { adminTableStyles } from "@/lib/admin-ui";
+import { adminHeadings } from "@/lib/admin-content";
 
 const ORDER_STATUSES = [
   { label: "Pending", value: "PENDING" },
@@ -44,54 +40,50 @@ export default function AdminOrdersPage() {
   useEffect(() => { fetchOrders(); }, [fetchOrders]);
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Orders" />
-            <AdminFilterBar>
-              <AdminSearchInput value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search orders..." />
-              <AdminStatusFilter value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={ORDER_STATUSES} />
-              <AdminExportButton href="/api/admin/orders/export" />
-            </AdminFilterBar>
-            {loading ? (
-              <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-14 bg-gray-100 rounded animate-pulse" />)}</div>
-            ) : (
-              <div className="bg-white border rounded-lg overflow-hidden">
-                <table className="min-w-full divide-y">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order #</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {orders.map((order) => (
-                      <tr key={order.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 font-medium text-sm">#{order.orderNumber}</td>
-                        <td className="px-4 py-3 text-sm">{order.customerName}</td>
-                        <td className="px-4 py-3 text-sm">£{(Number(order.total) / 100).toFixed(2)}</td>
-                        <td className="px-4 py-3"><span className="text-xs px-2 py-1 rounded bg-gray-100">{order.status}</span></td>
-                        <td className="px-4 py-3 text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</td>
-                        <td className="px-4 py-3 text-right">
-                          <Link href={`/admin/orders/${order.id}`} className="text-sm text-amber-600 hover:underline">View</Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-            <AdminPagination page={page} totalPages={totalPages} onPageChange={setPage} />
-          </main>
-        </div>
-      </div>
-    </AdminAuthGuard>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.orders.title} description={adminHeadings.orders.description} />
+
+        <AdminTableToolbar>
+          <AdminTableSearch value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search orders..." />
+          <AdminTableFilters value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={ORDER_STATUSES} label="Status" />
+        </AdminTableToolbar>
+
+        {loading ? (
+          <AdminLoadingState rows={5} height="3.5rem" />
+        ) : (
+          <AdminTableShell>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={adminTableStyles.head}>
+                  <th style={adminTableStyles.headCell}>Order #</th>
+                  <th style={adminTableStyles.headCell}>Customer</th>
+                  <th style={adminTableStyles.headCell}>Total</th>
+                  <th style={adminTableStyles.headCell}>Status</th>
+                  <th style={adminTableStyles.headCell}>Date</th>
+                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                    <td style={{ ...adminTableStyles.cell, fontWeight: 500 }}>#{order.orderNumber}</td>
+                    <td style={adminTableStyles.cell}>{order.customerName}</td>
+                    <td style={adminTableStyles.cell}>£{(Number(order.total) / 100).toFixed(2)}</td>
+                    <td style={adminTableStyles.cell}><AdminStatusBadge status={order.status} /></td>
+                    <td style={{ ...adminTableStyles.cell, color: "#6B7280" }}>{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
+                      <Link href={`/admin/orders/${order.id}`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>View</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </AdminTableShell>
+        )}
+
+        <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+      </AdminPageShell>
+    </AdminShell>
   );
 }

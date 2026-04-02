@@ -1,0 +1,20 @@
+/** Centralised CTA / action labels for admin UI */
+export const adminActions = {
+  add: "Add New",
+  edit: "Edit",
+  delete: "Delete",
+  save: "Save",
+  saving: "Saving...",
+  cancel: "Cancel",
+  export: "Export",
+  filter: "Filter",
+  search: "Search...",
+  confirm: "Confirm",
+  previous: "Previous",
+  next: "Next",
+  viewAll: "View All",
+  addItem: "Add Item",
+  addCategory: "Add Category",
+  addOffer: "Add Offer",
+  addCoupon: "Add Coupon",
+} as const;

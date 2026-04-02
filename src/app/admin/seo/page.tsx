@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle } from "@/components/admin/shared";
+import { adminFormStyles, adminLayout, adminSpacing } from "@/lib/admin-ui";
+import { adminHeadings } from "@/lib/admin-content";
+import { brandColors } from "@/theme/branding";
 
 const PAGES = ["global", "home", "menu", "about", "contact", "booking", "offers", "gallery"];
 
@@ -30,53 +32,76 @@ export default function AdminSeoPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">SEO Settings</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-              <div className="bg-white border rounded-lg p-4">
-                <h3 className="font-semibold text-sm mb-3">Pages</h3>
-                <div className="space-y-1">
-                  {PAGES.map((p) => (
-                    <button key={p} onClick={() => setSelectedPage(p)} className={`w-full text-left px-3 py-2 rounded text-sm capitalize ${selectedPage === p ? "bg-amber-50 text-amber-700 font-medium" : "hover:bg-gray-50"}`}>
-                      {p}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="lg:col-span-3 bg-white border rounded-lg p-6">
-                <form onSubmit={handleSave} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Title</label>
-                    <input value={seo.title ?? ""} onChange={(e) => setSeo((p) => ({ ...p, title: e.target.value }))} className="w-full px-3 py-2 border rounded-lg text-sm" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Description</label>
-                    <textarea value={seo.description ?? ""} onChange={(e) => setSeo((p) => ({ ...p, description: e.target.value }))} rows={3} className="w-full px-3 py-2 border rounded-lg text-sm" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Keywords</label>
-                    <input value={seo.keywords ?? ""} onChange={(e) => setSeo((p) => ({ ...p, keywords: e.target.value }))} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Comma separated" />
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <p className="text-xs text-gray-500 mb-1">Preview</p>
-                    <p className="text-blue-700 text-sm font-medium">{seo.title || "Page Title"}</p>
-                    <p className="text-green-700 text-xs">sultanrestaurant.com/{selectedPage === "global" ? "" : selectedPage}</p>
-                    <p className="text-gray-600 text-xs mt-1">{seo.description || "Page description will appear here"}</p>
-                  </div>
-                  <button type="submit" disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">
-                    {saving ? "Saving..." : "Save SEO"}
-                  </button>
-                </form>
-              </div>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.seo.title} description={adminHeadings.seo.description} />
+
+        <div style={{ display: "grid", gridTemplateColumns: "12rem 1fr", gap: adminSpacing.grid }} className="admin-seo-grid">
+          {/* Page selector */}
+          <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: "1rem" }}>
+            <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#111827", marginBottom: "0.75rem" }}>Pages</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              {PAGES.map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setSelectedPage(p)}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "0.5rem 0.75rem",
+                    borderRadius: "0.375rem",
+                    fontSize: "0.875rem",
+                    textTransform: "capitalize",
+                    border: "none",
+                    cursor: "pointer",
+                    background: selectedPage === p ? brandColors.gold[50] : "transparent",
+                    color: selectedPage === p ? brandColors.gold[700] : "#374151",
+                    fontWeight: selectedPage === p ? 500 : 400,
+                  }}
+                >
+                  {p}
+                </button>
+              ))}
             </div>
-          </main>
+          </div>
+
+          {/* Form */}
+          <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
+            <form onSubmit={handleSave} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <div>
+                <label style={adminFormStyles.label}>Title</label>
+                <input value={seo.title ?? ""} onChange={(e) => setSeo((p) => ({ ...p, title: e.target.value }))} style={adminFormStyles.input} onFocus={(e) => Object.assign(e.currentTarget.style, adminFormStyles.inputFocus)} onBlur={(e) => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.boxShadow = "none"; }} />
+              </div>
+              <div>
+                <label style={adminFormStyles.label}>Description</label>
+                <textarea value={seo.description ?? ""} onChange={(e) => setSeo((p) => ({ ...p, description: e.target.value }))} rows={3} style={adminFormStyles.textarea} onFocus={(e) => Object.assign(e.currentTarget.style, adminFormStyles.inputFocus)} onBlur={(e) => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.boxShadow = "none"; }} />
+              </div>
+              <div>
+                <label style={adminFormStyles.label}>Keywords</label>
+                <input value={seo.keywords ?? ""} onChange={(e) => setSeo((p) => ({ ...p, keywords: e.target.value }))} style={adminFormStyles.input} placeholder="Comma separated" onFocus={(e) => Object.assign(e.currentTarget.style, adminFormStyles.inputFocus)} onBlur={(e) => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.boxShadow = "none"; }} />
+              </div>
+              {/* Preview */}
+              <div style={{ background: "#F9FAFB", borderRadius: "0.5rem", padding: "1rem" }}>
+                <p style={{ fontSize: "0.75rem", color: "#6B7280", marginBottom: "0.25rem" }}>Preview</p>
+                <p style={{ color: "#1D4ED8", fontSize: "0.875rem", fontWeight: 500 }}>{seo.title || "Page Title"}</p>
+                <p style={{ color: "#15803D", fontSize: "0.75rem" }}>sultanrestaurant.com/{selectedPage === "global" ? "" : selectedPage}</p>
+                <p style={{ color: "#4B5563", fontSize: "0.75rem", marginTop: "0.25rem" }}>{seo.description || "Page description will appear here"}</p>
+              </div>
+              <div>
+                <button type="submit" disabled={saving} style={{ ...adminLayout.primaryBtn, padding: "0.5rem 1.5rem", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: 500, opacity: saving ? 0.5 : 1 }}>
+                  {saving ? "Saving..." : "Save SEO"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-    </AdminAuthGuard>
+
+        <style>{`
+          @media (max-width: 768px) {
+            .admin-seo-grid { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

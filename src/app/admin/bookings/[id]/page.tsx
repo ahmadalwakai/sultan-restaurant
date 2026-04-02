@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminLoadingState } from "@/components/admin/shared";
+import { adminSpacing } from "@/lib/admin-ui";
 
 export default function AdminBookingDetailPage() {
   const params = useParams();
@@ -15,33 +15,30 @@ export default function AdminBookingDetailPage() {
     fetch(`/api/admin/bookings/${params.id}`).then((r) => r.json()).then((d) => setBooking(d.data));
   }, [params.id]);
 
-  if (!booking) return <div className="flex items-center justify-center min-h-screen"><div className="animate-spin h-8 w-8 border-4 border-amber-500 border-t-transparent rounded-full" /></div>;
+  if (!booking) return <AdminShell><AdminPageShell><AdminLoadingState rows={4} height="2.5rem" /></AdminPageShell></AdminShell>;
+
+  const fieldStyle = { fontSize: "0.75rem", color: "#6B7280", marginBottom: "0.125rem" } as const;
+  const valueStyle = { fontWeight: 500 as const, fontSize: "0.875rem" };
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <Link href="/admin/bookings" className="text-sm text-gray-500 hover:underline">&larr; Back to Bookings</Link>
-            <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-6">Booking Details</h1>
-            <div className="bg-white border rounded-lg p-6 max-w-2xl space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div><p className="text-xs text-gray-500">Name</p><p className="font-medium">{booking.name as string}</p></div>
-                <div><p className="text-xs text-gray-500">Email</p><p className="font-medium">{booking.email as string}</p></div>
-                <div><p className="text-xs text-gray-500">Date</p><p className="font-medium">{new Date(booking.date as string).toLocaleDateString()}</p></div>
-                <div><p className="text-xs text-gray-500">Time</p><p className="font-medium">{booking.time as string}</p></div>
-                <div><p className="text-xs text-gray-500">Guests</p><p className="font-medium">{booking.guests as number}</p></div>
-                <div><p className="text-xs text-gray-500">Status</p><p className="font-medium">{booking.status as string}</p></div>
-              </div>
-              {Boolean(booking.notes) && (
-                <div><p className="text-xs text-gray-500">Notes</p><p className="text-sm">{String(booking.notes)}</p></div>
-              )}
-            </div>
-          </main>
+    <AdminShell>
+      <AdminPageShell>
+        <Link href="/admin/bookings" style={{ fontSize: "0.875rem", color: "#6B7280", textDecoration: "none" }}>&larr; Back to Bookings</Link>
+        <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#111827", marginTop: "0.5rem", marginBottom: adminSpacing.stack }}>Booking Details</h1>
+        <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, maxWidth: "42rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+            <div><p style={fieldStyle}>Name</p><p style={valueStyle}>{booking.name as string}</p></div>
+            <div><p style={fieldStyle}>Email</p><p style={valueStyle}>{booking.email as string}</p></div>
+            <div><p style={fieldStyle}>Date</p><p style={valueStyle}>{new Date(booking.date as string).toLocaleDateString()}</p></div>
+            <div><p style={fieldStyle}>Time</p><p style={valueStyle}>{booking.time as string}</p></div>
+            <div><p style={fieldStyle}>Guests</p><p style={valueStyle}>{booking.guests as number}</p></div>
+            <div><p style={fieldStyle}>Status</p><p style={valueStyle}>{booking.status as string}</p></div>
+          </div>
+          {Boolean(booking.notes) && (
+            <div><p style={fieldStyle}>Notes</p><p style={{ fontSize: "0.875rem" }}>{String(booking.notes)}</p></div>
+          )}
         </div>
-      </div>
-    </AdminAuthGuard>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

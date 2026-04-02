@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
-import { AdminPagination } from "@/components/admin/shared/AdminPagination";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { AdminTableShell, AdminTablePagination, AdminStatusBadge } from "@/components/admin/tables";
+import { adminTableStyles, adminFormStyles, adminLayout, adminSpacing } from "@/lib/admin-ui";
+import { adminHeadings } from "@/lib/admin-content";
 
 export default function AdminEmailPage() {
   const [logs, setLogs] = useState<Array<{ id: string; to: string; subject: string; status: string; sentAt: string }>>([]);
@@ -41,56 +41,53 @@ export default function AdminEmailPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Email" />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <div className="bg-white border rounded-lg p-6">
-                <h3 className="font-semibold mb-4">Send Test Email</h3>
-                <form onSubmit={sendTest} className="space-y-3">
-                  <input value={testEmail} onChange={(e) => setTestEmail(e.target.value)} placeholder="Recipient email" required type="email" className="w-full px-3 py-2 border rounded-lg text-sm" />
-                  <input value={testSubject} onChange={(e) => setTestSubject(e.target.value)} placeholder="Subject" required className="w-full px-3 py-2 border rounded-lg text-sm" />
-                  <button type="submit" disabled={sending} className="w-full py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 text-sm">
-                    {sending ? "Sending..." : "Send Test"}
-                  </button>
-                </form>
-              </div>
-            </div>
-            <h3 className="font-semibold mb-4">Email Log</h3>
-            {loading ? (
-              <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-12 bg-gray-100 rounded animate-pulse" />)}</div>
-            ) : (
-              <div className="bg-white border rounded-lg overflow-hidden">
-                <table className="min-w-full divide-y">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">To</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subject</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sent</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {logs.map((log) => (
-                      <tr key={log.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm">{log.to}</td>
-                        <td className="px-4 py-3 text-sm">{log.subject}</td>
-                        <td className="px-4 py-3"><span className={`text-xs px-2 py-1 rounded ${log.status === "SENT" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>{log.status}</span></td>
-                        <td className="px-4 py-3 text-sm text-gray-500">{new Date(log.sentAt).toLocaleString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-            <AdminPagination page={page} totalPages={totalPages} onPageChange={setPage} />
-          </main>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.email.title} description={adminHeadings.email.description} />
+
+        {/* Test Email Card */}
+        <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, maxWidth: "24rem", marginBottom: adminSpacing.stack }}>
+          <h3 style={{ fontWeight: 600, color: "#111827", marginBottom: "1rem" }}>Send Test Email</h3>
+          <form onSubmit={sendTest} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            <input value={testEmail} onChange={(e) => setTestEmail(e.target.value)} placeholder="Recipient email" required type="email" style={adminFormStyles.input} onFocus={(e) => Object.assign(e.currentTarget.style, adminFormStyles.inputFocus)} onBlur={(e) => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.boxShadow = "none"; }} />
+            <input value={testSubject} onChange={(e) => setTestSubject(e.target.value)} placeholder="Subject" required style={adminFormStyles.input} onFocus={(e) => Object.assign(e.currentTarget.style, adminFormStyles.inputFocus)} onBlur={(e) => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.boxShadow = "none"; }} />
+            <button type="submit" disabled={sending} style={{ ...adminLayout.primaryBtn, width: "100%", padding: "0.5rem", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: 500, opacity: sending ? 0.5 : 1 }}>
+              {sending ? "Sending..." : "Send Test"}
+            </button>
+          </form>
         </div>
-      </div>
-    </AdminAuthGuard>
+
+        <h3 style={{ fontWeight: 600, color: "#111827", marginBottom: "1rem" }}>Email Log</h3>
+
+        {loading ? (
+          <AdminLoadingState rows={5} height="3rem" />
+        ) : (
+          <AdminTableShell>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={adminTableStyles.head}>
+                  <th style={adminTableStyles.headCell}>To</th>
+                  <th style={adminTableStyles.headCell}>Subject</th>
+                  <th style={adminTableStyles.headCell}>Status</th>
+                  <th style={adminTableStyles.headCell}>Sent</th>
+                </tr>
+              </thead>
+              <tbody>
+                {logs.map((log) => (
+                  <tr key={log.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                    <td style={adminTableStyles.cell}>{log.to}</td>
+                    <td style={adminTableStyles.cell}>{log.subject}</td>
+                    <td style={adminTableStyles.cell}><AdminStatusBadge status={log.status} /></td>
+                    <td style={{ ...adminTableStyles.cell, color: "#6B7280" }}>{new Date(log.sentAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </AdminTableShell>
+        )}
+
+        <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+      </AdminPageShell>
+    </AdminShell>
   );
 }

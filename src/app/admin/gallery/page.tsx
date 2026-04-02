@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { adminLayout, adminSpacing } from "@/lib/admin-ui";
+import { adminHeadings } from "@/lib/admin-content";
 
 export default function AdminGalleryPage() {
   const [images, setImages] = useState<Array<{ id: string; url: string; alt: string; sortOrder: number }>>([]);
@@ -47,39 +47,42 @@ export default function AdminGalleryPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Gallery" />
-            <div className="mb-6">
-              <label className="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 cursor-pointer text-sm">
-                {uploading ? "Uploading..." : "+ Upload Image"}
-                <input type="file" accept="image/*" onChange={handleUpload} className="hidden" disabled={uploading} />
-              </label>
-            </div>
-            {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">{[...Array(8)].map((_, i) => <div key={i} className="aspect-square bg-gray-100 rounded-lg animate-pulse" />)}</div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {images.map((img) => (
-                  <div key={img.id} className="relative group">
-                    <img src={img.url} alt={img.alt} className="w-full aspect-square object-cover rounded-lg" />
-                    <button
-                      onClick={() => deleteImage(img.id)}
-                      className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-sm"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </main>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.gallery.title} description={adminHeadings.gallery.description} />
+
+        <div style={{ marginBottom: adminSpacing.stack }}>
+          <label style={{ ...adminLayout.primaryBtn, display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: 500 }}>
+            {uploading ? "Uploading..." : "+ Upload Image"}
+            <input type="file" accept="image/*" onChange={handleUpload} style={{ display: "none" }} disabled={uploading} />
+          </label>
         </div>
-      </div>
-    </AdminAuthGuard>
+
+        {loading ? (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(10rem, 1fr))", gap: adminSpacing.grid }}>
+            {[...Array(8)].map((_, i) => <div key={i} style={{ aspectRatio: "1", background: "#F3F4F6", borderRadius: "0.5rem" }} />)}
+          </div>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(10rem, 1fr))", gap: adminSpacing.grid }}>
+            {images.map((img) => (
+              <div key={img.id} style={{ position: "relative", borderRadius: "0.5rem", overflow: "hidden" }} className="admin-gallery-item">
+                <img src={img.url} alt={img.alt} style={{ width: "100%", aspectRatio: "1", objectFit: "cover", display: "block" }} />
+                <button
+                  onClick={() => deleteImage(img.id)}
+                  style={{ position: "absolute", top: "0.5rem", right: "0.5rem", width: "2rem", height: "2rem", background: "#EF4444", color: "#FFFFFF", border: "none", borderRadius: "50%", cursor: "pointer", fontSize: "0.875rem", opacity: 0, transition: "opacity 0.15s" }}
+                  className="admin-gallery-delete"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <style>{`
+          .admin-gallery-item:hover .admin-gallery-delete { opacity: 1 !important; }
+        `}</style>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

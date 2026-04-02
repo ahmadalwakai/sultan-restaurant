@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminLoadingState } from "@/components/admin/shared";
+import { adminFormStyles, adminSpacing, adminLayout } from "@/lib/admin-ui";
 
 const STATUSES = ["PENDING", "CONFIRMED", "PREPARING", "READY", "COMPLETED", "CANCELLED"];
 
@@ -33,59 +33,49 @@ export default function AdminOrderDetailPage() {
     router.refresh();
   }
 
-  if (!order) return <div className="flex items-center justify-center min-h-screen"><div className="animate-spin h-8 w-8 border-4 border-amber-500 border-t-transparent rounded-full" /></div>;
+  if (!order) return <AdminShell><AdminPageShell><AdminLoadingState rows={5} height="3rem" /></AdminPageShell></AdminShell>;
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <Link href="/admin/orders" className="text-sm text-gray-500 hover:underline">&larr; Back to Orders</Link>
-                <h1 className="text-2xl font-bold text-gray-900 mt-1">Order #{order.orderNumber as string}</h1>
-              </div>
-              <button onClick={handleRefund} className="px-4 py-2 text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50">Refund</button>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-white border rounded-lg p-6">
-                <h2 className="font-semibold mb-4">Items</h2>
-                <div className="space-y-3">
-                  {(order.items as Array<{ id: string; menuItem: { name: string }; quantity: number; price: number }>)?.map((item) => (
-                    <div key={item.id} className="flex justify-between text-sm">
-                      <span>{item.menuItem.name} x{item.quantity}</span>
-                      <span>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</span>
-                    </div>
-                  ))}
-                  <div className="pt-3 border-t flex justify-between font-semibold">
-                    <span>Total</span>
-                    <span>£{(Number(order.total) / 100).toFixed(2)}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="bg-white border rounded-lg p-6">
-                  <h2 className="font-semibold mb-3">Status</h2>
-                  <select
-                    value={order.status as string}
-                    onChange={(e) => updateStatus(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg text-sm"
-                  >
-                    {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
-                <div className="bg-white border rounded-lg p-6">
-                  <h2 className="font-semibold mb-3">Customer</h2>
-                  <p className="text-sm">{order.customerName as string}</p>
-                  <p className="text-sm text-gray-500">{order.customerPhone as string}</p>
-                </div>
-              </div>
-            </div>
-          </main>
+    <AdminShell>
+      <AdminPageShell>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: adminSpacing.stack }}>
+          <div>
+            <Link href="/admin/orders" style={{ fontSize: "0.875rem", color: "#6B7280", textDecoration: "none" }}>&larr; Back to Orders</Link>
+            <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#111827", marginTop: "0.25rem" }}>Order #{order.orderNumber as string}</h1>
+          </div>
+          <button onClick={handleRefund} style={{ ...adminLayout.dangerBtn, padding: "0.5rem 1rem", fontSize: "0.875rem", border: "1px solid #FCA5A5", borderRadius: "0.5rem", cursor: "pointer" }}>Refund</button>
         </div>
-      </div>
-    </AdminAuthGuard>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: adminSpacing.grid }}>
+          <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
+            <h2 style={{ fontWeight: 600, marginBottom: "1rem" }}>Items</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {(order.items as Array<{ id: string; menuItem: { name: string }; quantity: number; price: number }>)?.map((item) => (
+                <div key={item.id} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem" }}>
+                  <span>{item.menuItem.name} x{item.quantity}</span>
+                  <span>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</span>
+                </div>
+              ))}
+              <div style={{ paddingTop: "0.75rem", borderTop: "1px solid #E5E7EB", display: "flex", justifyContent: "space-between", fontWeight: 600 }}>
+                <span>Total</span>
+                <span>£{(Number(order.total) / 100).toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
+              <h2 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Status</h2>
+              <select value={order.status as string} onChange={(e) => updateStatus(e.target.value)} style={adminFormStyles.select}>
+                {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
+              <h2 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Customer</h2>
+              <p style={{ fontSize: "0.875rem" }}>{order.customerName as string}</p>
+              <p style={{ fontSize: "0.875rem", color: "#6B7280" }}>{order.customerPhone as string}</p>
+            </div>
+          </div>
+        </div>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

@@ -2,12 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
-import { AdminSearchInput } from "@/components/admin/shared/AdminSearchInput";
-import { AdminPagination } from "@/components/admin/shared/AdminPagination";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { AdminTableShell, AdminTableToolbar, AdminTableSearch, AdminTablePagination, AdminStatusBadge } from "@/components/admin/tables";
+import { adminTableStyles } from "@/lib/admin-ui";
+import { adminHeadings, adminActions } from "@/lib/admin-content";
 
 interface MenuItem {
   id: string;
@@ -50,55 +49,54 @@ export default function AdminMenuPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Menu Items" actionLabel="Add Item" actionHref="/admin/menu/new" />
-            <div className="mb-4">
-              <AdminSearchInput value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search menu items..." />
-            </div>
-            {loading ? (
-              <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-16 bg-gray-100 rounded animate-pulse" />)}</div>
-            ) : (
-              <div className="bg-white border rounded-lg overflow-hidden">
-                <table className="min-w-full divide-y">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Item</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {items.map((item) => (
-                      <tr key={item.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 font-medium text-sm">{item.name}</td>
-                        <td className="px-4 py-3 text-sm text-gray-500">{item.category?.name ?? "-"}</td>
-                        <td className="px-4 py-3 text-sm">£{(item.price / 100).toFixed(2)}</td>
-                        <td className="px-4 py-3">
-                          <button onClick={() => toggleAvailability(item.id)} className={`text-xs px-2 py-1 rounded ${item.isAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                            {item.isAvailable ? "Available" : "Unavailable"}
-                          </button>
-                        </td>
-                        <td className="px-4 py-3 text-right space-x-2">
-                          <Link href={`/admin/menu/${item.id}/edit`} className="text-sm text-amber-600 hover:underline">Edit</Link>
-                          <button onClick={() => deleteItem(item.id)} className="text-sm text-red-600 hover:underline">Delete</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-            <AdminPagination page={page} totalPages={totalPages} onPageChange={setPage} />
-          </main>
-        </div>
-      </div>
-    </AdminAuthGuard>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.menu.title} description={adminHeadings.menu.description} actionLabel={adminActions.addItem} actionHref="/admin/menu/new" />
+
+        <AdminTableToolbar>
+          <AdminTableSearch value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search menu items..." />
+        </AdminTableToolbar>
+
+        {loading ? (
+          <AdminLoadingState rows={5} height="3.5rem" />
+        ) : (
+          <AdminTableShell>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={adminTableStyles.head}>
+                  <th style={adminTableStyles.headCell}>Item</th>
+                  <th style={adminTableStyles.headCell}>Category</th>
+                  <th style={adminTableStyles.headCell}>Price</th>
+                  <th style={adminTableStyles.headCell}>Status</th>
+                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item) => (
+                  <tr key={item.id} style={{ cursor: "pointer" }} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                    <td style={{ ...adminTableStyles.cell, fontWeight: 500 }}>{item.name}</td>
+                    <td style={{ ...adminTableStyles.cell, color: "#6B7280" }}>{item.category?.name ?? "-"}</td>
+                    <td style={adminTableStyles.cell}>£{(item.price / 100).toFixed(2)}</td>
+                    <td style={adminTableStyles.cell}>
+                      <button onClick={() => toggleAvailability(item.id)} style={{ border: "none", cursor: "pointer", background: "none", padding: 0 }}>
+                        <AdminStatusBadge status={item.isAvailable ? "Available" : "Unavailable"} />
+                      </button>
+                    </td>
+                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
+                      <span style={{ display: "inline-flex", gap: "0.75rem" }}>
+                        <Link href={`/admin/menu/${item.id}/edit`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>{adminActions.edit}</Link>
+                        <button onClick={() => deleteItem(item.id)} style={{ fontSize: "0.875rem", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>{adminActions.delete}</button>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </AdminTableShell>
+        )}
+
+        <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+      </AdminPageShell>
+    </AdminShell>
   );
 }

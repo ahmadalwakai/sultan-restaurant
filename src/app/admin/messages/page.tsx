@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
-import { AdminPagination } from "@/components/admin/shared/AdminPagination";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { AdminTablePagination } from "@/components/admin/tables";
+import { adminSpacing } from "@/lib/admin-ui";
+import { adminHeadings } from "@/lib/admin-content";
+import { brandColors } from "@/theme/branding";
 
 export default function AdminMessagesPage() {
   const [messages, setMessages] = useState<Array<{ id: string; name: string; email: string; subject: string; message: string; status: string; createdAt: string }>>([]);
@@ -39,44 +40,59 @@ export default function AdminMessagesPage() {
   const selectedMsg = messages.find((m) => m.id === selected);
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Messages" />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-2">
-                {loading ? (
-                  <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-16 bg-gray-100 rounded animate-pulse" />)}</div>
-                ) : messages.map((m) => (
-                  <button key={m.id} onClick={() => { setSelected(m.id); markRead(m.id); }} className={`w-full text-left p-4 rounded-lg border hover:bg-gray-50 ${m.status === "UNREAD" ? "bg-amber-50 border-amber-200" : "bg-white"} ${selected === m.id ? "ring-2 ring-amber-500" : ""}`}>
-                    <div className="flex justify-between">
-                      <span className="font-medium text-sm">{m.name}</span>
-                      <span className="text-xs text-gray-400">{new Date(m.createdAt).toLocaleDateString()}</span>
-                    </div>
-                    <p className="text-sm text-gray-500 truncate">{m.subject}</p>
-                  </button>
-                ))}
-                <AdminPagination page={page} totalPages={totalPages} onPageChange={setPage} />
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.messages.title} description={adminHeadings.messages.description} />
+
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: adminSpacing.grid }} className="admin-messages-grid">
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {loading ? (
+              <AdminLoadingState rows={5} height="4rem" />
+            ) : messages.map((m) => (
+              <button
+                key={m.id}
+                onClick={() => { setSelected(m.id); markRead(m.id); }}
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "1rem",
+                  borderRadius: "0.5rem",
+                  border: selected === m.id ? `2px solid ${brandColors.gold[500]}` : "1px solid #E5E7EB",
+                  background: m.status === "UNREAD" ? brandColors.gold[50] : "#FFFFFF",
+                  cursor: "pointer",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "#111827" }}>{m.name}</span>
+                  <span style={{ fontSize: "0.75rem", color: "#9CA3AF" }}>{new Date(m.createdAt).toLocaleDateString()}</span>
+                </div>
+                <p style={{ fontSize: "0.875rem", color: "#6B7280", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.subject}</p>
+              </button>
+            ))}
+            <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+          </div>
+          <div>
+            {selectedMsg ? (
+              <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
+                <h3 style={{ fontWeight: 600, color: "#111827" }}>{selectedMsg.subject}</h3>
+                <p style={{ fontSize: "0.875rem", color: "#6B7280" }}>{selectedMsg.name} &lt;{selectedMsg.email}&gt;</p>
+                <p style={{ marginTop: "1rem", fontSize: "0.875rem", whiteSpace: "pre-wrap", color: "#374151" }}>{selectedMsg.message}</p>
+                <button onClick={() => deleteMessage(selectedMsg.id)} style={{ marginTop: "1rem", fontSize: "0.875rem", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>Delete</button>
               </div>
-              <div>
-                {selectedMsg ? (
-                  <div className="bg-white border rounded-lg p-6">
-                    <h3 className="font-semibold">{selectedMsg.subject}</h3>
-                    <p className="text-sm text-gray-500">{selectedMsg.name} &lt;{selectedMsg.email}&gt;</p>
-                    <p className="mt-4 text-sm whitespace-pre-wrap">{selectedMsg.message}</p>
-                    <button onClick={() => deleteMessage(selectedMsg.id)} className="mt-4 text-sm text-red-600 hover:underline">Delete</button>
-                  </div>
-                ) : (
-                  <div className="bg-white border rounded-lg p-6 text-center text-gray-400 text-sm">Select a message to view</div>
-                )}
+            ) : (
+              <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, textAlign: "center", color: "#9CA3AF", fontSize: "0.875rem" }}>
+                Select a message to view
               </div>
-            </div>
-          </main>
+            )}
+          </div>
         </div>
-      </div>
-    </AdminAuthGuard>
+
+        <style>{`
+          @media (max-width: 768px) {
+            .admin-messages-grid { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

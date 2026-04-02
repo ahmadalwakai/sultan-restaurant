@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle } from "@/components/admin/shared";
+import { adminFormStyles, adminSpacing, adminLayout } from "@/lib/admin-ui";
 
 export default function NewCouponPage() {
   const router = useRouter();
@@ -28,30 +28,24 @@ export default function NewCouponPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Add Coupon</h1>
-            <form onSubmit={handleSubmit} className="bg-white border rounded-lg p-6 max-w-2xl space-y-4">
-              <div><label className="block text-sm font-medium mb-1">Code</label><input name="code" required className="w-full px-3 py-2 border rounded-lg" /></div>
-              <div><label className="block text-sm font-medium mb-1">Discount Type</label>
-                <select name="discountType" className="w-full px-3 py-2 border rounded-lg">
-                  <option value="PERCENTAGE">Percentage</option>
-                  <option value="FIXED">Fixed Amount</option>
-                </select>
-              </div>
-              <div><label className="block text-sm font-medium mb-1">Discount Value</label><input name="discountValue" type="number" required className="w-full px-3 py-2 border rounded-lg" /></div>
-              <div><label className="block text-sm font-medium mb-1">Min Order (pence, optional)</label><input name="minOrderAmount" type="number" className="w-full px-3 py-2 border rounded-lg" /></div>
-              <div><label className="block text-sm font-medium mb-1">Max Uses (optional)</label><input name="maxUses" type="number" className="w-full px-3 py-2 border rounded-lg" /></div>
-              <div><label className="block text-sm font-medium mb-1">Expires At (optional)</label><input name="expiresAt" type="datetime-local" className="w-full px-3 py-2 border rounded-lg" /></div>
-              <button type="submit" className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700">Create Coupon</button>
-            </form>
-          </main>
-        </div>
-      </div>
-    </AdminAuthGuard>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title="Add Coupon" description="Create a new discount coupon" />
+        <form onSubmit={handleSubmit} style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, maxWidth: "42rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <div><label style={adminFormStyles.label}>Code</label><input name="code" required style={adminFormStyles.input} /></div>
+          <div><label style={adminFormStyles.label}>Discount Type</label>
+            <select name="discountType" style={adminFormStyles.select}>
+              <option value="PERCENTAGE">Percentage</option>
+              <option value="FIXED">Fixed Amount</option>
+            </select>
+          </div>
+          <div><label style={adminFormStyles.label}>Discount Value</label><input name="discountValue" type="number" required style={adminFormStyles.input} /></div>
+          <div><label style={adminFormStyles.label}>Min Order (pence, optional)</label><input name="minOrderAmount" type="number" style={adminFormStyles.input} /></div>
+          <div><label style={adminFormStyles.label}>Max Uses (optional)</label><input name="maxUses" type="number" style={adminFormStyles.input} /></div>
+          <div><label style={adminFormStyles.label}>Expires At (optional)</label><input name="expiresAt" type="datetime-local" style={adminFormStyles.input} /></div>
+          <button type="submit" style={{ ...adminLayout.primaryBtn, padding: "0.5rem 1.5rem", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: 500, alignSelf: "flex-start" }}>Create Coupon</button>
+        </form>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

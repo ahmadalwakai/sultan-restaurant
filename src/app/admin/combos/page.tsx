@@ -3,10 +3,11 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { AdminTableShell, AdminStatusBadge } from "@/components/admin/tables";
+import { adminTableStyles } from "@/lib/admin-ui";
+import { adminActions } from "@/lib/admin-content";
 import { formatCurrency } from "@/lib/utils/format-currency";
 
 interface ComboRow {
@@ -41,62 +42,57 @@ export default function AdminCombosPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Combo Meals" actionLabel="Add Combo" actionHref="/admin/combos/new" />
-            {loading ? (
-              <div className="space-y-3">{[...Array(3)].map((_, i) => <div key={i} className="h-14 animate-pulse rounded bg-gray-100" />)}</div>
-            ) : (
-              <div className="overflow-hidden rounded-lg border bg-white">
-                <table className="min-w-full divide-y">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Combo</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Price</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Savings</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Serves</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Status</th>
-                      <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {combos.map((c) => (
-                      <tr key={c.id} className="hover:bg-gray-50">
-                        <td className="flex items-center gap-3 px-4 py-3">
-                          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg">
-                            {c.image ? (
-                              <Image src={c.image} alt={c.name} fill className="object-cover" sizes="40px" />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center bg-amber-50 text-lg">🍱</div>
-                            )}
-                          </div>
-                          <span className="text-sm font-medium">{c.name}</span>
-                        </td>
-                        <td className="px-4 py-3 text-sm">{formatCurrency(c.price)}</td>
-                        <td className="px-4 py-3 text-sm text-green-600">Save {formatCurrency(c.savings)}</td>
-                        <td className="px-4 py-3 text-sm">{c.servesCount}</td>
-                        <td className="px-4 py-3">
-                          <span className={`rounded px-2 py-1 text-xs ${c.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                            {c.isActive ? "Active" : "Inactive"}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-right space-x-2">
-                          <Link href={`/admin/combos/${c.id}/edit`} className="text-sm text-amber-600 hover:underline">Edit</Link>
-                          <button onClick={() => deleteCombo(c.id)} className="text-sm text-red-600 hover:underline">Delete</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </main>
-        </div>
-      </div>
-    </AdminAuthGuard>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title="Combo Meals" description="Manage combo meal deals" actionLabel="Add Combo" actionHref="/admin/combos/new" />
+
+        {loading ? (
+          <AdminLoadingState rows={3} height="3.5rem" />
+        ) : (
+          <AdminTableShell>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={adminTableStyles.head}>
+                  <th style={adminTableStyles.headCell}>Combo</th>
+                  <th style={adminTableStyles.headCell}>Price</th>
+                  <th style={adminTableStyles.headCell}>Savings</th>
+                  <th style={adminTableStyles.headCell}>Serves</th>
+                  <th style={adminTableStyles.headCell}>Status</th>
+                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {combos.map((c) => (
+                  <tr key={c.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                    <td style={adminTableStyles.cell}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                        <div style={{ position: "relative", width: "2.5rem", height: "2.5rem", flexShrink: 0, borderRadius: "0.5rem", overflow: "hidden" }}>
+                          {c.image ? (
+                            <Image src={c.image} alt={c.name} fill style={{ objectFit: "cover" }} sizes="40px" />
+                          ) : (
+                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "#FEF3C7", fontSize: "1.125rem" }}>🍱</div>
+                          )}
+                        </div>
+                        <span style={{ fontSize: "0.875rem", fontWeight: 500 }}>{c.name}</span>
+                      </div>
+                    </td>
+                    <td style={adminTableStyles.cell}>{formatCurrency(c.price)}</td>
+                    <td style={{ ...adminTableStyles.cell, color: "#059669" }}>Save {formatCurrency(c.savings)}</td>
+                    <td style={adminTableStyles.cell}>{c.servesCount}</td>
+                    <td style={adminTableStyles.cell}><AdminStatusBadge status={c.isActive ? "Active" : "Inactive"} /></td>
+                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
+                      <span style={{ display: "inline-flex", gap: "0.75rem" }}>
+                        <Link href={`/admin/combos/${c.id}/edit`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>{adminActions.edit}</Link>
+                        <button onClick={() => deleteCombo(c.id)} style={{ fontSize: "0.875rem", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>{adminActions.delete}</button>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </AdminTableShell>
+        )}
+      </AdminPageShell>
+    </AdminShell>
   );
 }

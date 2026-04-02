@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle } from "@/components/admin/shared";
+import { adminSpacing } from "@/lib/admin-ui";
 import { OfferForm } from "@/components/forms/OfferForm";
 import type { OfferAdminFormValues } from "@/lib/validators";
 
@@ -20,19 +20,13 @@ export default function NewOfferPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Add Offer</h1>
-            <div className="bg-white border rounded-lg p-6 max-w-2xl">
-              <OfferForm onSubmit={handleSubmit} />
-            </div>
-          </main>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title="Add Offer" description="Create a new special offer" />
+        <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, maxWidth: "42rem" }}>
+          <OfferForm onSubmit={handleSubmit} />
         </div>
-      </div>
-    </AdminAuthGuard>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { adminSpacing } from "@/lib/admin-ui";
 import { CategoryForm } from "@/components/forms/CategoryForm";
 
 export default function EditCategoryPage() {
@@ -33,19 +33,13 @@ export default function EditCategoryPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Category</h1>
-            <div className="bg-white border rounded-lg p-6 max-w-2xl">
-              {category ? <CategoryForm defaultValues={category} onSubmit={handleSubmit} /> : <div className="animate-pulse h-40 bg-gray-100 rounded" />}
-            </div>
-          </main>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title="Edit Category" description="Update category details" />
+        <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, maxWidth: "42rem" }}>
+          {category ? <CategoryForm defaultValues={category} onSubmit={handleSubmit} /> : <AdminLoadingState rows={3} height="2.5rem" />}
         </div>
-      </div>
-    </AdminAuthGuard>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

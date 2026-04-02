@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { adminSpacing } from "@/lib/admin-ui";
 import { OfferForm } from "@/components/forms/OfferForm";
 import type { OfferAdminFormValues } from "@/lib/validators";
 
@@ -27,19 +27,13 @@ export default function EditOfferPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Offer</h1>
-            <div className="bg-white border rounded-lg p-6 max-w-2xl">
-              {offer ? <OfferForm defaultValues={offer} onSubmit={handleSubmit} /> : <div className="animate-pulse h-48 bg-gray-100 rounded" />}
-            </div>
-          </main>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title="Edit Offer" description="Update offer details" />
+        <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, maxWidth: "42rem" }}>
+          {offer ? <OfferForm defaultValues={offer} onSubmit={handleSubmit} /> : <AdminLoadingState rows={4} height="3rem" />}
         </div>
-      </div>
-    </AdminAuthGuard>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

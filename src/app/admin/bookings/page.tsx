@@ -2,14 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
-import { AdminStatusFilter } from "@/components/admin/shared/AdminStatusFilter";
-import { AdminPagination } from "@/components/admin/shared/AdminPagination";
-import { AdminFilterBar } from "@/components/admin/shared/AdminFilterBar";
-import { AdminExportButton } from "@/components/admin/shared/AdminExportButton";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { AdminTableShell, AdminTableToolbar, AdminTableFilters, AdminTablePagination, AdminStatusBadge } from "@/components/admin/tables";
+import { adminTableStyles, adminFormStyles } from "@/lib/admin-ui";
+import { adminHeadings } from "@/lib/admin-content";
 
 const BOOKING_STATUSES = [
   { label: "Pending", value: "PENDING" },
@@ -48,61 +45,57 @@ export default function AdminBookingsPage() {
   }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Bookings" />
-            <AdminFilterBar>
-              <AdminStatusFilter value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={BOOKING_STATUSES} />
-              <AdminExportButton href="/api/admin/bookings/export" />
-            </AdminFilterBar>
-            {loading ? (
-              <div className="space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="h-14 bg-gray-100 rounded animate-pulse" />)}</div>
-            ) : (
-              <div className="bg-white border rounded-lg overflow-hidden">
-                <table className="min-w-full divide-y">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Guests</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {bookings.map((b) => (
-                      <tr key={b.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 font-medium text-sm">{b.name}</td>
-                        <td className="px-4 py-3 text-sm">{new Date(b.date).toLocaleDateString()}</td>
-                        <td className="px-4 py-3 text-sm">{b.time}</td>
-                        <td className="px-4 py-3 text-sm">{b.guests}</td>
-                        <td className="px-4 py-3">
-                          <select
-                            value={b.status}
-                            onChange={(e) => updateStatus(b.id, e.target.value)}
-                            className="text-xs px-2 py-1 border rounded"
-                          >
-                            {BOOKING_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-                          </select>
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <Link href={`/admin/bookings/${b.id}`} className="text-sm text-amber-600 hover:underline">View</Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-            <AdminPagination page={page} totalPages={totalPages} onPageChange={setPage} />
-          </main>
-        </div>
-      </div>
-    </AdminAuthGuard>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.bookings.title} description={adminHeadings.bookings.description} />
+
+        <AdminTableToolbar>
+          <AdminTableFilters value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={BOOKING_STATUSES} label="Status" />
+        </AdminTableToolbar>
+
+        {loading ? (
+          <AdminLoadingState rows={5} height="3.5rem" />
+        ) : (
+          <AdminTableShell>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={adminTableStyles.head}>
+                  <th style={adminTableStyles.headCell}>Name</th>
+                  <th style={adminTableStyles.headCell}>Date</th>
+                  <th style={adminTableStyles.headCell}>Time</th>
+                  <th style={adminTableStyles.headCell}>Guests</th>
+                  <th style={adminTableStyles.headCell}>Status</th>
+                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map((b) => (
+                  <tr key={b.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                    <td style={{ ...adminTableStyles.cell, fontWeight: 500 }}>{b.name}</td>
+                    <td style={adminTableStyles.cell}>{new Date(b.date).toLocaleDateString()}</td>
+                    <td style={adminTableStyles.cell}>{b.time}</td>
+                    <td style={adminTableStyles.cell}>{b.guests}</td>
+                    <td style={adminTableStyles.cell}>
+                      <select
+                        value={b.status}
+                        onChange={(e) => updateStatus(b.id, e.target.value)}
+                        style={{ ...adminFormStyles.select, width: "auto", padding: "0.25rem 0.5rem", fontSize: "0.75rem" }}
+                      >
+                        {BOOKING_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                      </select>
+                    </td>
+                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
+                      <Link href={`/admin/bookings/${b.id}`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>View</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </AdminTableShell>
+        )}
+
+        <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+      </AdminPageShell>
+    </AdminShell>
   );
 }

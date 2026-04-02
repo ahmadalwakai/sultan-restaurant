@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminLoadingState } from "@/components/admin/shared";
+import { adminSpacing } from "@/lib/admin-ui";
 
 export default function AdminCustomerDetailPage() {
   const params = useParams();
@@ -15,41 +15,38 @@ export default function AdminCustomerDetailPage() {
     fetch(`/api/admin/customers/${params.id}`).then((r) => r.json()).then((d) => setCustomer(d.data));
   }, [params.id]);
 
-  if (!customer) return <div className="flex items-center justify-center min-h-screen"><div className="animate-spin h-8 w-8 border-4 border-amber-500 border-t-transparent rounded-full" /></div>;
+  if (!customer) return <AdminShell><AdminPageShell><AdminLoadingState rows={4} height="2.5rem" /></AdminPageShell></AdminShell>;
+
+  const cardStyle = { background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card } as const;
+  const labelStyle = { color: "#6B7280", fontSize: "0.875rem" } as const;
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <Link href="/admin/customers" className="text-sm text-gray-500 hover:underline">&larr; Back to Customers</Link>
-            <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-6">{customer.name as string ?? "Customer"}</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl">
-              <div className="bg-white border rounded-lg p-6">
-                <h2 className="font-semibold mb-3">Details</h2>
-                <p className="text-sm"><span className="text-gray-500">Email:</span> {customer.email as string}</p>
-                <p className="text-sm"><span className="text-gray-500">Phone:</span> {(customer.phone as string) ?? "-"}</p>
-                <p className="text-sm"><span className="text-gray-500">Joined:</span> {new Date(customer.createdAt as string).toLocaleDateString()}</p>
+    <AdminShell>
+      <AdminPageShell>
+        <Link href="/admin/customers" style={{ fontSize: "0.875rem", color: "#6B7280", textDecoration: "none" }}>&larr; Back to Customers</Link>
+        <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#111827", marginTop: "0.5rem", marginBottom: adminSpacing.stack }}>{customer.name as string ?? "Customer"}</h1>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: adminSpacing.grid, maxWidth: "56rem" }}>
+          <div style={cardStyle}>
+            <h2 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Details</h2>
+            <p style={{ fontSize: "0.875rem" }}><span style={labelStyle}>Email:</span> {customer.email as string}</p>
+            <p style={{ fontSize: "0.875rem" }}><span style={labelStyle}>Phone:</span> {(customer.phone as string) ?? "-"}</p>
+            <p style={{ fontSize: "0.875rem" }}><span style={labelStyle}>Joined:</span> {new Date(customer.createdAt as string).toLocaleDateString()}</p>
+          </div>
+          <div style={cardStyle}>
+            <h2 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Recent Orders</h2>
+            {(customer.orders as Array<{ id: string; orderNumber: string; total: number; status: string }>)?.length ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                {(customer.orders as Array<{ id: string; orderNumber: string; total: number; status: string }>).map((o) => (
+                  <Link key={o.id} href={`/admin/orders/${o.id}`} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", textDecoration: "none", color: "inherit" }}>
+                    <span>#{o.orderNumber}</span>
+                    <span>£{(Number(o.total) / 100).toFixed(2)}</span>
+                  </Link>
+                ))}
               </div>
-              <div className="bg-white border rounded-lg p-6">
-                <h2 className="font-semibold mb-3">Recent Orders</h2>
-                {(customer.orders as Array<{ id: string; orderNumber: string; total: number; status: string }>)?.length ? (
-                  <div className="space-y-2">
-                    {(customer.orders as Array<{ id: string; orderNumber: string; total: number; status: string }>).map((o) => (
-                      <Link key={o.id} href={`/admin/orders/${o.id}`} className="flex justify-between text-sm hover:bg-gray-50 p-2 rounded">
-                        <span>#{o.orderNumber}</span>
-                        <span>£{(Number(o.total) / 100).toFixed(2)}</span>
-                      </Link>
-                    ))}
-                  </div>
-                ) : <p className="text-sm text-gray-400">No orders</p>}
-              </div>
-            </div>
-          </main>
+            ) : <p style={{ fontSize: "0.875rem", color: "#9CA3AF" }}>No orders</p>}
+          </div>
         </div>
-      </div>
-    </AdminAuthGuard>
+      </AdminPageShell>
+    </AdminShell>
   );
 }

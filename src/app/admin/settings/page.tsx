@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle } from "@/components/admin/shared";
+import { adminFormStyles, adminLayout, adminSpacing } from "@/lib/admin-ui";
+import { adminHeadings } from "@/lib/admin-content";
+import { brandColors } from "@/theme/branding";
 
 const TABS = ["General", "Contact", "Social Links", "Opening Hours", "Homepage", "Delivery Partners"] as const;
 
@@ -40,7 +42,7 @@ export default function AdminSettingsPage() {
 
   function renderForm() {
     if (tab === "Opening Hours") return <OpeningHoursTab />;
-    if (tab === "Delivery Partners") return <p className="text-sm text-gray-500">Delivery partners management coming soon.</p>;
+    if (tab === "Delivery Partners") return <p style={{ fontSize: "0.875rem", color: "#6B7280" }}>Delivery partners management coming soon.</p>;
 
     const fields: Record<string, string[]> = {
       General: ["siteName", "tagline", "description"],
@@ -50,46 +52,63 @@ export default function AdminSettingsPage() {
     };
 
     return (
-      <form onSubmit={handleSave} className="space-y-4 max-w-xl">
+      <form onSubmit={handleSave} style={{ display: "flex", flexDirection: "column", gap: "1rem", maxWidth: "36rem" }}>
         {(fields[tab] ?? []).map((key) => (
           <div key={key}>
-            <label className="block text-sm font-medium mb-1 capitalize">{key.replace(/([A-Z])/g, " $1")}</label>
+            <label style={adminFormStyles.label}>{key.replace(/([A-Z])/g, " $1")}</label>
             <input
               value={settings[key] ?? ""}
               onChange={(e) => setSettings((p) => ({ ...p, [key]: e.target.value }))}
-              className="w-full px-3 py-2 border rounded-lg text-sm"
+              style={adminFormStyles.input}
+              onFocus={(e) => Object.assign(e.currentTarget.style, adminFormStyles.inputFocus)}
+              onBlur={(e) => { e.currentTarget.style.borderColor = "#D1D5DB"; e.currentTarget.style.boxShadow = "none"; }}
             />
           </div>
         ))}
-        <button type="submit" disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">
-          {saving ? "Saving..." : "Save"}
-        </button>
+        <div>
+          <button type="submit" disabled={saving} style={{ ...adminLayout.primaryBtn, padding: "0.5rem 1.5rem", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: 500, opacity: saving ? 0.5 : 1 }}>
+            {saving ? "Saving..." : "Save"}
+          </button>
+        </div>
       </form>
     );
   }
 
+  const tabBarStyle: React.CSSProperties = {
+    display: "flex",
+    gap: "0.25rem",
+    borderBottom: "1px solid #E5E7EB",
+    marginBottom: adminSpacing.stack,
+  };
+
+  const tabStyle = (active: boolean): React.CSSProperties => ({
+    padding: "0.5rem 1rem",
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    background: "none",
+    border: "none",
+    borderBottom: active ? `2px solid ${brandColors.gold[500]}` : "2px solid transparent",
+    color: active ? brandColors.gold[600] : "#6B7280",
+    cursor: "pointer",
+    marginBottom: "-1px",
+  });
+
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Settings</h1>
-            <div className="flex gap-2 mb-6 border-b">
-              {TABS.map((t) => (
-                <button key={t} onClick={() => setTab(t)} className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px ${tab === t ? "border-amber-500 text-amber-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}>
-                  {t}
-                </button>
-              ))}
-            </div>
-            <div className="bg-white border rounded-lg p-6">
-              {renderForm()}
-            </div>
-          </main>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.settings.title} description={adminHeadings.settings.description} />
+
+        <div style={tabBarStyle}>
+          {TABS.map((t) => (
+            <button key={t} onClick={() => setTab(t)} style={tabStyle(tab === t)}>{t}</button>
+          ))}
         </div>
-      </div>
-    </AdminAuthGuard>
+
+        <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
+          {renderForm()}
+        </div>
+      </AdminPageShell>
+    </AdminShell>
   );
 }
 
@@ -116,26 +135,28 @@ function OpeningHoursTab() {
   }
 
   return (
-    <div className="space-y-3 max-w-xl">
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxWidth: "36rem" }}>
       {hours.map((h, i) => (
-        <div key={h.dayOfWeek} className="flex items-center gap-3">
-          <span className="w-24 text-sm font-medium">{days[h.dayOfWeek]}</span>
-          <label className="flex items-center gap-1 text-sm">
+        <div key={h.dayOfWeek} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <span style={{ width: "6rem", fontSize: "0.875rem", fontWeight: 500, color: "#374151" }}>{days[h.dayOfWeek]}</span>
+          <label style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.875rem", color: "#374151" }}>
             <input type="checkbox" checked={!h.isClosed} onChange={(e) => { const next = [...hours]; next[i] = { ...h, isClosed: !e.target.checked }; setHours(next); }} />
             Open
           </label>
           {!h.isClosed && (
             <>
-              <input type="time" value={h.openTime} onChange={(e) => { const next = [...hours]; next[i] = { ...h, openTime: e.target.value }; setHours(next); }} className="px-2 py-1 border rounded text-sm" />
-              <span>-</span>
-              <input type="time" value={h.closeTime} onChange={(e) => { const next = [...hours]; next[i] = { ...h, closeTime: e.target.value }; setHours(next); }} className="px-2 py-1 border rounded text-sm" />
+              <input type="time" value={h.openTime} onChange={(e) => { const next = [...hours]; next[i] = { ...h, openTime: e.target.value }; setHours(next); }} style={{ ...adminFormStyles.input, width: "auto", padding: "0.25rem 0.5rem" }} />
+              <span style={{ color: "#6B7280" }}>-</span>
+              <input type="time" value={h.closeTime} onChange={(e) => { const next = [...hours]; next[i] = { ...h, closeTime: e.target.value }; setHours(next); }} style={{ ...adminFormStyles.input, width: "auto", padding: "0.25rem 0.5rem" }} />
             </>
           )}
         </div>
       ))}
-      <button onClick={handleSave} disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">
-        {saving ? "Saving..." : "Save Hours"}
-      </button>
+      <div>
+        <button onClick={handleSave} disabled={saving} style={{ ...adminLayout.primaryBtn, padding: "0.5rem 1.5rem", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: 500, opacity: saving ? 0.5 : 1 }}>
+          {saving ? "Saving..." : "Save Hours"}
+        </button>
+      </div>
     </div>
   );
 }

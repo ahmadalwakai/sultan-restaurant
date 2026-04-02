@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { AdminAuthGuard } from "@/components/admin/auth/AdminAuthGuard";
-import { AdminHeader } from "@/components/layout/AdminHeader";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
-import { AdminStatusFilter } from "@/components/admin/shared/AdminStatusFilter";
-import { AdminFilterBar } from "@/components/admin/shared/AdminFilterBar";
-import { AdminPagination } from "@/components/admin/shared/AdminPagination";
+import { AdminShell } from "@/components/admin/layout/AdminShell";
+import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
+import { AdminTableToolbar, AdminTableFilters, AdminTablePagination, AdminStatusBadge } from "@/components/admin/tables";
+import { adminSpacing, adminLayout } from "@/lib/admin-ui";
+import { adminHeadings } from "@/lib/admin-content";
+import { brandColors } from "@/theme/branding";
 
 const REVIEW_STATUSES = [
   { label: "Pending", value: "PENDING" },
@@ -40,45 +39,42 @@ export default function AdminReviewsPage() {
   async function deleteReview(id: string) { if (!confirm("Delete?")) return; await fetch(`/api/admin/reviews/${id}`, { method: "DELETE" }); fetchReviews(); }
 
   return (
-    <AdminAuthGuard>
-      <div className="flex h-screen bg-gray-50">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AdminHeader />
-          <main className="flex-1 overflow-y-auto p-6">
-            <AdminPageHeader title="Reviews" />
-            <AdminFilterBar>
-              <AdminStatusFilter value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={REVIEW_STATUSES} />
-            </AdminFilterBar>
-            {loading ? (
-              <div className="space-y-3">{[...Array(4)].map((_, i) => <div key={i} className="h-20 bg-gray-100 rounded animate-pulse" />)}</div>
-            ) : (
-              <div className="space-y-3">
-                {reviews.map((r) => (
-                  <div key={r.id} className="bg-white border rounded-lg p-4">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-sm">{r.user?.name ?? "Anonymous"}</span>
-                          <span className="text-amber-500">{"\u2605".repeat(r.rating)}{"\u2606".repeat(5 - r.rating)}</span>
-                          <span className={`text-xs px-2 py-0.5 rounded ${r.status === "APPROVED" ? "bg-green-100 text-green-700" : r.status === "REJECTED" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"}`}>{r.status}</span>
-                        </div>
-                        <p className="text-sm text-gray-600 mt-1">{r.comment}</p>
-                      </div>
-                      <div className="flex gap-2 shrink-0">
-                        {r.status !== "APPROVED" && <button onClick={() => approve(r.id)} className="text-xs text-green-600 hover:underline">Approve</button>}
-                        {r.status !== "REJECTED" && <button onClick={() => reject(r.id)} className="text-xs text-orange-600 hover:underline">Reject</button>}
-                        <button onClick={() => deleteReview(r.id)} className="text-xs text-red-600 hover:underline">Delete</button>
-                      </div>
+    <AdminShell>
+      <AdminPageShell>
+        <AdminSectionTitle title={adminHeadings.reviews.title} description={adminHeadings.reviews.description} />
+
+        <AdminTableToolbar>
+          <AdminTableFilters value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={REVIEW_STATUSES} label="Status" />
+        </AdminTableToolbar>
+
+        {loading ? (
+          <AdminLoadingState rows={4} height="5rem" />
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            {reviews.map((r) => (
+              <div key={r.id} style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "#111827" }}>{r.user?.name ?? "Anonymous"}</span>
+                      <span style={{ color: brandColors.gold[500] }}>{"\u2605".repeat(r.rating)}{"\u2606".repeat(5 - r.rating)}</span>
+                      <AdminStatusBadge status={r.status} />
                     </div>
+                    <p style={{ fontSize: "0.875rem", color: "#4B5563", marginTop: "0.25rem" }}>{r.comment}</p>
                   </div>
-                ))}
+                  <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0 }}>
+                    {r.status !== "APPROVED" && <button onClick={() => approve(r.id)} style={{ fontSize: "0.75rem", color: "#059669", background: "none", border: "none", cursor: "pointer" }}>Approve</button>}
+                    {r.status !== "REJECTED" && <button onClick={() => reject(r.id)} style={{ fontSize: "0.75rem", color: "#EA580C", background: "none", border: "none", cursor: "pointer" }}>Reject</button>}
+                    <button onClick={() => deleteReview(r.id)} style={{ fontSize: "0.75rem", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>Delete</button>
+                  </div>
+                </div>
               </div>
-            )}
-            <AdminPagination page={page} totalPages={totalPages} onPageChange={setPage} />
-          </main>
-        </div>
-      </div>
-    </AdminAuthGuard>
+            ))}
+          </div>
+        )}
+
+        <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+      </AdminPageShell>
+    </AdminShell>
   );
 }
