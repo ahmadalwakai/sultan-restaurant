@@ -6,6 +6,36 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { bookingSchema, type BookingFormValues } from "@/lib/validators";
 import { useCreateBooking, useBookingAvailability } from "@/hooks/api";
 import toast from "react-hot-toast";
+import { brandColors, brandRadii, brandTypography } from "@/theme/branding";
+import { brandGradients } from "@/lib/design";
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  borderRadius: brandRadii.lg,
+  border: `1px solid ${brandColors.gold[200]}`,
+  padding: "0.625rem 0.875rem",
+  fontSize: brandTypography.sizes.small,
+  fontFamily: brandTypography.fonts.body,
+  outline: "none",
+  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+  background: "#FFFFFF",
+  color: brandColors.charcoal,
+};
+
+const labelStyle: React.CSSProperties = {
+  display: "block",
+  marginBottom: "0.375rem",
+  fontSize: brandTypography.sizes.small,
+  fontWeight: brandTypography.weights.medium,
+  color: "#374151",
+  fontFamily: brandTypography.fonts.body,
+};
+
+const errorStyle: React.CSSProperties = {
+  marginTop: "0.25rem",
+  fontSize: brandTypography.sizes.xs,
+  color: brandColors.accent[500],
+};
 
 interface BookingFormProps {
   onSuccess?: () => void;
@@ -48,42 +78,48 @@ export function BookingForm({ onSuccess }: BookingFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+      {/* Name */}
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Name</label>
+        <label style={labelStyle}>Name</label>
         <input
           {...register("name")}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+          style={inputStyle}
           placeholder="Your full name"
+          className="booking-input"
         />
-        {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+        {errors.name && <p style={errorStyle}>{errors.name.message}</p>}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      {/* Email + Phone */}
+      <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "1fr 1fr" }} className="booking-grid-2">
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Email</label>
+          <label style={labelStyle}>Email</label>
           <input
             {...register("email")}
             type="email"
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+            style={inputStyle}
             placeholder="your@email.com"
+            className="booking-input"
           />
-          {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
+          {errors.email && <p style={errorStyle}>{errors.email.message}</p>}
         </div>
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Phone</label>
+          <label style={labelStyle}>Phone</label>
           <input
             {...register("phone")}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+            style={inputStyle}
             placeholder="07xxx xxx xxx"
+            className="booking-input"
           />
-          {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>}
+          {errors.phone && <p style={errorStyle}>{errors.phone.message}</p>}
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      {/* Date + Time + Guests */}
+      <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "1fr 1fr 1fr" }} className="booking-grid-3">
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Date</label>
+          <label style={labelStyle}>Date</label>
           <input
             {...register("date")}
             type="date"
@@ -92,15 +128,17 @@ export function BookingForm({ onSuccess }: BookingFormProps) {
               setSelectedDate(e.target.value);
               register("date").onChange(e);
             }}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+            style={inputStyle}
+            className="booking-input"
           />
-          {errors.date && <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>}
+          {errors.date && <p style={errorStyle}>{errors.date.message}</p>}
         </div>
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Time</label>
+          <label style={labelStyle}>Time</label>
           <select
             {...register("time")}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+            style={{ ...inputStyle, appearance: "auto" as React.CSSProperties["appearance"] }}
+            className="booking-input"
           >
             <option value="">Select time</option>
             {availability?.availableSlots?.map((slot) => (
@@ -109,40 +147,72 @@ export function BookingForm({ onSuccess }: BookingFormProps) {
               </option>
             ))}
           </select>
-          {errors.time && <p className="mt-1 text-xs text-red-500">{errors.time.message}</p>}
+          {errors.time && <p style={errorStyle}>{errors.time.message}</p>}
         </div>
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Guests</label>
+          <label style={labelStyle}>Guests</label>
           <input
             {...register("guests", { valueAsNumber: true })}
             type="number"
             min={1}
             max={20}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+            style={inputStyle}
+            className="booking-input"
           />
-          {errors.guests && <p className="mt-1 text-xs text-red-500">{errors.guests.message}</p>}
+          {errors.guests && <p style={errorStyle}>{errors.guests.message}</p>}
         </div>
       </div>
 
+      {/* Special Requests */}
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">
-          Special Requests (optional)
-        </label>
+        <label style={labelStyle}>Special Requests (optional)</label>
         <textarea
           {...register("specialRequests")}
           rows={3}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+          style={{ ...inputStyle, resize: "vertical" }}
           placeholder="Any dietary requirements or special requests?"
+          className="booking-input"
         />
       </div>
 
+      {/* Submit */}
       <button
         type="submit"
         disabled={createBooking.isPending}
-        className="w-full rounded-lg bg-amber-500 py-3 font-semibold text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
+        style={{
+          width: "100%",
+          borderRadius: brandRadii.button,
+          background: brandGradients.ctaGold,
+          padding: "0.875rem",
+          fontWeight: brandTypography.weights.semibold,
+          fontSize: brandTypography.sizes.body,
+          color: "#FFFFFF",
+          border: "none",
+          cursor: createBooking.isPending ? "wait" : "pointer",
+          opacity: createBooking.isPending ? 0.6 : 1,
+          transition: "transform 0.2s ease, box-shadow 0.2s ease",
+          letterSpacing: brandTypography.letterSpacing.wide,
+          fontFamily: brandTypography.fonts.body,
+        }}
+        className="booking-submit"
       >
         {createBooking.isPending ? "Booking..." : "Book Table"}
       </button>
+
+      <style>{`
+        .booking-input:focus {
+          border-color: ${brandColors.gold[400]} !important;
+          box-shadow: 0 0 0 3px ${brandColors.gold[100]} !important;
+        }
+        .booking-submit:hover:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 14px rgba(212,168,83,0.35);
+        }
+        @media (max-width: 640px) {
+          .booking-grid-2 { grid-template-columns: 1fr !important; }
+          .booking-grid-3 { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </form>
   );
 }

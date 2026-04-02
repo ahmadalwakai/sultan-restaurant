@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { BookingForm } from "@/components/forms/BookingForm";
+import { brandColors, brandRadii, brandShadows, brandTypography } from "@/theme/branding";
+import { zIndex } from "@/lib/design";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -27,24 +29,67 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
       onClick={(e) => {
         if (e.target === overlayRef.current) onClose();
       }}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: zIndex.modal,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "rgba(0,0,0,0.5)",
+        padding: "1rem",
+      }}
     >
-      <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "32rem",
+          borderRadius: brandRadii["2xl"],
+          background: "#FFFFFF",
+          padding: "1.5rem",
+          boxShadow: brandShadows.overlay,
+        }}
+      >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-2xl text-gray-400 hover:text-gray-600"
           aria-label="Close"
+          style={{
+            position: "absolute",
+            right: "1rem",
+            top: "1rem",
+            fontSize: "1.5rem",
+            color: "#9CA3AF",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            lineHeight: 1,
+            transition: "color 0.2s",
+          }}
+          className="booking-modal-close"
         >
           &times;
         </button>
-        <h2 className="mb-6 font-heading text-2xl font-bold text-gray-900">
+        <h2
+          style={{
+            marginBottom: "1.5rem",
+            fontFamily: brandTypography.fonts.heading,
+            fontSize: "1.5rem",
+            fontWeight: brandTypography.weights.bold,
+            color: brandColors.charcoal,
+          }}
+        >
           Book a Table
         </h2>
         <BookingForm onSuccess={onClose} />
       </div>
+
+      <style>{`
+        .booking-modal-close:hover { color: ${brandColors.charcoal} !important; }
+      `}</style>
     </div>
   );
 }
