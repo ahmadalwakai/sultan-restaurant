@@ -43,16 +43,8 @@ export function Footer() {
           <VStack align="start" gap={3}>
             <Text fontWeight="bold" color="fg.on-dark" fontSize="sm" textTransform="uppercase" letterSpacing="wider">Opening Hours</Text>
             <HStack justify="space-between" w="full">
-              <Text fontSize="sm" color="whiteAlpha.700">Mon – Thu</Text>
-              <Text fontSize="sm" color="whiteAlpha.700">12:00 – 10:00 PM</Text>
-            </HStack>
-            <HStack justify="space-between" w="full">
-              <Text fontSize="sm" color="whiteAlpha.700">Fri – Sat</Text>
-              <Text fontSize="sm" color="whiteAlpha.700">12:00 – 11:00 PM</Text>
-            </HStack>
-            <HStack justify="space-between" w="full">
-              <Text fontSize="sm" color="whiteAlpha.700">Sunday</Text>
-              <Text fontSize="sm" color="whiteAlpha.700">1:00 – 10:00 PM</Text>
+              <Text fontSize="sm" color="whiteAlpha.700">Every Day</Text>
+              <Text fontSize="sm" color="whiteAlpha.700">12:00 PM – 9:00 PM</Text>
             </HStack>
           </VStack>
         </SimpleGrid>

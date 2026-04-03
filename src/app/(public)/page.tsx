@@ -13,6 +13,7 @@ import { BookTableCTA } from "@/components/home/BookTableCTA";
 import { PickupCTA } from "@/components/home/PickupCTA";
 import { GalleryPreview } from "@/components/home/GalleryPreview";
 import { DeliveryPartnersSection } from "@/components/home/DeliveryPartnersSection";
+import { MapPreview } from "@/components/home/MapPreview";
 import { NewsletterSignup } from "@/components/home/NewsletterSignup";
 import { FAQSection } from "@/components/home/FAQSection";
 
@@ -36,6 +37,7 @@ export default function HomePage() {
       <PickupCTA />
       <GalleryPreview />
       <DeliveryPartnersSection />
+      <MapPreview />
       <FAQSection />
       <NewsletterSignup />
     </>

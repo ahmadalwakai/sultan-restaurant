@@ -47,7 +47,7 @@ export function BookTableCTA() {
                   </Box>
                   <VStack align="start" gap={0}>
                     <Text fontWeight="semibold" fontSize="sm" color="fg.default">Opening Hours</Text>
-                    <Text fontSize="xs" color="fg.muted">Mon–Thu: 12–10 PM | Fri–Sat: 12–11 PM | Sun: 1–10 PM</Text>
+                    <Text fontSize="xs" color="fg.muted">Every day: 12:00 PM – 9:00 PM</Text>
                   </VStack>
                 </HStack>
                 <HStack gap={3} w="full">

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { OfferPublic } from "@/types/offer";
-import { Card, Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Card, Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 interface OfferCardProps {
   offer: OfferPublic;
@@ -14,64 +14,96 @@ export function OfferCard({ offer }: OfferCardProps) {
     <Card.Root
       overflow="hidden"
       position="relative"
-      bgGradient="to-br"
-      gradientFrom="amber.500"
-      gradientTo="orange.600"
+      bg="black"
       color="white"
-      shadow="sm"
+      shadow="lg"
       borderRadius="xl"
       transition="all 0.2s"
-      _hover={{ shadow: "lg", transform: "translateY(-4px)" }}
+      _hover={{ shadow: "xl", transform: "translateY(-4px)" }}
+      h="320px"
     >
       {offer.image && (
         <Image
           src={offer.image}
           alt={offer.title}
           fill
-          style={{ objectFit: "cover", opacity: 0.15 }}
+          style={{ objectFit: "cover", opacity: 0.4 }}
           sizes="(max-width: 768px) 100vw, 50vw"
+          unoptimized
         />
       )}
-      <Card.Body p={{ base: 7, sm: 8 }} position="relative" zIndex={1} display="flex" flexDirection="column" gap={3}>
-        <Box alignSelf="flex-start" borderRadius="full" bg="whiteAlpha.300" px={3.5} py={1} fontSize="xs" fontWeight="bold" textTransform="uppercase" letterSpacing="wider">
-          {offer.discountType === "PERCENTAGE"
-            ? `${offer.discount}% OFF`
-            : `£${(offer.discount / 100).toFixed(2)} OFF`}
-        </Box>
-        <Heading as="h3" fontSize="xl" fontWeight="bold" fontFamily="heading" lineHeight="snug">{offer.title}</Heading>
-        {offer.description && (
-          <Text fontSize="sm" lineHeight="relaxed" color="whiteAlpha.800" lineClamp={2}>
-            {offer.description}
-          </Text>
-        )}
-        <Flex mt="auto" align="center" justify="space-between" gap={4} pt={2}>
-          <Link href="/menu">
-            <Box
-              display="inline-block"
-              borderRadius="lg"
-              bg="white"
-              px={5}
-              py={2.5}
-              fontSize="sm"
-              fontWeight="semibold"
-              color="amber.700"
-              transition="background 0.2s"
-              _hover={{ bg: "whiteAlpha.900" }}
-            >
-              Order Now
-            </Box>
-          </Link>
-          {offer.validUntil && (
-            <Text fontSize="xs" color="whiteAlpha.600">
-              Until{" "}
-              {new Date(offer.validUntil).toLocaleDateString("en-GB", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
+      {/* Solid gradient overlay for text readability */}
+      <Box
+        position="absolute"
+        bottom={0}
+        left={0}
+        right={0}
+        top={0}
+        bg="linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.3) 100%)"
+        zIndex={1}
+      />
+      <Card.Body
+        p={{ base: 6, sm: 8 }}
+        position="relative"
+        zIndex={2}
+        display="flex"
+        flexDirection="column"
+        justifyContent="flex-end"
+        h="full"
+      >
+        <VStack align="start" gap={3}>
+          <Box
+            borderRadius="full"
+            bg="brand.primary"
+            px={4}
+            py={1.5}
+            fontSize="sm"
+            fontWeight="bold"
+            color="black"
+            textTransform="uppercase"
+            letterSpacing="wider"
+          >
+            {offer.discountType === "PERCENTAGE"
+              ? `${offer.discount}% OFF`
+              : `£${(offer.discount / 100).toFixed(2)} OFF`}
+          </Box>
+          <Heading as="h3" fontSize="2xl" fontWeight="bold" fontFamily="heading" lineHeight="short" color="white">
+            {offer.title}
+          </Heading>
+          {offer.description && (
+            <Text fontSize="md" lineHeight="relaxed" color="whiteAlpha.900" lineClamp={2}>
+              {offer.description}
             </Text>
           )}
-        </Flex>
+          <Flex mt={2} align="center" justify="space-between" gap={4} w="full" pt={2}>
+            <Link href="/menu">
+              <Box
+                display="inline-block"
+                borderRadius="full"
+                bg="brand.primary"
+                px={6}
+                py={3}
+                fontSize="sm"
+                fontWeight="bold"
+                color="black"
+                transition="all 0.2s"
+                _hover={{ bg: "yellow.400", transform: "translateY(-2px)" }}
+              >
+                Order Now
+              </Box>
+            </Link>
+            {offer.validUntil && (
+              <Text fontSize="sm" color="whiteAlpha.700">
+                Until{" "}
+                {new Date(offer.validUntil).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </Text>
+            )}
+          </Flex>
+        </VStack>
       </Card.Body>
     </Card.Root>
   );

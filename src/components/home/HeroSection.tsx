@@ -12,10 +12,18 @@ export function HeroSection() {
   const opacity = useTransform(scrollY, [0, 400], [1, 0.3]);
 
   return (
-    <Box as="section" position="relative" h={{ base: "85vh", md: "90vh" }} overflow="hidden">
+    <Box as="section" position="relative" h={{ base: "85vh", md: "90vh" }} overflow="hidden" bg="bg.elevated">
       {/* Parallax background image */}
       <motion.div style={{ y, position: "absolute", inset: 0 }}>
-        <Image src="/images/hero/hero-main.jpg" alt="Sultan Restaurant interior" fill style={{ objectFit: "cover" }} priority />
+        <Image
+          src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1920&h=1080&fit=crop&q=80"
+          alt="Charcoal grilled kebabs and Middle Eastern dishes at Sultan Restaurant Glasgow"
+          fill
+          style={{ objectFit: "cover" }}
+          priority
+          sizes="100vw"
+          unoptimized
+        />
       </motion.div>
 
       {/* Dark overlay with gradient */}
