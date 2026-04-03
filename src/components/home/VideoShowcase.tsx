@@ -11,10 +11,10 @@ export function VideoShowcase() {
     <Box as="section" bg="gray.900" py={20}>
       <Container maxW="7xl" px={4}>
         <SectionHeader
+          label="Our Kitchen"
           title="Behind the Scenes"
           subtitle="Watch our chefs craft your favourite dishes"
-          titleColor="white"
-          subtitleColor="gray.400"
+          light={true}
         />
         <Flex mt={10} justify="center">
           <Box position="relative" w="full" maxW="4xl" overflow="hidden" borderRadius="2xl" shadow="2xl">

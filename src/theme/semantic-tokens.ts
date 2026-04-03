@@ -26,6 +26,21 @@ export const semanticTokens = defineSemanticTokens({
     "bg.muted": {
       value: { base: "{colors.gray.50}", _dark: "{colors.gray.800}" },
     },
+    "fg.default": {
+      value: "#1A1207",
+    },
+    "fg.muted": {
+      value: "#6B5E4F",
+    },
+    "fg.on-dark": {
+      value: "#FDFAF6",
+    },
+    "brand.primary": {
+      value: "#C8A951",
+    },
+    "brand.dark": {
+      value: "#2D1810",
+    },
     "text.primary": {
       value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" },
     },

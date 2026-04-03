@@ -3,34 +3,39 @@
 import { VStack, Heading, Text } from "@chakra-ui/react";
 
 interface SectionHeaderProps {
+  label?: string;
   title: string;
   subtitle?: string;
-  centered?: boolean;
-  titleColor?: string;
-  subtitleColor?: string;
+  light?: boolean;
 }
 
-export function SectionHeader({
-  title,
-  subtitle,
-  centered = true,
-  titleColor = "gray.900",
-  subtitleColor = "gray.500",
-}: SectionHeaderProps) {
+export function SectionHeader({ label, title, subtitle, light = false }: SectionHeaderProps) {
   return (
-    <VStack gap={2} textAlign={centered ? "center" : "start"} w="full">
+    <VStack gap={3} textAlign="center" maxW="3xl" mx="auto">
+      {label && (
+        <Text
+          fontSize="sm"
+          fontWeight="bold"
+          color={light ? "brand.primary" : "brand.primary"}
+          textTransform="uppercase"
+          letterSpacing="widest"
+        >
+          {label}
+        </Text>
+      )}
       <Heading
-        as="h2"
-        fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
-        fontWeight="bold"
         fontFamily="heading"
-        lineHeight="tight"
-        color={titleColor}
+        size={{ base: "2xl", md: "4xl" }}
+        color={light ? "fg.on-dark" : "fg.default"}
       >
         {title}
       </Heading>
       {subtitle && (
-        <Text color={subtitleColor} fontSize={{ base: "sm", md: "md" }}>
+        <Text
+          fontSize={{ base: "sm", md: "lg" }}
+          color={light ? "whiteAlpha.800" : "fg.muted"}
+          lineHeight="tall"
+        >
           {subtitle}
         </Text>
       )}

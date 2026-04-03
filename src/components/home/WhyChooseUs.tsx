@@ -1,56 +1,63 @@
 "use client";
 
 import { SectionHeader } from "@/components/sections/SectionHeader";
-import { Box, Container, VStack, SimpleGrid, Card, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Container, VStack, SimpleGrid, Card, Box as ChakraBox, Heading, Text } from "@chakra-ui/react";
+import { Flame, Leaf, ChefHat, Clock, MapPin, Star } from "lucide-react";
 
 const features = [
   {
-    icon: "🌿",
-    title: "Fresh Ingredients",
-    description: "Locally sourced produce and authentic spices imported directly from the Middle East.",
+    icon: Flame,
+    title: "Live Charcoal Grill",
+    description: "Our kebabs and mixed grills are cooked over natural charcoal — never gas, never shortcuts. You taste the difference in every bite."
   },
   {
-    icon: "👨\u200d🍳",
-    title: "Expert Chefs",
-    description: "Our team of chefs brings decades of culinary expertise to every dish.",
+    icon: Leaf,
+    title: "Fresh Spices, Ground Daily",
+    description: "We don't use pre-packed spice mixes. Our masalas, marinades, and blends are hand-prepared every morning by our head chef."
   },
   {
-    icon: "⏰",
-    title: "Fast Service",
-    description: "Quick preparation without compromising on quality or taste",
+    icon: ChefHat,
+    title: "Chefs with Heritage",
+    description: "Our kitchen team brings decades of experience from Syria, Lebanon, Iraq, and Pakistan — authentic technique passed down through families."
   },
   {
-    icon: "❤️",
-    title: "Made with Love",
-    description: "Every dish is prepared with care, passion, and attention to detail.",
+    icon: Clock,
+    title: "Made to Order, Always",
+    description: "Nothing sits under a heat lamp. Every dish is prepared fresh when you order — whether you're dining in, picking up, or ordering delivery."
+  },
+  {
+    icon: MapPin,
+    title: "Heart of the East End",
+    description: "Proudly serving the Gallowgate community and all of Glasgow. Easy parking, warm atmosphere, and a welcome for everyone."
+  },
+  {
+    icon: Star,
+    title: "Trusted by Thousands",
+    description: "Over 15,000 customers served and counting. Our 4.7-star rating isn't bought — it's earned one plate at a time."
   },
 ];
 
 export function WhyChooseUs() {
   return (
-    <Box as="section" py={{ base: 12, md: 16 }} bg="bg.canvas">
-      <Container maxW="7xl" px={{ base: 4, md: 6, lg: 8 }}>
-        <VStack gap={8}>
+    <Box as="section" py={{ base: 14, md: 20 }} bg="bg.elevated" color="fg.on-dark">
+      <Container maxW="7xl" px={{ base: 5, md: 8 }}>
+        <VStack gap={12} textAlign="center">
           <SectionHeader
-            title="Why Choose Sultan?"
-            subtitle="What makes us stand out from the rest"
+            label="The Sultan Difference"
+            title="Why Glasgow Chooses Sultan"
+            light={true}
           />
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={6} w="full">
-            {features.map((feature) => (
-              <Card.Root
-                key={feature.title}
-                variant="outline"
-                transition="all 0.2s"
-                _hover={{ borderColor: "orange.200", shadow: "md" }}
-              >
-                <Card.Body px={6} py={8} display="flex" flexDirection="column" alignItems="center" textAlign="center" gap={3}>
-                  <Flex w={12} h={12} align="center" justify="center" borderRadius="lg" bg="orange.50" fontSize="xl">
-                    {feature.icon}
-                  </Flex>
-                  <Heading as="h3" fontSize="sm" fontWeight="bold" textTransform="uppercase" letterSpacing="wide" color="gray.900">
-                    {feature.title}
-                  </Heading>
-                  <Text fontSize="sm" lineHeight="relaxed" color="gray.500">{feature.description}</Text>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8} w="full">
+            {features.map(f => (
+              <Card.Root key={f.title} bg="whiteAlpha.100" borderRadius="xl" border="1px solid" borderColor="whiteAlpha.200">
+                <Card.Body p={8}>
+                  <VStack gap={4} textAlign="center">
+                    <ChakraBox p={3} bg="brand.primary" borderRadius="full" color="bg.elevated">
+                      <f.icon size={24} />
+                    </ChakraBox>
+                    <Heading size="md" color="fg.on-dark">{f.title}</Heading>
+                    <Text color="whiteAlpha.800" fontSize="sm" lineHeight="tall">{f.description}</Text>
+                  </VStack>
                 </Card.Body>
               </Card.Root>
             ))}

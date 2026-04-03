@@ -1,44 +1,72 @@
 "use client";
 
 import Link from "next/link";
-import { Box, Container, VStack, Text, Heading } from "@chakra-ui/react";
+import { Box, Container, VStack, Text, Heading, SimpleGrid, Button, HStack } from "@chakra-ui/react";
+import { Clock, Users, Phone } from "lucide-react";
 
 export function BookTableCTA() {
   return (
-    <Box as="section" position="relative" overflow="hidden" bg="bg.elevated" color="text.on-dark" py={{ base: 12, md: 16 }}>
-      <Box position="absolute" inset={0} opacity={0.03} style={{ backgroundImage: "repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px)" }} />
-      <Container maxW="3xl" px={{ base: 4, md: 6, lg: 8 }} position="relative">
-        <VStack gap={4} textAlign="center">
-          <Text fontSize="xs" fontWeight="semibold" textTransform="uppercase" letterSpacing="widest" color="amber.400" opacity={0.7}>
-            Reservations
-          </Text>
-          <Heading as="h2" fontFamily="heading" fontSize={{ base: "2xl", sm: "3xl" }} fontWeight="bold" lineHeight="tight">
-            Join Us for an{" "}
-            <Text as="span" color="amber.400">Unforgettable</Text> Evening
-          </Heading>
-          <Text fontSize={{ base: "sm", sm: "md" }} lineHeight="relaxed" color="gray.400">
-            Reserve your table and enjoy the warm ambiance,
-            exceptional food, and outstanding service.
-          </Text>
-          <Link href="/book">
-            <Box
-              display="inline-block"
-              mt={3}
-              borderRadius="lg"
-              bg="amber.500"
-              px={8}
-              py={3}
-              fontSize="sm"
-              fontWeight="semibold"
-              color="white"
-              transition="all 0.2s"
-              _hover={{ bg: "amber.400" }}
-              shadow="0 4px 14px rgba(212,168,83,0.3)"
-            >
-              Reserve a Table
-            </Box>
-          </Link>
-        </VStack>
+    <Box as="section" py={{ base: 14, md: 20 }} bg="bg.subtle">
+      <Container maxW="5xl" px={{ base: 5, md: 8 }}>
+        <Box bg="bg.surface" shadow="xl" borderRadius="2xl" overflow="hidden">
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={8} alignItems="center">
+            <VStack align={{ base: "center", md: "start" }} gap={4} textAlign={{ base: "center", md: "left" }} p={{ base: 8, md: 10 }}>
+              <Text fontSize="sm" fontWeight="bold" color="brand.primary" textTransform="uppercase" letterSpacing="widest">
+                Reserve Your Table
+              </Text>
+              <Heading fontFamily="heading" size={{ base: "xl", md: "2xl" }} color="fg.default">
+                An Evening Worth Remembering
+              </Heading>
+              <Text color="fg.muted" lineHeight="tall">
+                Whether it's a family dinner, a birthday celebration, or an intimate meal for two —
+                we'll make it special. Book your table and let us take care of the rest.
+              </Text>
+              <HStack gap={3} pt={2}>
+                <Link href="/book">
+                  <Button bg="brand.primary" color="bg.elevated" size="lg" borderRadius="full" px={8}
+                    _hover={{ bg: "yellow.500" }}>
+                    Book a Table
+                  </Button>
+                </Link>
+                <Link href="/menu">
+                  <Button variant="outline" borderColor="brand.primary" color="brand.primary" size="lg" borderRadius="full" px={8}>
+                    View Menu
+                  </Button>
+                </Link>
+              </HStack>
+            </VStack>
+
+            <VStack gap={4} bg="bg.canvas" p={6} borderRadius="xl">
+              <HStack gap={3} w="full">
+                <Box p={2} bg="brand.primary" borderRadius="full" color="bg.elevated">
+                  <Clock size={18} />
+                </Box>
+                <VStack align="start" gap={0}>
+                  <Text fontWeight="semibold" fontSize="sm" color="fg.default">Opening Hours</Text>
+                  <Text fontSize="xs" color="fg.muted">Mon–Thu: 12–10 PM | Fri–Sat: 12–11 PM | Sun: 1–10 PM</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={3} w="full">
+                <Box p={2} bg="brand.primary" borderRadius="full" color="bg.elevated">
+                  <Users size={18} />
+                </Box>
+                <VStack align="start" gap={0}>
+                  <Text fontWeight="semibold" fontSize="sm" color="fg.default">Party Size</Text>
+                  <Text fontSize="xs" color="fg.muted">Tables for 1 to 20 guests available</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={3} w="full">
+                <Box p={2} bg="brand.primary" borderRadius="full" color="bg.elevated">
+                  <Phone size={18} />
+                </Box>
+                <VStack align="start" gap={0}>
+                  <Text fontWeight="semibold" fontSize="sm" color="fg.default">Call to Reserve</Text>
+                  <Text fontSize="xs" color="fg.muted">+44 141 391 8883</Text>
+                </VStack>
+              </HStack>
+            </VStack>
+          </SimpleGrid>
+        </Box>
       </Container>
     </Box>
   );

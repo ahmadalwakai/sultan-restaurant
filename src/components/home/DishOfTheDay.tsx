@@ -4,8 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useDishOfDay } from "@/hooks/api";
 import { formatCurrency } from "@/lib/utils/format-currency";
-import { SectionHeader } from "@/components/sections/SectionHeader";
-import { Box, Container, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, SimpleGrid, Heading, Text, VStack, Button, Badge, HStack } from "@chakra-ui/react";
 
 export function DishOfTheDay() {
   const { data: dish } = useDishOfDay();
@@ -15,75 +14,71 @@ export function DishOfTheDay() {
   const hasDiscount = dish.discountPrice !== null && dish.discountPrice < dish.menuItemPrice;
 
   return (
-    <Box as="section" bg="linear-gradient(to right, var(--chakra-colors-orange-600), var(--chakra-colors-orange-500))" py={{ base: 12, md: 16 }}>
-      <Container maxW="7xl" px={{ base: 4, md: 6, lg: 8 }}>
-        <VStack gap={8}>
-          <SectionHeader
-            title="Dish of the Day"
-            subtitle={dish.reason || "Chef's special selection for today"}
-            titleColor="white"
-            subtitleColor="whiteAlpha.800"
-          />
-          <Flex direction={{ base: "column", md: "row" }} align="center" gap={8} mt={12}>
-            <Box position="relative" css={{ aspectRatio: "1" }} w="full" maxW="24rem" overflow="hidden" borderRadius="2xl" shadow="2xl" md={{ w: "50%" }}>
+    <Box as="section" py={{ base: 14, md: 20 }} bg="bg.canvas">
+      <Container maxW="6xl" px={{ base: 5, md: 8 }}>
+        <Box bg="bg.surface" shadow="xl" borderRadius="2xl" overflow="hidden">
+          <SimpleGrid columns={{ base: 1, md: 2 }}>
+            <Box position="relative" minH={{ base: "250px", md: "400px" }}>
               {dish.menuItemImage ? (
-                <Image
-                  src={dish.menuItemImage}
-                  alt={dish.menuItemName}
-                  fill
-                  className="object-cover"
-                />
+                <Image src={dish.menuItemImage} alt={dish.menuItemName} fill style={{ objectFit: "cover" }} />
               ) : (
-                <Flex h="full" w="full" align="center" justify="center" bg="orange.200" fontSize="8xl">
+                <Box h="full" w="full" bg="bg.subtle" display="flex" alignItems="center" justifyContent="center" fontSize="8xl">
                   🍲
-                </Flex>
-              )}
-              {hasDiscount && (
-                <Box position="absolute" right={3} top={3} borderRadius="full" bg="red.500" px={3} py={1} fontSize="sm" fontWeight="bold" color="white" shadow="lg">
-                  SAVE {Math.round(((dish.menuItemPrice - dish.discountPrice!) / dish.menuItemPrice) * 100)}%
                 </Box>
               )}
+              <Box position="absolute" top={4} left={4}>
+                <Badge bg="brand.primary" color="bg.elevated" px={3} py={1} borderRadius="full" fontWeight="bold">
+                  Today's Special
+                </Badge>
+              </Box>
             </Box>
-            <Box flex={1} textAlign={{ base: "center", md: "left" }} color="white">
-              <Heading as="h3" fontSize={{ base: "3xl", md: "4xl" }} fontWeight="bold">{dish.menuItemName}</Heading>
-              {dish.menuItemDescription && (
-                <Text mt={3} fontSize="lg" color="whiteAlpha.900" lineHeight="relaxed">{dish.menuItemDescription}</Text>
-              )}
-              <Flex mt={6} align="center" justify={{ base: "center", md: "flex-start" }} gap={3}>
-                {hasDiscount ? (
-                  <>
-                    <Text as="span" fontSize="3xl" fontWeight="bold" color="white">
-                      {formatCurrency(dish.discountPrice!)}
-                    </Text>
-                    <Text as="span" fontSize="xl" color="whiteAlpha.600" textDecoration="line-through">
-                      {formatCurrency(dish.menuItemPrice)}
-                    </Text>
-                  </>
-                ) : (
-                  <Text as="span" fontSize="3xl" fontWeight="bold" color="white">
-                    {formatCurrency(dish.menuItemPrice)}
+
+            <Box p={{ base: 8, md: 10 }} display="flex" flexDirection="column" justifyContent="center">
+              <VStack align="start" gap={4}>
+                <Text fontSize="sm" color="brand.primary" fontWeight="bold" textTransform="uppercase" letterSpacing="wider">
+                  Dish of the Day
+                </Text>
+                <Heading fontFamily="heading" size={{ base: "xl", md: "2xl" }} color="fg.default">
+                  {dish.menuItemName}
+                </Heading>
+                {dish.menuItemDescription && (
+                  <Text color="fg.muted" lineHeight="tall" fontSize={{ base: "sm", md: "md" }}>
+                    {dish.menuItemDescription}
                   </Text>
                 )}
-              </Flex>
-              <Link href={`/menu/${dish.menuItemSlug}`}>
-              <Box
-                display="inline-block"
-                mt={6}
-                borderRadius="lg"
-                bg="white"
-                px={8}
-                py={3}
-                fontWeight={600}
-                color="orange.700"
-                transition="background 0.2s"
-                _hover={{ bg: "orange.50" }}
-              >
-                Order Now
-              </Box>
-              </Link>
+                <Box>
+                  {hasDiscount ? (
+                    <VStack align="start" gap={1}>
+                      <Text fontSize="2xl" fontWeight="bold" color="brand.primary">
+                        {formatCurrency(dish.discountPrice!)}
+                      </Text>
+                      <Text fontSize="lg" color="fg.muted" textDecoration="line-through">
+                        {formatCurrency(dish.menuItemPrice)}
+                      </Text>
+                    </VStack>
+                  ) : (
+                    <Text fontSize="2xl" fontWeight="bold" color="brand.primary">
+                      {formatCurrency(dish.menuItemPrice)}
+                    </Text>
+                  )}
+                </Box>
+                <HStack gap={3} pt={2}>
+                  <Link href={`/menu/${dish.menuItemSlug}`}>
+                    <Button bg="brand.primary" color="bg.elevated" borderRadius="full" px={6}
+                      _hover={{ bg: "yellow.500" }}>
+                      Order Now
+                    </Button>
+                  </Link>
+                  <Link href="/menu">
+                    <Button variant="outline" borderColor="brand.dark" color="fg.default" borderRadius="full" px={6}>
+                      View Full Menu
+                    </Button>
+                  </Link>
+                </HStack>
+              </VStack>
             </Box>
-          </Flex>
-        </VStack>
+          </SimpleGrid>
+        </Box>
       </Container>
     </Box>
   );
