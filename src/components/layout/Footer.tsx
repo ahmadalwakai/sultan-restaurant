@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Box, Container, SimpleGrid, VStack, Text, HStack, Heading } from "@chakra-ui/react";
+import { ArabicPatternOverlay } from "@/components/decorative/ArabicPattern";
 
 export function Footer() {
   return (
-    <Box as="footer" bg="bg.elevated" color="fg.on-dark" py={16}>
-      <Container maxW="7xl" px={{ base: 5, md: 8 }}>
+    <Box as="footer" bg="bg.elevated" color="fg.on-dark" py={16} position="relative" overflow="hidden">
+      <ArabicPatternOverlay opacity={0.02} />
+      <Container maxW="7xl" px={{ base: 5, md: 8 }} position="relative" zIndex={1}>
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={10}>
           {/* Column 1: Brand */}
           <VStack align="start" gap={4}>

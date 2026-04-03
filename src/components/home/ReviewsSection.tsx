@@ -3,6 +3,7 @@
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { Box, Container, VStack, SimpleGrid, Card, Text, HStack } from "@chakra-ui/react";
 import { Star } from "lucide-react";
+import { FadeInUp, StaggerContainer, StaggerItem, AnimatedCard } from "@/components/animation";
 
 const reviews = [
   {
@@ -40,30 +41,38 @@ export function ReviewsSection() {
     <Box as="section" py={{ base: 14, md: 20 }} bg="bg.canvas">
       <Container maxW="7xl" px={{ base: 5, md: 8 }}>
         <VStack gap={12}>
-          <SectionHeader
-            label="What Our Guests Say"
-            title="Real Reviews, Real People"
-          />
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="full">
-            {reviews.map((review, index) => (
-              <Card.Root key={index} bg="bg.surface" shadow="sm" borderRadius="xl">
-                <Card.Body p={6}>
-                  <VStack align="start" gap={3}>
-                    <HStack>
-                      {[...Array(review.rating)].map((_, i) => (
-                        <Star key={i} size={16} fill="currentColor" color="brand.primary" />
-                      ))}
-                    </HStack>
-                    <Text fontSize="sm" color="fg.default" lineHeight="tall">"{review.text}"</Text>
-                    <HStack justify="space-between" w="full">
-                      <Text fontSize="xs" fontWeight="bold" color="fg.default">{review.name}</Text>
-                      <Text fontSize="xs" color="fg.muted">{review.date} · {review.source}</Text>
-                    </HStack>
-                  </VStack>
-                </Card.Body>
-              </Card.Root>
-            ))}
-          </SimpleGrid>
+          <FadeInUp>
+            <SectionHeader
+              label="What Our Guests Say"
+              title="Real Reviews, Real People"
+            />
+          </FadeInUp>
+          <StaggerContainer>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="full">
+              {reviews.map((review, index) => (
+                <StaggerItem key={index}>
+                  <AnimatedCard>
+                    <Card.Root bg="bg.surface" shadow="sm" borderRadius="xl">
+                      <Card.Body p={6}>
+                        <VStack align="start" gap={3}>
+                          <HStack>
+                            {[...Array(review.rating)].map((_, i) => (
+                              <Star key={i} size={16} fill="currentColor" color="brand.primary" />
+                            ))}
+                          </HStack>
+                          <Text fontSize="sm" color="fg.default" lineHeight="tall">"{review.text}"</Text>
+                          <HStack justify="space-between" w="full">
+                            <Text fontSize="xs" fontWeight="bold" color="fg.default">{review.name}</Text>
+                            <Text fontSize="xs" color="fg.muted">{review.date} · {review.source}</Text>
+                          </HStack>
+                        </VStack>
+                      </Card.Body>
+                    </Card.Root>
+                  </AnimatedCard>
+                </StaggerItem>
+              ))}
+            </SimpleGrid>
+          </StaggerContainer>
         </VStack>
       </Container>
     </Box>

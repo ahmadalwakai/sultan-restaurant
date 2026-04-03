@@ -1,53 +1,82 @@
 "use client";
 
-import { brandSpacing } from "@/theme/branding";
-import { zIndex } from "@/lib/design";
-import { HeroBackground, HeroContent, HeroActions, HeroStats } from "./hero";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Box, Container, VStack, Text, Heading, HStack, Button, Link } from "@chakra-ui/react";
+import { ChevronDown } from "lucide-react";
+import { FadeInUp } from "@/components/animation";
+import Image from "next/image";
 
 export function HeroSection() {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0.3]);
+
   return (
-    <section
-      aria-label="Hero section"
-      style={{ position: "relative", height: "100vh", overflow: "hidden" }}
-    >
-      <HeroBackground />
+    <Box as="section" position="relative" h={{ base: "85vh", md: "90vh" }} overflow="hidden">
+      {/* Parallax background image */}
+      <motion.div style={{ y, position: "absolute", inset: 0 }}>
+        <Image src="/images/hero/hero-main.jpg" alt="Sultan Restaurant interior" fill style={{ objectFit: "cover" }} priority />
+      </motion.div>
 
-      <div
-        className="hero-container"
-        style={{
-          position: "relative",
-          zIndex: zIndex.content,
-          maxWidth: brandSpacing.maxWidth.wide,
-          margin: "0 auto",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-        }}
-      >
-        <HeroContent />
-        <HeroActions />
-        <HeroStats />
-      </div>
+      {/* Dark overlay with gradient */}
+      <Box position="absolute" inset={0} bgGradient="to-t" gradientFrom="blackAlpha.800" gradientTo="blackAlpha.300" />
 
-      <style>{`
-        .hero-container {
-          padding: 0 ${brandSpacing.container.mobile} ${brandSpacing.heroBottom.mobile};
-        }
-        .hero-headline { font-size: 2.75rem; }
-        .hero-sub { font-size: 0.9375rem; }
-        .hero-ctas { flex-direction: column; }
-        .hero-ctas a, .hero-ctas button { width: 100%; }
-        @media (min-width: 768px) {
-          .hero-container {
-            padding: 0 ${brandSpacing.container.desktop} ${brandSpacing.heroBottom.desktop};
-          }
-          .hero-headline { font-size: 4.5rem; }
-          .hero-sub { font-size: 1.25rem; }
-          .hero-ctas { flex-direction: row; }
-          .hero-ctas a, .hero-ctas button { width: auto; }
-        }
-      `}</style>
-    </section>
+      {/* Content */}
+      <motion.div style={{ opacity }}>
+        <Container maxW="6xl" h="full" display="flex" alignItems="center" justifyContent="center" position="relative" zIndex={1}>
+          <VStack gap={6} textAlign="center" color="white">
+            <FadeInUp>
+              <Text fontSize="sm" fontWeight="bold" color="brand.primary" textTransform="uppercase" letterSpacing="widest">
+                Authentic Middle Eastern & Indian Cuisine
+              </Text>
+            </FadeInUp>
+
+            <FadeInUp delay={0.2}>
+              <Heading fontFamily="heading" size={{ base: "4xl", md: "6xl" }} fontWeight="bold" lineHeight="1.1">
+                Welcome to<br />
+                <Text as="span" color="brand.primary">Sultan</Text> Restaurant
+              </Heading>
+            </FadeInUp>
+
+            <FadeInUp delay={0.4}>
+              <Text fontSize={{ base: "md", md: "xl" }} color="whiteAlpha.900" maxW="xl">
+                Charcoal-grilled kebabs, hand-ground spices, and recipes passed down through generations.
+                Glasgow's home for authentic Eastern cuisine since 2014.
+              </Text>
+            </FadeInUp>
+
+            <FadeInUp delay={0.6}>
+              <HStack gap={4} flexWrap="wrap" justify="center">
+                <Link href="/menu">
+                  <Button size="lg" bg="brand.primary" color="bg.elevated" borderRadius="full" px={8}
+                    _hover={{ bg: "yellow.500", transform: "translateY(-2px)" }} transition="all 0.2s"
+                    fontWeight="bold" fontSize="md">
+                    Explore Our Menu
+                  </Button>
+                </Link>
+                <Link href="/book">
+                  <Button size="lg" variant="outline" borderColor="white" color="white" borderRadius="full" px={8}
+                    _hover={{ bg: "whiteAlpha.200" }} fontWeight="bold" fontSize="md">
+                    Reserve a Table
+                  </Button>
+                </Link>
+              </HStack>
+            </FadeInUp>
+
+            {/* Scroll indicator */}
+            <FadeInUp delay={1}>
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              >
+                <Box mt={8}>
+                  <ChevronDown size={28} color="rgba(255,255,255,0.5)" />
+                </Box>
+              </motion.div>
+            </FadeInUp>
+          </VStack>
+        </Container>
+      </motion.div>
+    </Box>
   );
 }

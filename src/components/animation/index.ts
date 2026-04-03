@@ -5,3 +5,6 @@ export { ScrollReveal } from "./ScrollReveal";
 export { StaggerChildren, StaggerItem } from "./StaggerChildren";
 export { PageTransition } from "./PageTransition";
 export { CountUp } from "./CountUp";
+export { FadeInUp, FadeInLeft, FadeInRight, ScaleIn, StaggerContainer, StaggerItem as StaggerItemNew } from "./MotionWrapper";
+export { AnimatedCard } from "./AnimatedCard";
+export { AnimatedCounter } from "./AnimatedCounter";

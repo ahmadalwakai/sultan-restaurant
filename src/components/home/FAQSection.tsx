@@ -1,0 +1,76 @@
+"use client";
+
+import { SectionHeader } from "@/components/sections/SectionHeader";
+import { Box, Container, VStack, Accordion } from "@chakra-ui/react";
+import { FadeInUp } from "@/components/animation";
+import { ArabicPatternOverlay } from "@/components/decorative/ArabicPattern";
+
+const faqs = [
+  {
+    question: "What type of cuisine does Sultan Restaurant serve?",
+    answer: "Sultan Restaurant serves authentic Middle Eastern cuisine including Syrian, Lebanese, and Iraqi dishes, alongside Indian classics like biryani, tandoori, and curry. All dishes are prepared fresh with hand-ground spices."
+  },
+  {
+    question: "Does Sultan Restaurant offer halal food?",
+    answer: "Yes, all meat served at Sultan Restaurant is 100% halal certified. We take great care to ensure our sourcing meets the highest halal standards."
+  },
+  {
+    question: "Can I order food for collection/pickup?",
+    answer: "Yes, you can order online through our website for collection. Orders are typically ready within 30 minutes. We also offer delivery through Uber Eats, Deliveroo, and Just Eat."
+  },
+  {
+    question: "Does Sultan Restaurant take table reservations?",
+    answer: "Yes, you can book a table for up to 20 guests through our website or by calling +44 141 391 8883. We recommend booking for weekends and special occasions."
+  },
+  {
+    question: "Where is Sultan Restaurant located?",
+    answer: "Sultan Restaurant is located at 577 Gallowgate, Glasgow G40 2PE, Scotland. We are in the heart of Glasgow's East End with easy parking available nearby."
+  },
+  {
+    question: "What are Sultan Restaurant's opening hours?",
+    answer: "We are open Monday to Thursday 12:00 PM – 10:00 PM, Friday to Saturday 12:00 PM – 11:00 PM, and Sunday 1:00 PM – 10:00 PM."
+  },
+  {
+    question: "Does Sultan Restaurant cater for dietary requirements?",
+    answer: "Yes, we offer vegetarian, vegan-friendly, and gluten-free options. Our staff can advise on allergens and dietary needs. Please let us know when booking or ordering."
+  },
+  {
+    question: "Does Sultan Restaurant offer catering for events?",
+    answer: "Yes, we provide catering services for events, corporate gatherings, and private parties. Contact us at info@sultanrestaurant.co.uk or call to discuss your requirements."
+  },
+];
+
+export function FAQSection() {
+  return (
+    <Box as="section" py={{ base: 14, md: 20 }} bg="bg.elevated" color="fg.on-dark" position="relative" overflow="hidden">
+      <ArabicPatternOverlay opacity={0.02} />
+      <Container maxW="3xl" px={{ base: 5, md: 8 }} position="relative" zIndex={1}>
+        <VStack gap={10}>
+          <FadeInUp>
+            <SectionHeader
+              label="Common Questions"
+              title="Frequently Asked"
+              subtitle="Everything you need to know about dining with us"
+              light
+            />
+          </FadeInUp>
+          <FadeInUp delay={0.2}>
+            <Accordion.Root mt={10} variant="plain" collapsible defaultValue={["faq-0"]}>
+              {faqs.map((faq, i) => (
+                <Accordion.Item key={i} value={`faq-${i}`} borderBottom="1px solid" borderColor="whiteAlpha.200">
+                  <Accordion.ItemTrigger py={5} px={0} fontWeight="semibold" color="fg.on-dark" fontSize="md">
+                    {faq.question}
+                    <Accordion.ItemIndicator />
+                  </Accordion.ItemTrigger>
+                  <Accordion.ItemContent pb={5} color="whiteAlpha.700" fontSize="sm" lineHeight="tall">
+                    {faq.answer}
+                  </Accordion.ItemContent>
+                </Accordion.Item>
+              ))}
+            </Accordion.Root>
+          </FadeInUp>
+        </VStack>
+      </Container>
+    </Box>
+  );
+}

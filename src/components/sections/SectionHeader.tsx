@@ -1,6 +1,7 @@
 "use client";
 
 import { VStack, Heading, Text } from "@chakra-ui/react";
+import { GoldDivider } from "@/components/decorative/GoldDivider";
 
 interface SectionHeaderProps {
   label?: string;
@@ -13,15 +14,18 @@ export function SectionHeader({ label, title, subtitle, light = false }: Section
   return (
     <VStack gap={3} textAlign="center" maxW="3xl" mx="auto">
       {label && (
-        <Text
-          fontSize="sm"
-          fontWeight="bold"
-          color={light ? "brand.primary" : "brand.primary"}
-          textTransform="uppercase"
-          letterSpacing="widest"
-        >
-          {label}
-        </Text>
+        <>
+          <Text
+            fontSize="sm"
+            fontWeight="bold"
+            color={light ? "brand.primary" : "brand.primary"}
+            textTransform="uppercase"
+            letterSpacing="widest"
+          >
+            {label}
+          </Text>
+          <GoldDivider />
+        </>
       )}
       <Heading
         fontFamily="heading"

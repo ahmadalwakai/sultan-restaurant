@@ -24,7 +24,7 @@ function restaurantSchema() {
       longitude: -4.2177,
     },
     image: `${SITE_URL}/images/hero/hero-main.jpg`,
-    servesCuisine: ["Middle Eastern", "Syrian", "Lebanese", "Iraqi", "Indian"],
+    servesCuisine: ["Middle Eastern", "Syrian", "Lebanese", "Iraqi", "Indian", "Halal"],
     priceRange: "££",
     acceptsReservations: true,
     menu: `${SITE_URL}/menu`,
@@ -32,6 +32,23 @@ function restaurantSchema() {
       "@type": "Menu",
       url: `${SITE_URL}/menu`,
     },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      "ratingValue": "4.7",
+      "reviewCount": "320",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    paymentAccepted: ["Cash", "Credit Card", "Debit Card", "Apple Pay", "Google Pay"],
+    currenciesAccepted: "GBP",
+    smokingAllowed: false,
+    amenityFeature: [
+      { "@type": "LocationFeatureSpecification", "name": "Wheelchair Accessible", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Free WiFi", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Outdoor Seating", "value": false },
+      { "@type": "LocationFeatureSpecification", "name": "Takeout", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Delivery", "value": true },
+    ],
     sameAs: [SOCIAL.facebook, SOCIAL.instagram, SOCIAL.twitter],
     openingHoursSpecification: [
       { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"], opens: "12:00", closes: "22:00" },

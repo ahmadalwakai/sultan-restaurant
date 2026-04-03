@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Box, Container, VStack, Heading, Text, SimpleGrid } from "@chakra-ui/react";
+import { FadeInUp, AnimatedCounter } from "@/components/animation";
 
 export function AboutPreview() {
   const paragraphs = [
@@ -10,46 +11,52 @@ export function AboutPreview() {
   ];
 
   const stats = [
-    { number: "10+", label: "Years Serving Glasgow" },
-    { number: "50+", label: "Signature Dishes" },
-    { number: "15,000+", label: "Happy Customers" },
-    { number: "4.7★", label: "Average Rating" },
+    { number: 10, label: "Years Serving Glasgow" },
+    { number: 50, label: "Signature Dishes" },
+    { number: 15000, label: "Happy Customers" },
+    { number: 4.7, label: "Average Rating", suffix: "★" },
   ];
 
   return (
     <Box as="section" py={{ base: 14, md: 20 }} bg="bg.subtle">
       <Container maxW="6xl" px={{ base: 5, md: 8 }}>
         <VStack gap={10} textAlign="center">
-          <VStack gap={3}>
-            <Text fontSize="sm" fontWeight="bold" color="brand.primary" textTransform="uppercase" letterSpacing="widest">
-              Our Story
-            </Text>
-            <Heading fontFamily="heading" size={{ base: "2xl", md: "4xl" }} color="fg.default">
-              The Sultan Experience
-            </Heading>
-            <Text fontSize="lg" color="fg.muted" maxW="2xl">
-              Where Ancient Recipes Meet Modern Glasgow
-            </Text>
-          </VStack>
+          <FadeInUp>
+            <VStack gap={3}>
+              <Text fontSize="sm" fontWeight="bold" color="brand.primary" textTransform="uppercase" letterSpacing="widest">
+                Our Story
+              </Text>
+              <Heading fontFamily="heading" size={{ base: "2xl", md: "4xl" }} color="fg.default">
+                The Sultan Experience
+              </Heading>
+              <Text fontSize="lg" color="fg.muted" maxW="2xl">
+                Where Ancient Recipes Meet Modern Glasgow
+              </Text>
+            </VStack>
+          </FadeInUp>
 
           <VStack gap={6} maxW="3xl" textAlign="center">
             {paragraphs.map((paragraph, index) => (
-              <Text key={index} fontSize="base" lineHeight="tall" color="fg.default">
-                {paragraph}
-              </Text>
+              <FadeInUp key={index} delay={0.2 + index * 0.1}>
+                <Text fontSize="base" lineHeight="tall" color="fg.default">
+                  {paragraph}
+                </Text>
+              </FadeInUp>
             ))}
           </VStack>
 
-          <SimpleGrid columns={{ base: 2, md: 4 }} gap={8} w="full" maxW="4xl" pt={6}>
-            {stats.map(stat => (
-              <VStack key={stat.label} gap={1}>
-                <Text fontSize={{ base: "3xl", md: "4xl" }} fontWeight="bold" color="brand.primary">
-                  {stat.number}
-                </Text>
-                <Text fontSize="sm" color="fg.muted">{stat.label}</Text>
-              </VStack>
-            ))}
-          </SimpleGrid>
+          <FadeInUp delay={0.6}>
+            <SimpleGrid columns={{ base: 2, md: 4 }} gap={8} w="full" maxW="4xl" pt={6}>
+              {stats.map(stat => (
+                <VStack key={stat.label} gap={1}>
+                  <Text fontSize={{ base: "3xl", md: "4xl" }} fontWeight="bold" color="brand.primary">
+                    <AnimatedCounter target={stat.number} suffix={stat.suffix || "+"} />
+                  </Text>
+                  <Text fontSize="sm" color="fg.muted">{stat.label}</Text>
+                </VStack>
+              ))}
+            </SimpleGrid>
+          </FadeInUp>
         </VStack>
       </Container>
     </Box>

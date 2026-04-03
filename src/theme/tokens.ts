@@ -34,4 +34,44 @@ export const tokens = defineTokens({
   radii: {
     brand: { value: "0.75rem" },
   },
+  textStyles: {
+    "section-label": {
+      fontSize: "sm",
+      fontWeight: "bold",
+      textTransform: "uppercase",
+      letterSpacing: "widest",
+      color: "brand.primary",
+    },
+    "section-title": {
+      fontFamily: "heading",
+      fontSize: { base: "2xl", md: "4xl" },
+      fontWeight: "bold",
+      lineHeight: "1.2",
+    },
+    "section-subtitle": {
+      fontSize: { base: "sm", md: "lg" },
+      lineHeight: "tall",
+    },
+    "card-title": {
+      fontFamily: "heading",
+      fontSize: "lg",
+      fontWeight: "bold",
+    },
+    "card-body": {
+      fontSize: "sm",
+      lineHeight: "tall",
+    },
+    "price": {
+      fontSize: "xl",
+      fontWeight: "bold",
+      color: "brand.primary",
+    },
+  },
+  shadows: {
+    "card-sm": { value: "0 1px 3px rgba(26, 18, 7, 0.06), 0 1px 2px rgba(26, 18, 7, 0.04)" },
+    "card-md": { value: "0 4px 12px rgba(26, 18, 7, 0.08), 0 2px 4px rgba(26, 18, 7, 0.04)" },
+    "card-lg": { value: "0 12px 32px rgba(26, 18, 7, 0.12), 0 4px 8px rgba(26, 18, 7, 0.06)" },
+    "card-hover": { value: "0 20px 40px rgba(26, 18, 7, 0.15), 0 8px 16px rgba(26, 18, 7, 0.08)" },
+    "gold-glow": { value: "0 4px 20px rgba(200, 169, 81, 0.3)" },
+  },
 });

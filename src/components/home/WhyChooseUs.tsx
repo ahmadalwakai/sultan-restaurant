@@ -3,6 +3,8 @@
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { Box, Container, VStack, SimpleGrid, Card, Box as ChakraBox, Heading, Text } from "@chakra-ui/react";
 import { Flame, Leaf, ChefHat, Clock, MapPin, Star } from "lucide-react";
+import { FadeInUp, StaggerContainer, StaggerItem, AnimatedCard } from "@/components/animation";
+import { ArabicPatternOverlay } from "@/components/decorative/ArabicPattern";
 
 const features = [
   {
@@ -39,29 +41,38 @@ const features = [
 
 export function WhyChooseUs() {
   return (
-    <Box as="section" py={{ base: 14, md: 20 }} bg="bg.elevated" color="fg.on-dark">
-      <Container maxW="7xl" px={{ base: 5, md: 8 }}>
+    <Box as="section" py={{ base: 14, md: 20 }} bg="bg.elevated" color="fg.on-dark" position="relative" overflow="hidden">
+      <ArabicPatternOverlay opacity={0.02} />
+      <Container maxW="7xl" px={{ base: 5, md: 8 }} position="relative" zIndex={1}>
         <VStack gap={12} textAlign="center">
-          <SectionHeader
-            label="The Sultan Difference"
-            title="Why Glasgow Chooses Sultan"
-            light={true}
-          />
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8} w="full">
-            {features.map(f => (
-              <Card.Root key={f.title} bg="whiteAlpha.100" borderRadius="xl" border="1px solid" borderColor="whiteAlpha.200">
-                <Card.Body p={8}>
-                  <VStack gap={4} textAlign="center">
-                    <ChakraBox p={3} bg="brand.primary" borderRadius="full" color="bg.elevated">
-                      <f.icon size={24} />
-                    </ChakraBox>
-                    <Heading size="md" color="fg.on-dark">{f.title}</Heading>
-                    <Text color="whiteAlpha.800" fontSize="sm" lineHeight="tall">{f.description}</Text>
-                  </VStack>
-                </Card.Body>
-              </Card.Root>
-            ))}
-          </SimpleGrid>
+          <FadeInUp>
+            <SectionHeader
+              label="The Sultan Difference"
+              title="Why Glasgow Chooses Sultan"
+              light={true}
+            />
+          </FadeInUp>
+          <StaggerContainer>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8} w="full">
+              {features.map(f => (
+                <StaggerItem key={f.title}>
+                  <AnimatedCard>
+                    <Card.Root bg="whiteAlpha.100" borderRadius="xl" border="1px solid" borderColor="whiteAlpha.200">
+                      <Card.Body p={8}>
+                        <VStack gap={4} textAlign="center">
+                          <ChakraBox p={3} bg="brand.primary" borderRadius="full" color="bg.elevated">
+                            <f.icon size={24} />
+                          </ChakraBox>
+                          <Heading size="md" color="fg.on-dark">{f.title}</Heading>
+                          <Text color="whiteAlpha.800" fontSize="sm" lineHeight="tall">{f.description}</Text>
+                        </VStack>
+                      </Card.Body>
+                    </Card.Root>
+                  </AnimatedCard>
+                </StaggerItem>
+              ))}
+            </SimpleGrid>
+          </StaggerContainer>
         </VStack>
       </Container>
     </Box>
