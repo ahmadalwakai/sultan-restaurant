@@ -119,7 +119,7 @@ function OpeningHoursTab() {
   useEffect(() => {
     fetch("/api/admin/settings/opening-hours").then((r) => r.json()).then((d) => {
       if (d.data?.length) setHours(d.data);
-      else setHours(days.map((_, i) => ({ dayOfWeek: i, openTime: "11:00", closeTime: "22:00", isClosed: false })));
+      else setHours(days.map((_, i) => ({ dayOfWeek: i, openTime: "12:00", closeTime: "21:00", isClosed: false })));
     });
   }, []);
 

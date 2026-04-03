@@ -35,15 +35,18 @@ export function CuisineTypesBar() {
                   p={3}
                   borderRadius="xl"
                   bg="bg.surface"
-                  shadow="sm"
                   cursor="pointer"
-                  _hover={{ shadow: "md", transform: "translateY(-2px)" }}
+                  _hover={{ transform: "translateY(-2px)" }}
                   transition="all 0.2s"
+                  style={{
+                    border: "1px solid #C8A951",
+                    boxShadow: "0 0 8px rgba(200, 169, 81, 0.4), 0 0 16px rgba(200, 169, 81, 0.2), inset 0 0 8px rgba(200, 169, 81, 0.1)",
+                  }}
                 >
-                  <Box color="brand.primary">
+                  <Box style={{ color: "#C8A951" }}>
                     <c.icon size={20} />
                   </Box>
-                  <Text fontSize="xs" fontWeight="medium" color="fg.default" whiteSpace="nowrap">
+                  <Text fontSize="xs" fontWeight="medium" style={{ color: "#000000" }} whiteSpace="nowrap">
                     {c.label}
                   </Text>
                 </VStack>

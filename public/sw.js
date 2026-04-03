@@ -1,14 +1,25 @@
 // Service Worker for Sultan Restaurant PWA
-const CACHE_NAME = 'sultan-restaurant-v1.0.0';
-const STATIC_CACHE = 'sultan-static-v1.0.0';
-const DYNAMIC_CACHE = 'sultan-dynamic-v1.0.0';
+const CACHE_NAME = 'sultan-restaurant-v1.1.0';
+const STATIC_CACHE = 'sultan-static-v1.1.0';
+const DYNAMIC_CACHE = 'sultan-dynamic-v1.1.0';
+const MENU_CACHE = 'sultan-menu-v1.1.0';
 
 // Critical assets to cache immediately
 const CRITICAL_ASSETS = [
   '/',
   '/manifest.json',
   '/offline',
-  // Add critical fonts, CSS, JS here
+  '/menu',
+  '/fonts/poppins-regular.woff2',
+  '/fonts/poppins-semibold.woff2',
+  '/fonts/poppins-bold.woff2',
+];
+
+// Menu-specific assets for offline access
+const MENU_ASSETS = [
+  '/api/menu',
+  '/api/menu/categories',
+  '/api/menu/featured',
 ];
 
 // Runtime cacheable assets
@@ -22,23 +33,41 @@ const RUNTIME_ASSETS = [
 self.addEventListener('install', (event) => {
   console.log('[SW] Install event');
   event.waitUntil(
-    caches.open(STATIC_CACHE)
-      .then(cache => {
-        console.log('[SW] Caching critical assets');
-        return cache.addAll(CRITICAL_ASSETS);
-      })
-      .then(() => self.skipWaiting())
+    Promise.all([
+      caches.open(STATIC_CACHE)
+        .then(cache => {
+          console.log('[SW] Caching critical assets');
+          return cache.addAll(CRITICAL_ASSETS);
+        }),
+      // Cache menu data for offline access
+      caches.open(MENU_CACHE)
+        .then(cache => {
+          console.log('[SW] Caching menu data for offline');
+          return Promise.allSettled(
+            MENU_ASSETS.map(url => 
+              fetch(url)
+                .then(response => {
+                  if (response.ok) {
+                    return cache.put(url, response);
+                  }
+                })
+                .catch(() => console.log('[SW] Could not cache:', url))
+            )
+          );
+        }),
+    ]).then(() => self.skipWaiting())
   );
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activate event');
+  const currentCaches = [STATIC_CACHE, DYNAMIC_CACHE, MENU_CACHE];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+          if (!currentCaches.includes(cacheName)) {
             console.log('[SW] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
@@ -59,7 +88,13 @@ self.addEventListener('fetch', (event) => {
   // Skip Chrome extension requests
   if (url.protocol === 'chrome-extension:') return;
 
-  // Handle API requests with network-first strategy
+  // Handle menu API requests with stale-while-revalidate for offline support
+  if (url.pathname.startsWith('/api/menu')) {
+    event.respondWith(staleWhileRevalidate(request, MENU_CACHE));
+    return;
+  }
+
+  // Handle other API requests with network-first strategy
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(networkFirstStrategy(request));
     return;
@@ -122,6 +157,49 @@ async function networkFirstStrategy(request) {
     }
     throw error;
   }
+}
+
+// Stale-while-revalidate for menu data (best for offline support)
+async function staleWhileRevalidate(request, cacheName = MENU_CACHE) {
+  const cache = await caches.open(cacheName);
+  const cachedResponse = await cache.match(request);
+  
+  // Fetch fresh data in background
+  const fetchPromise = fetch(request)
+    .then(networkResponse => {
+      if (networkResponse.ok) {
+        cache.put(request, networkResponse.clone());
+      }
+      return networkResponse;
+    })
+    .catch(error => {
+      console.log('[SW] Stale-while-revalidate fetch failed:', error);
+      return null;
+    });
+
+  // Return cached response immediately if available, otherwise wait for network
+  if (cachedResponse) {
+    console.log('[SW] Serving menu from cache');
+    return cachedResponse;
+  }
+  
+  const networkResponse = await fetchPromise;
+  if (networkResponse) {
+    return networkResponse;
+  }
+  
+  // If both cache and network fail, return offline-safe response
+  return new Response(
+    JSON.stringify({ 
+      error: 'Offline',
+      message: 'Menu data not available offline. Please check your connection.',
+      offline: true 
+    }),
+    { 
+      status: 503,
+      headers: { 'Content-Type': 'application/json' }
+    }
+  );
 }
 
 // Check if request is for a static asset

@@ -11,7 +11,7 @@ describe("GET /api/opening-hours", () => {
 
   it("should return all opening hours", async () => {
     vi.mocked(prisma.openingHour.findMany).mockResolvedValue([
-      { dayOfWeek: 0, openTime: "12:00", closeTime: "22:00", isClosed: false },
+      { dayOfWeek: 0, openTime: "12:00", closeTime: "21:00", isClosed: false },
       { dayOfWeek: 1, openTime: null, closeTime: null, isClosed: true },
     ] as never);
 

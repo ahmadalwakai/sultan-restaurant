@@ -96,7 +96,7 @@ export function generateLocalSEOFAQ(areaName: string): Array<{ question: string;
     },
     {
       question: `What are your delivery hours for ${areaName}?`,
-      answer: `We deliver to ${areaName} daily from 11:00 AM to 10:00 PM. Our kitchen closes at 9:30 PM for dine-in orders and 9:00 PM for delivery orders.`,
+      answer: `We deliver to ${areaName} daily from 12:00 PM to 9:00 PM. Our kitchen closes at 8:30 PM for dine-in orders and 8:00 PM for delivery orders.`,
     },
   ];
 }

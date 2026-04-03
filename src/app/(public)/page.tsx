@@ -16,6 +16,21 @@ import { DeliveryPartnersSection } from "@/components/home/DeliveryPartnersSecti
 import { MapPreview } from "@/components/home/MapPreview";
 import { NewsletterSignup } from "@/components/home/NewsletterSignup";
 import { FAQSection } from "@/components/home/FAQSection";
+import { TrustStrip } from "@/components/sections/TrustStrip";
+import { ChefsTable } from "@/components/sections/ChefsTable";
+import { CateringSection } from "@/components/sections/CateringSection";
+
+// Premium Enhancement Components
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { StickyMobileOrder } from "@/components/mobile/StickyMobileOrder";
+import { ChefProfiles } from "@/components/sections/ChefProfiles";
+import { HowItsMade } from "@/components/sections/HowItsMade";
+import { InstagramFeed } from "@/components/sections/InstagramFeed";
+import { LoyaltyPreview } from "@/components/sections/LoyaltyPreview";
+import { PressAwards } from "@/components/sections/PressAwards";
+import { BlogTeaser } from "@/components/sections/BlogTeaser";
+import { BuildYourPlatter } from "@/components/menu/BuildYourPlatter";
 
 const OffersCarousel = dynamic(() => import("@/components/home/OffersCarousel").then(m => ({ default: m.OffersCarousel })), {
   loading: () => <div style={{ height: "400px", background: "#1a1a1a" }} />,
@@ -24,22 +39,52 @@ const OffersCarousel = dynamic(() => import("@/components/home/OffersCarousel").
 export default function HomePage() {
   return (
     <>
+      {/* Global UI enhancements */}
+      <ScrollProgress />
+      
+      {/* Hero + Trust indicators */}
       <HeroSection />
+      <TrustStrip />
+      
+      {/* Cuisine exploration */}
       <CuisineTypesBar />
-      <PopularDishes />
       <CuisineShowcase />
+      <PopularDishes />
+      
+      {/* Premium content */}
+      <ChefsTable />
+      <ChefProfiles />
       <DishOfTheDay />
       <OffersCarousel />
+      <HowItsMade />
+      
+      {/* Services */}
+      <CateringSection />
+      <BuildYourPlatter />
       <AboutPreview />
+      
+      {/* Social proof */}
       <ReviewsSection />
+      <PressAwards />
+      <GalleryPreview />
+      <InstagramFeed />
+      
+      {/* Loyalty & Conversion */}
+      <LoyaltyPreview />
       <WhyChooseUs />
       <BookTableCTA />
       <PickupCTA />
-      <GalleryPreview />
       <DeliveryPartnersSection />
+      
+      {/* Location & info */}
       <MapPreview />
       <FAQSection />
+      <BlogTeaser />
       <NewsletterSignup />
+      
+      {/* Floating UI elements */}
+      <WhatsAppButton />
+      <StickyMobileOrder />
     </>
   );
 }

@@ -9,7 +9,7 @@ interface DayHours { day: string; open: string; close: string; isClosed: boolean
 
 export function OpeningHoursForm({ initial, onSave }: { initial: DayHours[]; onSave: (data: DayHours[]) => Promise<void> }) {
   const [hours, setHours] = useState<DayHours[]>(
-    initial.length ? initial : DAYS.map((day) => ({ day, open: "11:00", close: "22:00", isClosed: false }))
+    initial.length ? initial : DAYS.map((day) => ({ day, open: "12:00", close: "21:00", isClosed: false }))
   );
   const [saving, setSaving] = useState(false);
 

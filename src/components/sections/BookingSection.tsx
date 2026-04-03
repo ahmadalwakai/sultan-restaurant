@@ -62,7 +62,7 @@ export function BookingSection() {
             </Link>
           </HStack>
           <Text mt={6} color="gray.400">
-            Open daily from 11:00 AM to 11:00 PM
+            Open daily from 12:00 PM to 9:00 PM
           </Text>
         </VStack>
       </Box>

@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     question: "What are Sultan Restaurant's opening hours?",
-    answer: "We are open Monday to Thursday 12:00 PM – 10:00 PM, Friday to Saturday 12:00 PM – 11:00 PM, and Sunday 1:00 PM – 10:00 PM."
+    answer: "We are open every day from 12:00 PM – 9:00 PM (21:00), 7 days a week."
   },
   {
     question: "Does Sultan Restaurant cater for dietary requirements?",

@@ -10,3 +10,11 @@ export { ReviewsSection } from "./ReviewsSection";
 export { SectionDivider } from "./SectionDivider";
 export { SectionHeader } from "./SectionHeader";
 export { SectionWrapper } from "./SectionWrapper";
+
+// Premium Enhancement Sections
+export { ChefProfiles } from "./ChefProfiles";
+export { HowItsMade } from "./HowItsMade";
+export { InstagramFeed } from "./InstagramFeed";
+export { LoyaltyPreview } from "./LoyaltyPreview";
+export { PressAwards } from "./PressAwards";
+export { BlogTeaser } from "./BlogTeaser";

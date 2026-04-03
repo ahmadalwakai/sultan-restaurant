@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { seedLogger } from "../utils";
 
 const socialLinksData = [
-  { key: "whatsapp", value: "https://wa.me/442012345678", group: "social" },
+  { key: "whatsapp", value: "https://wa.me/message/FCSKZ3PZSJTMI1", group: "social" },
   { key: "instagram", value: "https://instagram.com/sultanrestaurant", group: "social" },
   { key: "facebook", value: "https://facebook.com/sultanrestaurant", group: "social" },
   { key: "twitter", value: "https://twitter.com/sultanrest", group: "social" },

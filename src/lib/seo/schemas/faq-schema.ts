@@ -47,7 +47,7 @@ export const sultanFAQData: FAQData = {
     },
     {
       question: 'Do you offer delivery in Glasgow?',
-      answer: 'Yes, we offer delivery throughout Glasgow and surrounding areas within a 10-mile radius. Our delivery service is available Monday through Sunday from 11 AM to 10 PM. Minimum order is £15, and delivery fees start from £2.99.',
+      answer: 'Yes, we offer delivery throughout Glasgow and surrounding areas within a 10-mile radius. Our delivery service is available Monday through Sunday from 12:00 PM to 9:00 PM. Minimum order is £15, and delivery fees start from £2.99.',
     },
     {
       question: 'Can I make a reservation?',
@@ -59,7 +59,7 @@ export const sultanFAQData: FAQData = {
     },
     {
       question: 'What are your opening hours?',
-      answer: 'We are open Monday through Sunday from 11:00 AM to 10:00 PM. Our kitchen closes at 9:30 PM for dine-in orders and 9:00 PM for delivery orders. Last seating is at 9:00 PM.',
+      answer: 'We are open every day from 12:00 PM to 9:00 PM, 7 days a week. Our kitchen closes at 8:30 PM for dine-in orders and 8:00 PM for delivery orders.',
     },
     {
       question: 'Do you accept credit cards?',

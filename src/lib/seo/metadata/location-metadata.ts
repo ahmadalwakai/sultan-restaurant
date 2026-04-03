@@ -90,7 +90,7 @@ export function generateLocationPageMetadata(options: LocationPageMetadataOption
     priceRange: '££',
     servesCuisine: ['Syrian', 'Lebanese', 'Iraqi', 'Middle Eastern'],
     openingHours: [
-      'Mo-Su 11:00-22:00',
+      'Mo-Su 12:00-21:00',
     ],
     paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
     currenciesAccepted: 'GBP',

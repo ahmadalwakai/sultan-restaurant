@@ -45,9 +45,8 @@ export default function ContactPage() {
                 <Card.Body p={6}>
                   <Heading as="h3" size="md" fontFamily="heading" fontWeight="bold">Opening Hours</Heading>
                   <VStack mt={2} gap={1} align="start" fontSize="sm" color="gray.600">
-                    <Text>Mon–Thu: 12:00 PM – 10:00 PM</Text>
-                    <Text>Fri–Sat: 12:00 PM – 11:00 PM</Text>
-                    <Text>Sun: 1:00 PM – 10:00 PM</Text>
+                    <Text>Every Day: 12:00 PM – 9:00 PM</Text>
+                    <Text>7 days a week</Text>
                   </VStack>
                 </Card.Body>
               </Card.Root>

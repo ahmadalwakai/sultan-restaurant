@@ -33,17 +33,53 @@ export function HeroSection() {
       <motion.div style={{ opacity }}>
         <Container maxW="6xl" h="full" display="flex" alignItems="center" justifyContent="center" position="relative" zIndex={1}>
           <VStack gap={6} textAlign="center" color="white">
-            <FadeInUp>
-              <Text fontSize="sm" fontWeight="bold" color="brand.primary" textTransform="uppercase" letterSpacing="widest">
-                Authentic Middle Eastern & Indian Cuisine
-              </Text>
-            </FadeInUp>
-
             <FadeInUp delay={0.2}>
               <Heading fontFamily="heading" size={{ base: "4xl", md: "6xl" }} fontWeight="bold" lineHeight="1.1">
                 Welcome to<br />
-                <Text as="span" color="brand.primary">Sultan</Text> Restaurant
+                <span style={{ display: "inline-flex" }}>
+                  {"Sultan".split("").map((char, i) => (
+                    <motion.span
+                      key={`s-${i}`}
+                      style={{ display: "inline-block", color: "#C8A951" }}
+                      animate={{ y: [0, -12, 0] }}
+                      transition={{
+                        duration: 0.6,
+                        repeat: Infinity,
+                        repeatDelay: 2.4,
+                        ease: "easeInOut",
+                        delay: i * 0.08,
+                      }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </span>
+                <span style={{ display: "inline-block", width: "0.3em" }}> </span>
+                <span style={{ display: "inline-flex" }}>
+                  {"Restaurant".split("").map((char, i) => (
+                    <motion.span
+                      key={`r-${i}`}
+                      style={{ display: "inline-block", color: "#FFFFFF" }}
+                      animate={{ y: [0, -12, 0] }}
+                      transition={{
+                        duration: 0.6,
+                        repeat: Infinity,
+                        repeatDelay: 2.4,
+                        ease: "easeInOut",
+                        delay: (i + 7) * 0.08,
+                      }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </span>
               </Heading>
+            </FadeInUp>
+
+            <FadeInUp delay={0.3}>
+              <Text fontSize="sm" fontWeight="bold" style={{ color: "#C8A951" }} textTransform="uppercase" letterSpacing="widest">
+                Authentic Middle Eastern & Indian Cuisine
+              </Text>
             </FadeInUp>
 
             <FadeInUp delay={0.4}>
