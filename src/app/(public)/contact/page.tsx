@@ -2,7 +2,11 @@ import { ContactForm } from "@/components/forms/ContactForm";
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { SITE_CONFIG } from "@/lib/constants/site";
 
-export const metadata = { title: "Contact Us | Sultan Restaurant" };
+export const metadata = {
+  title: "Contact Us",
+  description:
+    "Get in touch with Sultan Restaurant. Call +44 141 391 8883, email info@sultanrestaurant.co.uk, or visit us at 577 Gallowgate, Glasgow G40 2PE.",
+};
 
 export default function ContactPage() {
   return (
@@ -32,7 +36,11 @@ export default function ContactPage() {
             </div>
             <div className="rounded-2xl bg-white p-6 shadow-md">
               <h3 className="font-heading text-lg font-bold">Opening Hours</h3>
-              <p className="mt-2 text-gray-600">Daily: 11:00 AM - 11:00 PM</p>
+              <div className="mt-2 space-y-1 text-sm text-gray-600">
+                <p>Mon–Thu: 12:00 PM – 10:00 PM</p>
+                <p>Fri–Sat: 12:00 PM – 11:00 PM</p>
+                <p>Sun: 1:00 PM – 10:00 PM</p>
+              </div>
             </div>
           </div>
         </div>

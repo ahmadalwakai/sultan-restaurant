@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { SectionShell } from "@/components/shared/SectionShell";
+
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -12,33 +14,40 @@ export function NewsletterSignup() {
   };
 
   return (
-    <section className="bg-gray-900 py-16">
-      <div className="mx-auto max-w-xl px-4 text-center text-white">
-        <h2 className="font-heading text-2xl font-bold">Stay Updated</h2>
-        <p className="mt-2 text-gray-400">
+    <SectionShell bg="bg-stone-100" spacing="compact" size="narrow">
+      <div className="text-center">
+        <h2 className="font-heading text-xl font-bold text-gray-900 sm:text-2xl">
+          Stay Updated
+        </h2>
+        <p className="mt-2 text-sm text-gray-500">
           Subscribe for exclusive offers and updates
         </p>
         {submitted ? (
-          <p className="mt-6 text-amber-400 font-medium">Thank you for subscribing!</p>
+          <p className="mt-6 text-sm font-medium text-amber-600">
+            Thank you for subscribing!
+          </p>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-6 flex gap-2">
+          <form
+            onSubmit={handleSubmit}
+            className="mt-6 flex flex-col gap-3 sm:flex-row"
+          >
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
-              className="flex-1 rounded-lg bg-white/10 px-4 py-3 text-white placeholder-gray-400 outline-none ring-1 ring-white/20 focus:ring-amber-500"
+              className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
             />
             <button
               type="submit"
-              className="rounded-lg bg-amber-500 px-6 py-3 font-semibold text-white transition-colors hover:bg-amber-600"
+              className="rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800"
             >
               Subscribe
             </button>
           </form>
         )}
       </div>
-    </section>
+    </SectionShell>
   );
 }

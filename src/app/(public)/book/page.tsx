@@ -2,7 +2,11 @@ import { BookingForm } from "@/components/forms/BookingForm";
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { SITE_CONFIG } from "@/lib/constants/site";
 
-export const metadata = { title: "Book a Table | Sultan Restaurant" };
+export const metadata = {
+  title: "Book a Table",
+  description:
+    "Reserve a table at Sultan Restaurant, 577 Gallowgate, Glasgow. Authentic Middle Eastern & Indian dining for groups of 1 to 20.",
+};
 
 export default function BookPage() {
   return (

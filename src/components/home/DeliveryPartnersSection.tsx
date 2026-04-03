@@ -1,40 +1,30 @@
 "use client";
 
-import Image from "next/image";
-import { SectionHeader } from "@/components/sections/SectionHeader";
+import { SectionShell } from "@/components/shared/SectionShell";
 
 const partners = [
-  { name: "Uber Eats", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Uber_Eats_2020_logo.svg/320px-Uber_Eats_2020_logo.svg.png" },
-  { name: "Deliveroo", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/Deliveroo_logo.svg/320px-Deliveroo_logo.svg.png" },
-  { name: "Just Eat", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Just_Eat_logo.svg/320px-Just_Eat_logo.svg.png" },
+  { name: "Uber Eats", color: "#06C167" },
+  { name: "Deliveroo", color: "#00CCBC" },
+  { name: "Just Eat", color: "#F36D00" },
 ];
 
 export function DeliveryPartnersSection() {
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="mx-auto max-w-5xl px-4 text-center">
-        <SectionHeader
-          title="Also Available On"
-          subtitle="Order through your favorite delivery platform"
-        />
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-12">
-          {partners.map((partner) => (
-            <div
-              key={partner.name}
-              className="flex h-20 w-40 items-center justify-center opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
-            >
-              <Image
-                src={partner.logo}
-                alt={partner.name}
-                width={160}
-                height={80}
-                className="object-contain"
-                unoptimized
-              />
-            </div>
-          ))}
-        </div>
+    <SectionShell spacing="compact" size="narrow" className="border-t border-gray-100">
+      <p className="text-center text-xs font-medium uppercase tracking-widest text-gray-400">
+        Also available on
+      </p>
+      <div className="mt-5 flex items-center justify-center gap-8 sm:gap-12">
+        {partners.map((partner) => (
+          <span
+            key={partner.name}
+            className="text-base font-bold sm:text-lg"
+            style={{ color: partner.color }}
+          >
+            {partner.name}
+          </span>
+        ))}
       </div>
-    </section>
+    </SectionShell>
   );
 }

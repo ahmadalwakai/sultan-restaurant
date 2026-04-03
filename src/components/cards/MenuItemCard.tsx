@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import { useCartStore } from "@/lib/cart";
+import { CardSurface } from "@/components/shared/CardSurface";
 import type { MenuItemPublic } from "@/types/menu";
 
 interface MenuItemCardProps {
@@ -31,7 +32,7 @@ export function MenuItemCard({ item }: MenuItemCardProps) {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-xl">
+    <CardSurface className="group flex flex-col transition-all hover:shadow-lg">
       <div className="relative aspect-[4/3] overflow-hidden">
         {item.image && !imgError ? (
           <Image
@@ -96,6 +97,6 @@ export function MenuItemCard({ item }: MenuItemCardProps) {
           </button>
         </div>
       </div>
-    </div>
+    </CardSurface>
   );
 }

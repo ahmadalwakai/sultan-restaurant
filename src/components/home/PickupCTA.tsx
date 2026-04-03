@@ -1,24 +1,27 @@
 "use client";
 
 import Link from "next/link";
+import { SectionShell } from "@/components/shared/SectionShell";
 
 export function PickupCTA() {
   return (
-    <section className="bg-gradient-to-r from-amber-500 to-orange-600 py-16">
-      <div className="mx-auto max-w-4xl px-4 text-center text-white">
-        <h2 className="font-heading text-3xl font-bold md:text-4xl">
-          Order for Collection
-        </h2>
-        <p className="mt-3 text-lg text-white/90">
-          Skip the queue! Order online and collect from our restaurant.
-        </p>
+    <SectionShell bg="bg-amber-50" spacing="compact" className="border-t border-amber-100">
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between sm:gap-6">
+        <div className="text-center sm:text-left">
+          <h2 className="font-heading text-lg font-bold text-gray-900 sm:text-xl">
+            Order for Collection
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">
+            Skip the queue — order online, collect in 30 minutes.
+          </p>
+        </div>
         <Link
           href="/pickup"
-          className="mt-6 inline-block rounded-lg bg-white px-8 py-3.5 text-lg font-semibold text-amber-600 transition-colors hover:bg-gray-100"
+          className="shrink-0 rounded-lg bg-amber-600 px-7 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-amber-700"
         >
-          Order for Pickup
+          Order Now
         </Link>
       </div>
-    </section>
+    </SectionShell>
   );
 }

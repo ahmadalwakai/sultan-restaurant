@@ -2,7 +2,11 @@ import { SectionHeader } from "@/components/sections/SectionHeader";
 import { DeliveryPartnersSection } from "@/components/home/DeliveryPartnersSection";
 import Link from "next/link";
 
-export const metadata = { title: "Delivery | Sultan Restaurant" };
+export const metadata = {
+  title: "Delivery",
+  description:
+    "Sultan Restaurant delivery via Uber Eats, Deliveroo & Just Eat. Or order online for collection from 577 Gallowgate, Glasgow.",
+};
 
 export default function DeliveryPage() {
   return (

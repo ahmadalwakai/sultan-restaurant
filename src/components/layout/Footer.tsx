@@ -1,122 +1,118 @@
 import Link from "next/link";
-import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import { SITE_NAME, CONTACT } from "@/lib/constants/site";
 import { Logo } from "@/components/shared/Logo";
 import { FOOTER_NAV } from "@/lib/constants/navigation";
-import { brandColors, brandTypography } from "@/theme/branding";
-import { brandGradients } from "@/lib/design";
 
 export function Footer() {
+  const columnStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+  };
+
+  const headingStyle: React.CSSProperties = {
+    fontSize: 13,
+    fontWeight: 600,
+    color: "white",
+    letterSpacing: "0.05em",
+    textTransform: "uppercase" as const,
+    marginBottom: 4,
+  };
+
+  const linkStyle: React.CSSProperties = {
+    fontSize: 14,
+    color: "#9CA3AF",
+    textDecoration: "none",
+    transition: "color 0.2s",
+  };
+
   return (
-    <Box as="footer" bg={brandColors.charcoal} color="gray.300" py={12}>
-      {/* Top gold edge */}
-      <Box h="3px" w="full" bg={brandGradients.footerEdge} mb={-12} mt={-12} position="relative" top={-12} />
-      <Container maxW="7xl">
-        <Flex direction={{ base: "column", md: "row" }} gap={8} mb={8}>
-          {/* Brand */}
-          <Box flex={1}>
-            <Box mb={2}>
+    <footer
+      style={{
+        background: "#111111",
+        borderTop: "1px solid #B8860B",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "48px 24px 0",
+        }}
+      >
+        {/* Grid: brand + 3 nav columns */}
+        <div
+          className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]"
+        >
+          {/* Brand column */}
+          <div>
+            <div style={{ marginBottom: 16 }}>
               <Logo size="sm" />
-            </Box>
-            <Text fontSize="sm" mb={1} fontFamily={brandTypography.fonts.body}>{CONTACT.address}</Text>
-            <Text fontSize="sm" mb={1} fontFamily={brandTypography.fonts.body}>{CONTACT.phone}</Text>
-            <Text fontSize="sm" fontFamily={brandTypography.fonts.body}>{CONTACT.email}</Text>
-          </Box>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <span style={{ fontSize: 14, color: "#9CA3AF" }}>
+                {CONTACT.address}
+              </span>
+              <a
+                href={`tel:${CONTACT.phone}`}
+                style={{ fontSize: 14, color: "#9CA3AF", textDecoration: "none" }}
+              >
+                {CONTACT.phone}
+              </a>
+              <a
+                href={`mailto:${CONTACT.email}`}
+                style={{ fontSize: 14, color: "#9CA3AF", textDecoration: "none" }}
+              >
+                {CONTACT.email}
+              </a>
+            </div>
+          </div>
 
           {/* Quick Links */}
-          <Box flex={1}>
-            <Text
-              fontWeight={brandTypography.weights.semibold}
-              color="white"
-              mb={3}
-              fontFamily={brandTypography.fonts.heading}
-              fontSize={brandTypography.sizes.body}
-              letterSpacing={brandTypography.letterSpacing.wide}
-            >
-              Quick Links
-            </Text>
-            <Flex direction="column" gap={2}>
-              {FOOTER_NAV.quickLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  style={{
-                    fontSize: brandTypography.sizes.small,
-                    fontFamily: brandTypography.fonts.body,
-                    transition: "color 0.2s",
-                  }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </Flex>
-          </Box>
+          <div style={columnStyle}>
+            <p style={headingStyle}>Quick Links</p>
+            {FOOTER_NAV.quickLinks.map((item) => (
+              <Link key={item.href} href={item.href} style={linkStyle}>
+                {item.label}
+              </Link>
+            ))}
+          </div>
 
-          {/* Info */}
-          <Box flex={1}>
-            <Text
-              fontWeight={brandTypography.weights.semibold}
-              color="white"
-              mb={3}
-              fontFamily={brandTypography.fonts.heading}
-              fontSize={brandTypography.sizes.body}
-              letterSpacing={brandTypography.letterSpacing.wide}
-            >
-              Information
-            </Text>
-            <Flex direction="column" gap={2}>
-              {FOOTER_NAV.info.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  style={{
-                    fontSize: brandTypography.sizes.small,
-                    fontFamily: brandTypography.fonts.body,
-                    transition: "color 0.2s",
-                  }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </Flex>
-          </Box>
+          {/* Information */}
+          <div style={columnStyle}>
+            <p style={headingStyle}>Information</p>
+            {FOOTER_NAV.info.map((item) => (
+              <Link key={item.href} href={item.href} style={linkStyle}>
+                {item.label}
+              </Link>
+            ))}
+          </div>
 
           {/* Legal */}
-          <Box flex={1}>
-            <Text
-              fontWeight={brandTypography.weights.semibold}
-              color="white"
-              mb={3}
-              fontFamily={brandTypography.fonts.heading}
-              fontSize={brandTypography.sizes.body}
-              letterSpacing={brandTypography.letterSpacing.wide}
-            >
-              Legal
-            </Text>
-            <Flex direction="column" gap={2}>
-              {FOOTER_NAV.legal.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  style={{
-                    fontSize: brandTypography.sizes.small,
-                    fontFamily: brandTypography.fonts.body,
-                    transition: "color 0.2s",
-                  }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </Flex>
-          </Box>
-        </Flex>
+          <div style={columnStyle}>
+            <p style={headingStyle}>Legal</p>
+            {FOOTER_NAV.legal.map((item) => (
+              <Link key={item.href} href={item.href} style={linkStyle}>
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
 
-        <Box borderTopWidth="1px" borderColor="gray.700" pt={6}>
-          <Text fontSize="sm" textAlign="center" fontFamily={brandTypography.fonts.body}>
+        {/* Bottom bar */}
+        <div
+          style={{
+            marginTop: 40,
+            borderTop: "1px solid #374151",
+            padding: "20px 0",
+            textAlign: "center",
+          }}
+        >
+          <p style={{ fontSize: 13, color: "#6B7280" }}>
             &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
-          </Text>
-        </Box>
-      </Container>
-    </Box>
+          </p>
+        </div>
+      </div>
+    </footer>
   );
 }

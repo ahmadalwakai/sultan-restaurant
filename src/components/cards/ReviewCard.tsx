@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { CardSurface } from "@/components/shared/CardSurface";
 
 interface ReviewCardProps {
   review: {
@@ -15,7 +16,7 @@ interface ReviewCardProps {
 
 export function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <div className="flex flex-col rounded-xl bg-white p-6 shadow-md">
+    <CardSurface className="flex flex-col p-6 transition-all hover:shadow-md hover:border-gray-200">
       <div className="flex items-center gap-3">
         {review.userImage ? (
           <Image
@@ -54,6 +55,6 @@ export function ReviewCard({ review }: ReviewCardProps) {
           year: "numeric",
         })}
       </p>
-    </div>
+    </CardSurface>
   );
 }

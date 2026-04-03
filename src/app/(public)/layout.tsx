@@ -2,6 +2,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingActions } from "@/components/layout/FloatingActions";
 import { OpeningHoursBar } from "@/components/home/OpeningHoursBar";
+import { OfferBanner } from "@/components/home/OfferBanner";
 
 export default function PublicLayout({
   children,
@@ -10,6 +11,7 @@ export default function PublicLayout({
 }) {
   return (
     <>
+      <OfferBanner />
       <OpeningHoursBar />
       <Header />
       <main className="min-h-screen">{children}</main>

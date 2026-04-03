@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headingFont, bodyFont } from "@/fonts/fonts";
 import { Providers } from "@/components/providers/Providers";
+import { RestaurantStructuredData } from "@/components/seo/RestaurantJsonLd";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -47,6 +48,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body suppressHydrationWarning>
+        <RestaurantStructuredData />
         <Providers>{children}</Providers>
       </body>
     </html>

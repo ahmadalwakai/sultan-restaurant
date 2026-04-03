@@ -14,14 +14,14 @@ export function DishOfTheDay() {
   const hasDiscount = dish.discountPrice !== null && dish.discountPrice < dish.menuItemPrice;
 
   return (
-    <section className="bg-gradient-to-r from-amber-600 to-orange-600 py-16">
-      <div className="mx-auto max-w-7xl px-4">
+    <section className="bg-gradient-to-r from-amber-600 to-orange-600 py-14 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12">
         <SectionHeader
           title="Dish of the Day"
           subtitle={dish.reason || "Chef's special selection for today"}
           className="[&_h2]:text-white [&_p]:text-white/80"
         />
-        <div className="mt-10 flex flex-col items-center gap-8 md:flex-row">
+        <div className="mt-12 flex flex-col items-center gap-8 md:flex-row">
           <div className="relative aspect-square w-full max-w-sm overflow-hidden rounded-2xl shadow-2xl md:w-1/2">
             {dish.menuItemImage ? (
               <Image
