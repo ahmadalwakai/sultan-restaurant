@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Bell, BellOff, Settings } from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+import { Box, Button, HStack, Text } from '@chakra-ui/react';
 
 interface PushNotificationManagerProps {
   className?: string;
@@ -157,9 +157,9 @@ export default function PushNotificationManager({ className }: PushNotificationM
   };
 
   const getStatusIcon = () => {
-    if (permission.denied) return <BellOff className="w-5 h-5" />;
-    if (isSubscribed) return <Bell className="w-5 h-5" />;
-    return <Settings className="w-5 h-5" />;
+    if (permission.denied) return <BellOff size={20} />;
+    if (isSubscribed) return <Bell size={20} />;
+    return <Settings size={20} />;
   };
 
   const handleAction = () => {
@@ -182,27 +182,35 @@ export default function PushNotificationManager({ className }: PushNotificationM
   };
 
   return (
-    <div className={cn('flex items-center space-x-3', className)}>
-      <div className="flex items-center space-x-2">
-        {getStatusIcon()}
-        <span className="text-sm font-medium">{getStatusText()}</span>
-      </div>
+    <HStack gap={3} className={className}>
+      <HStack gap={2}>
+        <Box as="span">
+          {getStatusIcon()}
+        </Box>
+        <Text fontSize="sm" fontWeight="medium">
+          {getStatusText()}
+        </Text>
+      </HStack>
 
-      <button
+      <Button
         onClick={handleAction}
         disabled={isLoading}
-        className={cn(
-          'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-          permission.denied
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            : isSubscribed
-            ? 'bg-red-100 text-red-700 hover:bg-red-200'
-            : 'bg-orange-100 text-orange-700 hover:bg-orange-200',
-          isLoading && 'opacity-50 cursor-not-allowed'
-        )}
+        px={4}
+        py={2}
+        fontSize="sm"
+        fontWeight="medium"
+        rounded="lg"
+        transition="colors"
+        bg={permission.denied ? 'gray.100' : isSubscribed ? 'red.100' : 'orange.100'}
+        color={permission.denied ? 'gray.400' : isSubscribed ? 'red.700' : 'orange.700'}
+        _hover={{
+          bg: permission.denied ? 'gray.100' : isSubscribed ? 'red.200' : 'orange.200'
+        }}
+        opacity={isLoading ? 0.5 : 1}
+        cursor={isLoading ? 'not-allowed' : 'pointer'}
       >
         {isLoading ? 'Loading...' : permission.denied ? 'Settings' : isSubscribed ? 'Disable' : 'Enable'}
-      </button>
-    </div>
+      </Button>
+    </HStack>
   );
 }

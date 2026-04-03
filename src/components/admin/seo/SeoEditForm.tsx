@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { VStack, Input, Textarea, Button, Text, Box } from "@chakra-ui/react";
 
 interface SeoData { pageSlug: string; title: string; description: string; keywords: string; ogImageUrl: string }
 
@@ -16,30 +17,98 @@ export function SeoEditForm({ initial, onSave }: { initial: SeoData; onSave: (da
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
-      <div>
-        <label className="block text-sm font-medium mb-1">Page</label>
-        <input value={form.pageSlug} disabled className="w-full border rounded-lg px-3 py-2 bg-gray-50 text-gray-500" />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Title</label>
-        <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full border rounded-lg px-3 py-2" maxLength={60} />
-        <p className="text-xs text-gray-400 mt-1">{form.title.length}/60 characters</p>
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Description</label>
-        <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border rounded-lg px-3 py-2" rows={3} maxLength={160} />
-        <p className="text-xs text-gray-400 mt-1">{form.description.length}/160 characters</p>
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Keywords (comma-separated)</label>
-        <input value={form.keywords} onChange={(e) => setForm({ ...form, keywords: e.target.value })} className="w-full border rounded-lg px-3 py-2" />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">OG Image URL</label>
-        <input value={form.ogImageUrl} onChange={(e) => setForm({ ...form, ogImageUrl: e.target.value })} className="w-full border rounded-lg px-3 py-2" />
-      </div>
-      <button type="submit" disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">{saving ? "Saving..." : "Save SEO"}</button>
-    </form>
+    <Box as="form" onSubmit={handleSubmit} maxW="xl">
+      <VStack align="stretch" gap={4}>
+        <Box>
+          <Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>
+            Page
+          </Text>
+          <Input
+            value={form.pageSlug}
+            disabled
+            bg="gray.50"
+            color="gray.500"
+            borderRadius="lg"
+            px={3}
+            py={2}
+          />
+        </Box>
+
+        <Box>
+          <Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>
+            Title
+          </Text>
+          <Input
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            borderRadius="lg"
+            px={3}
+            py={2}
+            maxLength={60}
+          />
+          <Text fontSize="xs" color="gray.400" mt={1}>
+            {form.title.length}/60 characters
+          </Text>
+        </Box>
+
+        <Box>
+          <Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>
+            Description
+          </Text>
+          <Textarea
+            value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            borderRadius="lg"
+            px={3}
+            py={2}
+            rows={3}
+            maxLength={160}
+          />
+          <Text fontSize="xs" color="gray.400" mt={1}>
+            {form.description.length}/160 characters
+          </Text>
+        </Box>
+
+        <Box>
+          <Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>
+            Keywords (comma-separated)
+          </Text>
+          <Input
+            value={form.keywords}
+            onChange={(e) => setForm({ ...form, keywords: e.target.value })}
+            borderRadius="lg"
+            px={3}
+            py={2}
+          />
+        </Box>
+
+        <Box>
+          <Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>
+            OG Image URL
+          </Text>
+          <Input
+            value={form.ogImageUrl}
+            onChange={(e) => setForm({ ...form, ogImageUrl: e.target.value })}
+            borderRadius="lg"
+            px={3}
+            py={2}
+          />
+        </Box>
+
+        <Button
+          type="submit"
+          disabled={saving}
+          bg="amber.600"
+          color="white"
+          borderRadius="lg"
+          px={6}
+          py={2}
+          _hover={{ bg: "amber.700" }}
+          _disabled={{ opacity: 0.5 }}
+        >
+          {saving ? "Saving..." : "Save SEO"}
+        </Button>
+      </VStack>
+    </Box>
   );
 }

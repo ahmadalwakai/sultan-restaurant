@@ -3,6 +3,7 @@
 // ─── Service Health Card ─────────────────────────────────
 
 import type { ServiceHealth } from "@/lib/monitoring/health/health-types";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 interface ServiceHealthCardProps {
   service: ServiceHealth;
@@ -16,19 +17,19 @@ const statusIcon: Record<string, string> = {
 
 export function ServiceHealthCard({ service }: ServiceHealthCardProps) {
   return (
-    <div className="border rounded-lg p-3">
-      <div className="flex items-center gap-2">
+    <Box borderWidth="1px" borderRadius="lg" p={3}>
+      <Flex align="center" gap={2}>
         <span>{statusIcon[service.status] ?? "⚪"}</span>
-        <span className="text-sm font-medium text-gray-900 capitalize">
+        <Text fontSize="sm" fontWeight="medium" color="gray.900" textTransform="capitalize">
           {service.service.replace("-", " ")}
-        </span>
-      </div>
-      <div className="mt-1 flex items-center justify-between">
-        <span className="text-xs text-gray-500">{service.latencyMs}ms</span>
+        </Text>
+      </Flex>
+      <Flex mt={1} align="center" justify="space-between">
+        <Text fontSize="xs" color="gray.500">{service.latencyMs}ms</Text>
         {service.message && (
-          <span className="text-xs text-gray-400 truncate ml-2">{service.message}</span>
+          <Text fontSize="xs" color="gray.400" truncate ml={2}>{service.message}</Text>
         )}
-      </div>
-    </div>
+      </Flex>
+    </Box>
   );
 }

@@ -8,37 +8,46 @@
 //   robots: 'noindex, nofollow',
 // };
 
+import { Box, Text, Heading, Button, VStack } from "@chakra-ui/react";
+
 export default function OfflinePage() {
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full text-center">
+    <Box minH="screen" bg="gray.900" color="gray.100" display="flex" flexDir="column" alignItems="center" justifyContent="center" p={4}>
+      <Box maxW="md" w="full" textAlign="center">
         {/* Icon */}
-        <div className="text-6xl mb-6">🍽️</div>
+        <Text fontSize="6xl" mb={6}>🍽️</Text>
 
         {/* Title */}
-        <h1 className="text-3xl font-bold text-amber-400 mb-4">
+        <Heading size="3xl" fontWeight="bold" color="amber.400" mb={4}>
           You're Offline
-        </h1>
+        </Heading>
 
         {/* Message */}
-        <p className="text-gray-300 mb-8 leading-relaxed">
+        <Text color="gray.300" mb={8} lineHeight="relaxed">
           We're sorry, but it looks like you're not connected to the internet.
           Don't worry though - you can still browse our menu and place orders when you get back online!
-        </p>
+        </Text>
 
         {/* Retry Button */}
-        <button
+        <Button
           onClick={() => window.location.reload()}
-          className="bg-amber-500 hover:bg-amber-600 text-gray-900 font-semibold py-3 px-6 rounded-lg transition-colors duration-200 mb-6"
+          bg="amber.500"
+          _hover={{ bg: "amber.600" }}
+          color="gray.900"
+          fontWeight="semibold"
+          py={3}
+          px={6}
+          rounded="lg"
+          mb={6}
         >
           Try Again
-        </button>
+        </Button>
 
         {/* Status */}
-        <div className="text-sm text-gray-500" id="status">
+        <Text fontSize="sm" color="gray.500" id="status">
           Checking connection...
-        </div>
-      </div>
+        </Text>
+      </Box>
 
       <script
         dangerouslySetInnerHTML={{
@@ -68,6 +77,6 @@ export default function OfflinePage() {
           `,
         }}
       />
-    </div>
+    </Box>
   );
 }

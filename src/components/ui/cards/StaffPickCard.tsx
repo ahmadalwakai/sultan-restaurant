@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import type { MenuItemPublic } from "@/types/menu";
+import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
 
 interface StaffPickCardProps {
   item: MenuItemPublic;
@@ -12,32 +13,37 @@ interface StaffPickCardProps {
 
 export function StaffPickCard({ item, staffNote, onAddToCart }: StaffPickCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md">
-      <div className="absolute left-3 top-3 z-10 rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-white shadow">
+    <Box role="group" position="relative" overflow="hidden" borderRadius="xl" bg="bg.surface" shadow="sm" transition="shadow 0.2s" _hover={{ shadow: "md" }}>
+      <Box position="absolute" left={3} top={3} zIndex={10} borderRadius="full" bg="amber.500" px={3} py={1} fontSize="xs" fontWeight="bold" color="white" shadow="sm">
         ⭐ Staff Pick
-      </div>
-      <div className="relative h-48">
+      </Box>
+      <Box position="relative" h={48}>
         {item.image ? (
-          <Image src={item.image} alt={item.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
+          <Image src={item.image} alt={item.name} fill className="object-cover" sizes="300px" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-amber-50 text-5xl">🍽️</div>
+          <Flex h="full" w="full" align="center" justify="center" bg="amber.50" fontSize="5xl">🍽️</Flex>
         )}
-      </div>
-      <div className="p-4">
-        <h3 className="font-bold text-gray-900">{item.name}</h3>
-        {staffNote && <p className="mt-1 text-sm italic text-gray-500">&ldquo;{staffNote}&rdquo;</p>}
-        <div className="mt-3 flex items-center justify-between">
-          <span className="text-lg font-bold text-amber-600">{formatCurrency(item.price)}</span>
+      </Box>
+      <Box p={4}>
+        <Heading size="sm" fontWeight="bold" color="gray.900">{item.name}</Heading>
+        {staffNote && <Text mt={1} fontSize="sm" fontStyle="italic" color="gray.500">&ldquo;{staffNote}&rdquo;</Text>}
+        <Flex mt={3} align="center" justify="space-between">
+          <Text fontSize="lg" fontWeight="bold" color="amber.600">{formatCurrency(item.price)}</Text>
           {onAddToCart && (
-            <button
+            <Button
+              size="sm"
+              borderRadius="lg"
+              bg="amber.500"
+              color="white"
+              fontWeight="medium"
+              _hover={{ bg: "amber.600" }}
               onClick={onAddToCart}
-              className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-600"
             >
               Add to Cart
-            </button>
+            </Button>
           )}
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </Box>
+    </Box>
   );
 }

@@ -1,16 +1,17 @@
 import Link from "next/link";
+import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 export default function PublicNotFound() {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center px-4">
-      <div className="text-center space-y-4">
-        <h1 className="text-6xl font-bold font-heading text-amber-600">404</h1>
-        <h2 className="text-2xl font-semibold text-gray-900">Page Not Found</h2>
-        <p className="text-gray-600">We couldn&apos;t find what you were looking for.</p>
-        <Link href="/" className="inline-block px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">
-          Return Home
-        </Link>
-      </div>
-    </div>
+    <Flex minH="60vh" align="center" justify="center" px={4}>
+      <VStack gap={4} textAlign="center">
+        <Heading size="6xl" fontWeight="bold" fontFamily="heading" color="amber.600">404</Heading>
+        <Heading size="xl" fontWeight={600} color="gray.900">Page Not Found</Heading>
+        <Text color="gray.600">We couldn&apos;t find what you were looking for.</Text>
+        <Button asChild bg="amber.600" color="white" px={6} py={3} borderRadius="lg" _hover={{ bg: "amber.700" }}>
+          <Link href="/">Return Home</Link>
+        </Button>
+      </VStack>
+    </Flex>
   );
 }

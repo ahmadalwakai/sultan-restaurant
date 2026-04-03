@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@chakra-ui/react";
 
 export function EmailResendButton({ emailId }: { emailId: string }) {
   const [resending, setResending] = useState(false);
@@ -15,12 +16,14 @@ export function EmailResendButton({ emailId }: { emailId: string }) {
   };
 
   return (
-    <button
+    <Button
       onClick={handleResend}
       disabled={resending || done}
-      className="text-sm px-3 py-1 border border-amber-600 text-amber-600 rounded hover:bg-amber-50 disabled:opacity-50"
+      variant="outline"
+      size="sm"
+      colorPalette="amber"
     >
       {done ? "Resent!" : resending ? "Resending..." : "Resend"}
-    </button>
+    </Button>
   );
 }

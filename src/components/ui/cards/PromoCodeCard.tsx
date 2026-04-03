@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Flex, Text, Button } from "@chakra-ui/react";
 
 interface PromoCodeCardProps {
   code: string;
@@ -19,27 +20,32 @@ export function PromoCodeCard({ code, description, discount, expiresAt }: PromoC
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-dashed border-amber-300 bg-amber-50">
-      <div className="p-4">
-        <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-amber-600">{discount}</span>
+    <Box overflow="hidden" borderRadius="xl" border="1px dashed" borderColor="amber.300" bg="amber.50">
+      <Box p={4}>
+        <Flex align="center" justify="space-between">
+          <Text fontSize="2xl" fontWeight="bold" color="amber.600">{discount}</Text>
           {expiresAt && (
-            <span className="text-xs text-gray-400">
+            <Text fontSize="xs" color="gray.400">
               Expires {new Date(expiresAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
-            </span>
+            </Text>
           )}
-        </div>
-        <p className="mt-1 text-sm text-gray-600">{description}</p>
-      </div>
-      <div className="flex items-center justify-between border-t border-dashed border-amber-300 bg-white px-4 py-3">
-        <span className="font-mono text-sm font-bold tracking-wider text-gray-800">{code}</span>
-        <button
+        </Flex>
+        <Text mt={1} fontSize="sm" color="gray.600">{description}</Text>
+      </Box>
+      <Flex align="center" justify="space-between" borderTop="1px dashed" borderColor="amber.300" bg="bg.surface" px={4} py={3}>
+        <Text fontFamily="mono" fontSize="sm" fontWeight="bold" letterSpacing="wider" color="gray.800">{code}</Text>
+        <Button
+          size="sm"
+          borderRadius="lg"
+          bg="amber.500"
+          color="white"
+          fontWeight="medium"
+          _hover={{ bg: "amber.600" }}
           onClick={handleCopy}
-          className="rounded-lg bg-amber-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-amber-600"
         >
           {copied ? "Copied!" : "Copy"}
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Flex>
+    </Box>
   );
 }

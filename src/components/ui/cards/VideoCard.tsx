@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useRef } from "react";
+import { Box, Flex, Text, chakra } from "@chakra-ui/react";
 
 interface VideoCardProps {
   title: string;
@@ -20,39 +21,52 @@ export function VideoCard({ title, thumbnailUrl, videoUrl, duration }: VideoCard
   }
 
   return (
-    <div className="group overflow-hidden rounded-xl bg-white shadow-sm">
-      <div className="relative aspect-video">
+    <Box overflow="hidden" borderRadius="xl" bg="white" shadow="sm" role="group">
+      <Box position="relative" css={{ aspectRatio: "16/9" }}>
         {playing ? (
           <video
             ref={videoRef}
             src={videoUrl}
-            className="h-full w-full object-cover"
+            style={{ height: "100%", width: "100%", objectFit: "cover" }}
             controls
             autoPlay
           />
         ) : (
           <>
-            <Image src={thumbnailUrl} alt={title} fill className="object-cover" />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
-              <button
+            <Image src={thumbnailUrl} alt={title} fill objectFit="cover" />
+            <Flex position="absolute" inset={0} align="center" justify="center" bg="blackAlpha.200" transition="background 0.2s" _groupHover={{ bg: "blackAlpha.300" }}>
+              <chakra.button
+                type="button"
                 onClick={handlePlay}
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-amber-600 shadow-lg transition-transform group-hover:scale-110"
+                h={14}
+                w={14}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                borderRadius="full"
+                bg="whiteAlpha.900"
+                color="orange.600"
+                shadow="lg"
+                transition="transform 0.2s"
+                _groupHover={{ transform: "scale(1.1)" }}
                 aria-label="Play video"
               >
-                <svg className="ml-1 h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-              </button>
-            </div>
+                <svg width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </chakra.button>
+            </Flex>
             {duration && (
-              <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
+              <Text as="span" position="absolute" bottom={2} right={2} borderRadius="md" bg="blackAlpha.700" px={2} py={0.5} fontSize="xs" fontWeight="medium" color="white">
                 {duration}
-              </span>
+              </Text>
             )}
           </>
         )}
-      </div>
-      <div className="p-3">
-        <p className="font-medium text-gray-900 line-clamp-1">{title}</p>
-      </div>
-    </div>
+      </Box>
+      <Box p={3}>
+        <Text fontWeight="medium" color="gray.900" lineClamp={1}>{title}</Text>
+      </Box>
+    </Box>
   );
 }

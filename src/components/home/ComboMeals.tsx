@@ -6,6 +6,7 @@ import { useCombos } from "@/hooks/api";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { LoadingState } from "@/components/shared/LoadingState";
+import { Box, Container, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 
 export function ComboMeals() {
   const { data: combos, isLoading } = useCombos();
@@ -14,67 +15,81 @@ export function ComboMeals() {
   if (!combos || combos.length === 0) return null;
 
   return (
-    <section className="bg-gray-50 py-20">
-      <div className="mx-auto max-w-7xl px-4">
+    <Box as="section" bg="gray.50" py={20}>
+      <Container maxW="7xl" px={4}>
         <SectionHeader
           title="Family & Combo Meals"
           subtitle="Great value meals for sharing — perfect for families"
         />
-        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6} mt={10}>
           {combos.slice(0, 6).map((combo) => (
-            <div
+            <Box
               key={combo.id}
-              className="group overflow-hidden rounded-2xl bg-white shadow-md transition-all hover:shadow-xl hover:-translate-y-1"
+              overflow="hidden"
+              borderRadius="2xl"
+              bg="white"
+              shadow="md"
+              transition="all 0.2s"
+              _hover={{ shadow: "xl", transform: "translateY(-4px) scale(1.02)" }}
             >
-              <div className="relative aspect-[16/10]">
+              <Box position="relative" css={{ aspectRatio: "16/10" }}>
                 {combo.image ? (
                   <Image
                     src={combo.image}
                     alt={combo.name}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-100 to-orange-100 text-5xl">
+                  <Flex h="full" w="full" align="center" justify="center" bg="linear-gradient(to bottom right, var(--chakra-colors-orange-100), var(--chakra-colors-orange-100))" fontSize="5xl">
                     🍱
-                  </div>
+                  </Flex>
                 )}
                 {combo.savings > 0 && (
-                  <div className="absolute left-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
+                  <Box position="absolute" left={3} top={3} borderRadius="full" bg="red.500" px={3} py={1} fontSize="xs" fontWeight="bold" color="white">
                     Save {formatCurrency(combo.savings)}
-                  </div>
+                  </Box>
                 )}
-                <div className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-gray-700">
+                <Box position="absolute" right={3} top={3} borderRadius="full" bg="whiteAlpha.900" px={3} py={1} fontSize="xs" fontWeight="medium" color="gray.700">
                   Serves {combo.servesCount}
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-bold text-gray-900">{combo.name}</h3>
+                </Box>
+              </Box>
+              <Box p={5}>
+                <Heading size="md" fontWeight="bold" color="gray.900">{combo.name}</Heading>
                 {combo.description && (
-                  <p className="mt-1 text-sm text-gray-500 line-clamp-2">{combo.description}</p>
+                  <Text mt={1} fontSize="sm" color="gray.500" lineClamp={2}>{combo.description}</Text>
                 )}
-                <div className="mt-2 text-xs text-gray-400">
+                <Text mt={2} fontSize="xs" color="gray.400">
                   {combo.items.map((item) => `${item.quantity}× ${item.menuItemName}`).join(" • ")}
-                </div>
-                <div className="mt-4 flex items-center justify-between">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-xl font-bold text-amber-600">{formatCurrency(combo.price)}</span>
+                </Text>
+                <Flex mt={4} align="center" justify="space-between">
+                  <Flex align="baseline" gap={2}>
+                    <Text fontSize="xl" fontWeight="bold" color="orange.500">{formatCurrency(combo.price)}</Text>
                     {combo.originalPrice > combo.price && (
-                      <span className="text-sm text-gray-400 line-through">{formatCurrency(combo.originalPrice)}</span>
+                      <Text fontSize="sm" color="gray.400" textDecoration="line-through">{formatCurrency(combo.originalPrice)}</Text>
                     )}
-                  </div>
-                  <Link
-                    href="/menu"
-                    className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-600"
+                  </Flex>
+                  <Link href="/menu">
+                  <Box
+                    borderRadius="lg"
+                    bg="orange.400"
+                    px={4}
+                    py={2}
+                    fontSize="sm"
+                    fontWeight={600}
+                    color="white"
+                    transition="background 0.2s"
+                    _hover={{ bg: "orange.500" }}
                   >
                     Order
+                  </Box>
                   </Link>
-                </div>
-              </div>
-            </div>
+                </Flex>
+              </Box>
+            </Box>
           ))}
-        </div>
-      </div>
-    </section>
+        </SimpleGrid>
+      </Container>
+    </Box>
   );
 }

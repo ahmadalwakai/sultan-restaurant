@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { HStack, Button, Text } from "@chakra-ui/react";
 import { AdminTable } from "@/components/admin/shared/AdminTable";
 import { OfferStatusBadge } from "./OfferStatusBadge";
 
@@ -20,15 +21,57 @@ export function OffersTable({ offers, isLoading, onToggle, onDelete }: OffersTab
       keyExtractor={(o) => o.id}
       isLoading={isLoading}
       columns={[
-        { key: "title", header: "Title", render: (o) => <Link href={`/admin/offers/${o.id}/edit`} className="text-amber-600 hover:underline font-medium">{o.title}</Link> },
-        { key: "discount", header: "Discount", render: (o) => o.discountType === "PERCENTAGE" ? `${o.discountValue}%` : `£${(o.discountValue / 100).toFixed(2)}` },
-        { key: "status", header: "Status", render: (o) => <OfferStatusBadge isActive={o.isActive} expiresAt={o.expiresAt} /> },
-        { key: "actions", header: "", className: "text-right", render: (o) => (
-          <div className="flex gap-2 justify-end">
-            <button onClick={() => onToggle(o.id, !o.isActive)} className="text-xs text-blue-600 hover:underline">{o.isActive ? "Disable" : "Enable"}</button>
-            <button onClick={() => onDelete(o.id)} className="text-xs text-red-600 hover:underline">Delete</button>
-          </div>
-        )},
+        {
+          key: "title",
+          header: "Title",
+          render: (o) => (
+            <Link href={`/admin/offers/${o.id}/edit`}>
+              <Text color="amber.600" _hover={{ textDecoration: "underline" }} fontWeight="medium">
+                {o.title}
+              </Text>
+            </Link>
+          )
+        },
+        {
+          key: "discount",
+          header: "Discount",
+          render: (o) => (
+            <Text>
+              {o.discountType === "PERCENTAGE" ? `${o.discountValue}%` : `£${(o.discountValue / 100).toFixed(2)}`}
+            </Text>
+          )
+        },
+        {
+          key: "status",
+          header: "Status",
+          render: (o) => <OfferStatusBadge isActive={o.isActive} expiresAt={o.expiresAt} />
+        },
+        {
+          key: "actions",
+          header: "",
+          render: (o) => (
+            <HStack gap={2} justify="end">
+              <Button
+                size="sm"
+                variant="ghost"
+                color="blue.600"
+                _hover={{ textDecoration: "underline" }}
+                onClick={() => onToggle(o.id, !o.isActive)}
+              >
+                {o.isActive ? "Disable" : "Enable"}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                color="red.600"
+                _hover={{ textDecoration: "underline" }}
+                onClick={() => onDelete(o.id)}
+              >
+                Delete
+              </Button>
+            </HStack>
+          )
+        },
       ]}
     />
   );

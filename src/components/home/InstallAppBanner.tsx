@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Box, Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 
 export function InstallAppBanner() {
   const [showBanner, setShowBanner] = useState(false);
@@ -34,34 +35,47 @@ export function InstallAppBanner() {
   if (!showBanner) return null;
 
   return (
-    <section className="bg-gradient-to-r from-amber-500 to-orange-500 py-6">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row">
-        <div className="flex items-center gap-4 text-white">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 text-2xl">
+    <Box as="section" bg="linear-gradient(to right, var(--chakra-colors-orange-400), var(--chakra-colors-orange-500))" py={6}>
+      <Flex direction={{ base: "column", sm: "row" }} maxW="7xl" mx="auto" align="center" justify="space-between" gap={4} px={4}>
+        <Flex align="center" gap={4} color="white">
+          <Flex h={12} w={12} align="center" justify="center" borderRadius="xl" bg="whiteAlpha.200" fontSize="2xl">
             📱
-          </div>
-          <div>
-            <h3 className="font-bold text-lg">Add Sultan to your Home Screen</h3>
-            <p className="text-sm text-white/80">
+          </Flex>
+          <Box>
+            <Heading size="md" fontWeight="bold">Add Sultan to your Home Screen</Heading>
+            <Text fontSize="sm" color="whiteAlpha.800">
               Quick access to menu, orders & exclusive offers
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-3">
-          <button
+            </Text>
+          </Box>
+        </Flex>
+        <Flex gap={3}>
+          <Button
             onClick={handleInstall}
-            className="rounded-lg bg-white px-6 py-2.5 font-semibold text-amber-600 transition-colors hover:bg-amber-50"
+            borderRadius="lg"
+            bg="white"
+            px={6}
+            fontWeight={600}
+            color="orange.500"
+            _hover={{ bg: "orange.50" }}
           >
             Install App
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleDismiss}
-            className="rounded-lg border-2 border-white/40 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-white"
+            variant="outline"
+            borderRadius="lg"
+            borderWidth="2px"
+            borderColor="whiteAlpha.400"
+            px={4}
+            fontSize="sm"
+            fontWeight="medium"
+            color="white"
+            _hover={{ borderColor: "white" }}
           >
             Not Now
-          </button>
-        </div>
-      </div>
-    </section>
+          </Button>
+        </Flex>
+      </Flex>
+    </Box>
   );
 }

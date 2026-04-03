@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminLoadingState } from "@/components/admin/shared";
-import { adminFormStyles, adminSpacing, adminLayout } from "@/lib/admin-ui";
+import { VStack, HStack, Heading, Text, Card, Box, Button, SimpleGrid, NativeSelect, Flex } from "@chakra-ui/react";
 
 const STATUSES = ["PENDING", "CONFIRMED", "PREPARING", "READY", "COMPLETED", "CANCELLED"];
 
@@ -38,43 +38,58 @@ export default function AdminOrderDetailPage() {
   return (
     <AdminShell>
       <AdminPageShell>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: adminSpacing.stack }}>
-          <div>
-            <Link href="/admin/orders" style={{ fontSize: "0.875rem", color: "#6B7280", textDecoration: "none" }}>&larr; Back to Orders</Link>
-            <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#111827", marginTop: "0.25rem" }}>Order #{order.orderNumber as string}</h1>
-          </div>
-          <button onClick={handleRefund} style={{ ...adminLayout.dangerBtn, padding: "0.5rem 1rem", fontSize: "0.875rem", border: "1px solid #FCA5A5", borderRadius: "0.5rem", cursor: "pointer" }}>Refund</button>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: adminSpacing.grid }}>
-          <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
-            <h2 style={{ fontWeight: 600, marginBottom: "1rem" }}>Items</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              {(order.items as Array<{ id: string; menuItem: { name: string }; quantity: number; price: number }>)?.map((item) => (
-                <div key={item.id} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem" }}>
-                  <span>{item.menuItem.name} x{item.quantity}</span>
-                  <span>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</span>
-                </div>
-              ))}
-              <div style={{ paddingTop: "0.75rem", borderTop: "1px solid #E5E7EB", display: "flex", justifyContent: "space-between", fontWeight: 600 }}>
-                <span>Total</span>
-                <span>£{(Number(order.total) / 100).toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
-              <h2 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Status</h2>
-              <select value={order.status as string} onChange={(e) => updateStatus(e.target.value)} style={adminFormStyles.select}>
-                {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-            <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card }}>
-              <h2 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Customer</h2>
-              <p style={{ fontSize: "0.875rem" }}>{order.customerName as string}</p>
-              <p style={{ fontSize: "0.875rem", color: "#6B7280" }}>{order.customerPhone as string}</p>
-            </div>
-          </div>
-        </div>
+        <VStack align="stretch" gap={6}>
+          <HStack justify="space-between" align="center">
+            <Box>
+              <Link href="/admin/orders" style={{ fontSize: "0.875rem", color: "#6B7280", textDecoration: "none" }}>&larr; Back to Orders</Link>
+              <Heading size="xl" color="gray.900" mt={1}>Order #{order.orderNumber as string}</Heading>
+            </Box>
+            <Button size="sm" colorPalette="red" variant="outline" onClick={handleRefund}>Refund</Button>
+          </HStack>
+
+          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={6}>
+            <Card.Root shadow="sm" borderRadius="xl">
+              <Card.Body p={6}>
+                <Heading size="md" mb={4}>Items</Heading>
+                <VStack gap={3} align="stretch">
+                  {(order.items as Array<{ id: string; menuItem: { name: string }; quantity: number; price: number }>)?.map((item) => (
+                    <Flex key={item.id} justify="space-between" fontSize="sm">
+                      <Text>{item.menuItem.name} x{item.quantity}</Text>
+                      <Text>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</Text>
+                    </Flex>
+                  ))}
+                  <Flex justify="space-between" fontWeight="semibold" pt={3} borderTopWidth="1px" borderColor="gray.200">
+                    <Text>Total</Text>
+                    <Text>£{(Number(order.total) / 100).toFixed(2)}</Text>
+                  </Flex>
+                </VStack>
+              </Card.Body>
+            </Card.Root>
+
+            <VStack gap={4} align="stretch">
+              <Card.Root shadow="sm" borderRadius="xl">
+                <Card.Body p={6}>
+                  <Heading size="md" mb={3}>Status</Heading>
+                  <NativeSelect.Root>
+                    <NativeSelect.Field
+                      value={order.status as string}
+                      onChange={(e) => updateStatus(e.target.value)}
+                    >
+                      {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+                    </NativeSelect.Field>
+                  </NativeSelect.Root>
+                </Card.Body>
+              </Card.Root>
+              <Card.Root shadow="sm" borderRadius="xl">
+                <Card.Body p={6}>
+                  <Heading size="md" mb={3}>Customer</Heading>
+                  <Text fontSize="sm">{order.customerName as string}</Text>
+                  <Text fontSize="sm" color="gray.500">{order.customerPhone as string}</Text>
+                </Card.Body>
+              </Card.Root>
+            </VStack>
+          </SimpleGrid>
+        </VStack>
       </AdminPageShell>
     </AdminShell>
   );

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Activity, Zap, HardDrive, Wifi } from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+import { Box, VStack, HStack, Text } from '@chakra-ui/react';
 
 interface PerformanceMetrics {
   fcp: number | null; // First Contentful Paint
@@ -115,75 +115,96 @@ export default function PerformanceMonitor({
   }
 
   return (
-    <div className={cn('fixed bottom-4 left-4 z-50 bg-white rounded-lg shadow-lg border p-4 max-w-xs', className)}>
-      <div className="flex items-center space-x-2 mb-3">
-        <Activity className="w-4 h-4 text-blue-600" />
-        <h3 className="text-sm font-semibold text-gray-900">Performance</h3>
-      </div>
+    <Box
+      position="fixed"
+      bottom={4}
+      left={4}
+      zIndex={50}
+      bg="white"
+      rounded="lg"
+      shadow="lg"
+      border="1px"
+      borderColor="gray.200"
+      p={4}
+      maxW="xs"
+      className={className}
+    >
+      <HStack gap={2} mb={3}>
+        <Activity size={16} color="blue.600" />
+        <Text fontSize="sm" fontWeight="semibold" color="gray.900">
+          Performance
+        </Text>
+      </HStack>
 
-      <div className="space-y-2 text-xs">
-        <div className="flex justify-between">
-          <span className="text-gray-600">FCP:</span>
-          <span className={getScoreColor(metrics.fcp, { good: 1800, poor: 3000 })}>
+      <VStack gap={2} fontSize="xs">
+        <HStack justify="space-between" w="full">
+          <Text color="gray.600">FCP:</Text>
+          <Text color={getScoreColor(metrics.fcp, { good: 1800, poor: 3000 })}>
             {formatTime(metrics.fcp)}
-          </span>
-        </div>
+          </Text>
+        </HStack>
 
-        <div className="flex justify-between">
-          <span className="text-gray-600">LCP:</span>
-          <span className={getScoreColor(metrics.lcp, { good: 2500, poor: 4000 })}>
+        <HStack justify="space-between" w="full">
+          <Text color="gray.600">LCP:</Text>
+          <Text color={getScoreColor(metrics.lcp, { good: 2500, poor: 4000 })}>
             {formatTime(metrics.lcp)}
-          </span>
-        </div>
+          </Text>
+        </HStack>
 
-        <div className="flex justify-between">
-          <span className="text-gray-600">FID:</span>
-          <span className={getScoreColor(metrics.fid, { good: 100, poor: 300 })}>
+        <HStack justify="space-between" w="full">
+          <Text color="gray.600">FID:</Text>
+          <Text color={getScoreColor(metrics.fid, { good: 100, poor: 300 })}>
             {formatTime(metrics.fid)}
-          </span>
-        </div>
+          </Text>
+        </HStack>
 
-        <div className="flex justify-between">
-          <span className="text-gray-600">CLS:</span>
-          <span className={getScoreColor(metrics.cls, { good: 0.1, poor: 0.25 })}>
+        <HStack justify="space-between" w="full">
+          <Text color="gray.600">CLS:</Text>
+          <Text color={getScoreColor(metrics.cls, { good: 0.1, poor: 0.25 })}>
             {formatScore(metrics.cls)}
-          </span>
-        </div>
+          </Text>
+        </HStack>
 
-        <div className="border-t pt-2 mt-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-1">
-              <Wifi className="w-3 h-3 text-gray-600" />
-              <span className="text-gray-600">Connection:</span>
-            </div>
-            <span className={cn(
-              'capitalize',
-              connectionSpeed === 'fast' && 'text-green-600',
-              connectionSpeed === 'medium' && 'text-yellow-600',
-              connectionSpeed === 'slow' && 'text-orange-600',
-              connectionSpeed === 'very-slow' && 'text-red-600'
-            )}>
+        <Box borderTop="1px" borderColor="gray.200" pt={2} mt={2}>
+
+        <VStack gap={1} w="full">
+          <HStack justify="space-between" w="full">
+            <HStack gap={1}>
+              <Wifi size={12} color="gray.600" />
+              <Text color="gray.600">Connection:</Text>
+            </HStack>
+            <Text
+              textTransform="capitalize"
+              color={
+                connectionSpeed === 'fast' ? 'green.600' :
+                connectionSpeed === 'medium' ? 'yellow.600' :
+                connectionSpeed === 'slow' ? 'orange.600' :
+                connectionSpeed === 'very-slow' ? 'red.600' : 'gray.600'
+              }
+            >
               {connectionSpeed.replace('-', ' ')}
-            </span>
-          </div>
+            </Text>
+          </HStack>
 
           {memoryUsage !== null && (
-            <div className="flex items-center justify-between mt-1">
-              <div className="flex items-center space-x-1">
-                <HardDrive className="w-3 h-3 text-gray-600" />
-                <span className="text-gray-600">Memory:</span>
-              </div>
-              <span className={cn(
-                (memoryUsage > 0.8) && 'text-red-600',
-                (memoryUsage > 0.6) && 'text-yellow-600',
-                (memoryUsage <= 0.6) && 'text-green-600'
-              )}>
+            <HStack justify="space-between" w="full">
+              <HStack gap={1}>
+                <HardDrive size={12} color="gray.600" />
+                <Text color="gray.600">Memory:</Text>
+              </HStack>
+              <Text
+                color={
+                  memoryUsage > 0.8 ? 'red.600' :
+                  memoryUsage > 0.6 ? 'yellow.600' : 'green.600'
+                }
+              >
                 {(memoryUsage * 100).toFixed(0)}%
-              </span>
-            </div>
+              </Text>
+            </HStack>
           )}
-        </div>
-      </div>
-    </div>
+        </VStack>
+        </Box>
+      </VStack>
+    </Box>
   );
 }

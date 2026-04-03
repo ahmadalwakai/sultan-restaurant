@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useDishOfDay } from "@/hooks/api";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import { SectionHeader } from "@/components/sections/SectionHeader";
+import { Box, Container, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 export function DishOfTheDay() {
   const { data: dish } = useDishOfDay();
@@ -14,63 +15,76 @@ export function DishOfTheDay() {
   const hasDiscount = dish.discountPrice !== null && dish.discountPrice < dish.menuItemPrice;
 
   return (
-    <section className="bg-gradient-to-r from-amber-600 to-orange-600 py-14 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12">
-        <SectionHeader
-          title="Dish of the Day"
-          subtitle={dish.reason || "Chef's special selection for today"}
-          className="[&_h2]:text-white [&_p]:text-white/80"
-        />
-        <div className="mt-12 flex flex-col items-center gap-8 md:flex-row">
-          <div className="relative aspect-square w-full max-w-sm overflow-hidden rounded-2xl shadow-2xl md:w-1/2">
-            {dish.menuItemImage ? (
-              <Image
-                src={dish.menuItemImage}
-                alt={dish.menuItemName}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center bg-amber-200 text-8xl">
-                🍲
-              </div>
-            )}
-            {hasDiscount && (
-              <div className="absolute right-3 top-3 rounded-full bg-red-500 px-3 py-1 text-sm font-bold text-white shadow-lg">
-                SAVE {Math.round(((dish.menuItemPrice - dish.discountPrice!) / dish.menuItemPrice) * 100)}%
-              </div>
-            )}
-          </div>
-          <div className="flex-1 text-center text-white md:text-left">
-            <h3 className="text-3xl font-bold md:text-4xl">{dish.menuItemName}</h3>
-            {dish.menuItemDescription && (
-              <p className="mt-3 text-lg text-white/90 leading-relaxed">{dish.menuItemDescription}</p>
-            )}
-            <div className="mt-6 flex items-center justify-center gap-3 md:justify-start">
-              {hasDiscount ? (
-                <>
-                  <span className="text-3xl font-bold text-white">
-                    {formatCurrency(dish.discountPrice!)}
-                  </span>
-                  <span className="text-xl text-white/60 line-through">
-                    {formatCurrency(dish.menuItemPrice)}
-                  </span>
-                </>
+    <Box as="section" bg="linear-gradient(to right, var(--chakra-colors-orange-600), var(--chakra-colors-orange-500))" py={{ base: 12, md: 16 }}>
+      <Container maxW="7xl" px={{ base: 4, md: 6, lg: 8 }}>
+        <VStack gap={8}>
+          <SectionHeader
+            title="Dish of the Day"
+            subtitle={dish.reason || "Chef's special selection for today"}
+            titleColor="white"
+            subtitleColor="whiteAlpha.800"
+          />
+          <Flex direction={{ base: "column", md: "row" }} align="center" gap={8} mt={12}>
+            <Box position="relative" css={{ aspectRatio: "1" }} w="full" maxW="24rem" overflow="hidden" borderRadius="2xl" shadow="2xl" md={{ w: "50%" }}>
+              {dish.menuItemImage ? (
+                <Image
+                  src={dish.menuItemImage}
+                  alt={dish.menuItemName}
+                  fill
+                  className="object-cover"
+                />
               ) : (
-                <span className="text-3xl font-bold text-white">
-                  {formatCurrency(dish.menuItemPrice)}
-                </span>
+                <Flex h="full" w="full" align="center" justify="center" bg="orange.200" fontSize="8xl">
+                  🍲
+                </Flex>
               )}
-            </div>
-            <Link
-              href={`/menu/${dish.menuItemSlug}`}
-              className="mt-6 inline-block rounded-lg bg-white px-8 py-3 font-semibold text-amber-700 transition-colors hover:bg-amber-50"
-            >
-              Order Now
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
+              {hasDiscount && (
+                <Box position="absolute" right={3} top={3} borderRadius="full" bg="red.500" px={3} py={1} fontSize="sm" fontWeight="bold" color="white" shadow="lg">
+                  SAVE {Math.round(((dish.menuItemPrice - dish.discountPrice!) / dish.menuItemPrice) * 100)}%
+                </Box>
+              )}
+            </Box>
+            <Box flex={1} textAlign={{ base: "center", md: "left" }} color="white">
+              <Heading as="h3" fontSize={{ base: "3xl", md: "4xl" }} fontWeight="bold">{dish.menuItemName}</Heading>
+              {dish.menuItemDescription && (
+                <Text mt={3} fontSize="lg" color="whiteAlpha.900" lineHeight="relaxed">{dish.menuItemDescription}</Text>
+              )}
+              <Flex mt={6} align="center" justify={{ base: "center", md: "flex-start" }} gap={3}>
+                {hasDiscount ? (
+                  <>
+                    <Text as="span" fontSize="3xl" fontWeight="bold" color="white">
+                      {formatCurrency(dish.discountPrice!)}
+                    </Text>
+                    <Text as="span" fontSize="xl" color="whiteAlpha.600" textDecoration="line-through">
+                      {formatCurrency(dish.menuItemPrice)}
+                    </Text>
+                  </>
+                ) : (
+                  <Text as="span" fontSize="3xl" fontWeight="bold" color="white">
+                    {formatCurrency(dish.menuItemPrice)}
+                  </Text>
+                )}
+              </Flex>
+              <Link href={`/menu/${dish.menuItemSlug}`}>
+              <Box
+                display="inline-block"
+                mt={6}
+                borderRadius="lg"
+                bg="white"
+                px={8}
+                py={3}
+                fontWeight={600}
+                color="orange.700"
+                transition="background 0.2s"
+                _hover={{ bg: "orange.50" }}
+              >
+                Order Now
+              </Box>
+              </Link>
+            </Box>
+          </Flex>
+        </VStack>
+      </Container>
+    </Box>
   );
 }

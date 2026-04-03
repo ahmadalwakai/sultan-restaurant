@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 
 interface HomepageSettings { heroTitle: string; heroSubtitle: string; heroImageUrl: string; showOffers: boolean; showReviews: boolean; showMenu: boolean; showBooking: boolean }
 
@@ -23,20 +24,33 @@ export function HomepageSettingsForm({ initial, onSave }: { initial: HomepageSet
   ];
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
-      <div><label className="block text-sm font-medium mb-1">Hero Title</label><input value={form.heroTitle} onChange={(e) => setForm({ ...form, heroTitle: e.target.value })} className="w-full border rounded-lg px-3 py-2" /></div>
-      <div><label className="block text-sm font-medium mb-1">Hero Subtitle</label><input value={form.heroSubtitle} onChange={(e) => setForm({ ...form, heroSubtitle: e.target.value })} className="w-full border rounded-lg px-3 py-2" /></div>
-      <div><label className="block text-sm font-medium mb-1">Hero Image URL</label><input value={form.heroImageUrl} onChange={(e) => setForm({ ...form, heroImageUrl: e.target.value })} className="w-full border rounded-lg px-3 py-2" /></div>
-      <div className="space-y-2 pt-2">
-        <p className="text-sm font-medium">Sections</p>
-        {toggles.map((t) => (
-          <label key={t.key} className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={form[t.key] as boolean} onChange={(e) => setForm({ ...form, [t.key]: e.target.checked })} />
-            {t.label}
-          </label>
-        ))}
-      </div>
-      <button type="submit" disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">{saving ? "Saving..." : "Save Changes"}</button>
-    </form>
+    <VStack as="form" onSubmit={handleSubmit} gap={4} maxW="xl" align="stretch">
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium">Hero Title</Text>
+        <Input value={form.heroTitle} onChange={(e) => setForm({ ...form, heroTitle: e.target.value })} size="md" />
+      </Box>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium">Hero Subtitle</Text>
+        <Input value={form.heroSubtitle} onChange={(e) => setForm({ ...form, heroSubtitle: e.target.value })} size="md" />
+      </Box>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium">Hero Image URL</Text>
+        <Input value={form.heroImageUrl} onChange={(e) => setForm({ ...form, heroImageUrl: e.target.value })} size="md" />
+      </Box>
+      <Box pt={2}>
+        <Text mb={2} fontSize="sm" fontWeight="medium">Sections</Text>
+        <VStack gap={2} align="start">
+          {toggles.map((t) => (
+            <HStack as="label" gap={2} fontSize="sm" key={t.key}>
+              <input type="checkbox" checked={form[t.key] as boolean} onChange={(e) => setForm({ ...form, [t.key]: e.target.checked })} />
+              <Text>{t.label}</Text>
+            </HStack>
+          ))}
+        </VStack>
+      </Box>
+      <Button type="submit" disabled={saving} borderRadius="lg" bg="amber.600" color="white" py={2} px={6} _hover={{ bg: "amber.700" }} _disabled={{ opacity: 0.5 }}>
+        {saving ? "Saving..." : "Save Changes"}
+      </Button>
+    </VStack>
   );
 }

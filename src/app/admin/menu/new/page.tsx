@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle } from "@/components/admin/shared";
-import { adminSpacing } from "@/lib/admin-ui";
+import { Card } from "@chakra-ui/react";
 import { MenuItemForm } from "@/components/forms/MenuItemForm";
 
 export default function NewMenuItemPage() {
@@ -23,9 +23,11 @@ export default function NewMenuItemPage() {
     <AdminShell>
       <AdminPageShell>
         <AdminSectionTitle title="Add Menu Item" description="Create a new menu item" />
-        <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, maxWidth: "42rem" }}>
-          <MenuItemForm onSubmit={handleSubmit} />
-        </div>
+        <Card.Root shadow="sm" borderRadius="xl" maxW="42rem">
+          <Card.Body p={6}>
+            <MenuItemForm onSubmit={handleSubmit} />
+          </Card.Body>
+        </Card.Root>
       </AdminPageShell>
     </AdminShell>
   );

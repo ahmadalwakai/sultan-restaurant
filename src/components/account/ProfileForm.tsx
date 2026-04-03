@@ -24,7 +24,8 @@ export default function ProfileForm({ initialData, onSave }: ProfileFormProps) {
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit} bg="white" p={6} borderRadius="xl" shadow="sm">
+    <form onSubmit={handleSubmit}>
+    <Box bg="white" p={6} borderRadius="xl" shadow="sm">
       <VStack gap={4} align="stretch">
         <Field.Root>
           <Field.Label>Name</Field.Label>
@@ -43,5 +44,6 @@ export default function ProfileForm({ initialData, onSave }: ProfileFormProps) {
         </Button>
       </VStack>
     </Box>
+    </form>
   );
 }

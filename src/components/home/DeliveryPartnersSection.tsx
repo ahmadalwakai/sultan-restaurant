@@ -1,6 +1,6 @@
 "use client";
 
-import { SectionShell } from "@/components/shared/SectionShell";
+import { Box, Container, VStack, Flex, Text } from "@chakra-ui/react";
 
 const partners = [
   { name: "Uber Eats", color: "#06C167" },
@@ -10,21 +10,26 @@ const partners = [
 
 export function DeliveryPartnersSection() {
   return (
-    <SectionShell spacing="compact" size="narrow" className="border-t border-gray-100">
-      <p className="text-center text-xs font-medium uppercase tracking-widest text-gray-400">
-        Also available on
-      </p>
-      <div className="mt-5 flex items-center justify-center gap-8 sm:gap-12">
-        {partners.map((partner) => (
-          <span
-            key={partner.name}
-            className="text-base font-bold sm:text-lg"
-            style={{ color: partner.color }}
-          >
-            {partner.name}
-          </span>
-        ))}
-      </div>
-    </SectionShell>
+    <Box as="section" py={{ base: 8, md: 10 }} bg="bg.canvas" borderTopWidth="1px" borderColor="gray.100">
+      <Container maxW="3xl" px={{ base: 4, md: 6, lg: 8 }}>
+        <VStack gap={5}>
+          <Text fontSize="xs" fontWeight="medium" textTransform="uppercase" letterSpacing="widest" color="gray.400" textAlign="center">
+            Also available on
+          </Text>
+          <Flex gap={{ base: 8, sm: 12 }} align="center" justify="center">
+            {partners.map((partner) => (
+              <Text
+                key={partner.name}
+                fontSize={{ base: "md", sm: "lg" }}
+                fontWeight="bold"
+                style={{ color: partner.color }}
+              >
+                {partner.name}
+              </Text>
+            ))}
+          </Flex>
+        </VStack>
+      </Container>
+    </Box>
   );
 }

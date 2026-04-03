@@ -1,5 +1,6 @@
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import Image from "next/image";
+import { Box, Container, SimpleGrid } from "@chakra-ui/react";
 
 export const metadata = { title: "Gallery | Sultan Restaurant" };
 
@@ -25,31 +26,41 @@ const images = galleryUrls.map((src, i) => ({
 
 export default function GalleryPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="mx-auto max-w-7xl px-4">
+    <Box minH="screen" bg="gray.50" py={16}>
+      <Container maxW="7xl" px={4}>
         <SectionHeader
           title="Gallery"
           subtitle="Take a visual tour of Sultan Restaurant"
         />
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={4} mt={10}>
           {images.map((img, i) => (
-            <div
+            <Box
               key={i}
-              className="group relative aspect-square overflow-hidden rounded-xl"
+              position="relative"
+              css={{ aspectRatio: "1" }}
+              overflow="hidden"
+              rounded="xl"
+              role="group"
             >
               <Image
                 src={img.src}
                 alt={img.alt}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                className="object-cover"
                 sizes="(max-width: 768px) 50vw, 25vw"
                 unoptimized
               />
-              <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
-            </div>
+              <Box
+                position="absolute"
+                inset={0}
+                bg="blackAlpha.0"
+                transition="background 0.2s"
+                _groupHover={{ bg: "blackAlpha.200" }}
+              />
+            </Box>
           ))}
-        </div>
-      </div>
-    </div>
+        </SimpleGrid>
+      </Container>
+    </Box>
   );
 }

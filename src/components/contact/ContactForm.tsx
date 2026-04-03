@@ -25,7 +25,8 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+    <Box>
       <Heading as="h2" fontSize="2xl" fontFamily="var(--font-heading)" mb={6}>Get in Touch</Heading>
       <VStack gap={4}>
         <Field.Root><Field.Label>Name</Field.Label><Input value={name} onChange={(e) => setName(e.target.value)} required /></Field.Root>
@@ -35,5 +36,6 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
         <Button type="submit" colorPalette="brand" w="full" loading={loading}>Send Message</Button>
       </VStack>
     </Box>
+    </form>
   );
 }

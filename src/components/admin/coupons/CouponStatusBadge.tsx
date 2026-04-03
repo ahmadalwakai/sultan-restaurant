@@ -1,9 +1,20 @@
 "use client";
 
+import { Box } from "@chakra-ui/react";
+
 export function CouponStatusBadge({ isActive, expiresAt }: { isActive: boolean; expiresAt?: string | null }) {
   const isExpired = expiresAt ? new Date(expiresAt) < new Date() : false;
   const label = isExpired ? "Expired" : isActive ? "Active" : "Inactive";
-  const color = isExpired ? "bg-red-100 text-red-700" : isActive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700";
+  const colorMap = {
+    expired: { bg: "red.100", color: "red.700" },
+    active: { bg: "green.100", color: "green.700" },
+    inactive: { bg: "gray.100", color: "gray.700" },
+  };
+  const style = isExpired ? colorMap.expired : isActive ? colorMap.active : colorMap.inactive;
 
-  return <span className={`text-xs px-2 py-1 rounded font-medium ${color}`}>{label}</span>;
+  return (
+    <Box as="span" fontSize="xs" px={2} py={1} borderRadius="md" fontWeight="medium" bg={style.bg} color={style.color}>
+      {label}
+    </Box>
+  );
 }

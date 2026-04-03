@@ -44,7 +44,7 @@ export default function AdminMessagesPage() {
       <AdminPageShell>
         <AdminSectionTitle title={adminHeadings.messages.title} description={adminHeadings.messages.description} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: adminSpacing.grid }} className="admin-messages-grid">
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: adminSpacing.grid }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {loading ? (
               <AdminLoadingState rows={5} height="4rem" />

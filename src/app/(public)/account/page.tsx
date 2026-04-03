@@ -3,6 +3,7 @@
 import { useAuth } from "@/hooks";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Box, Container, Heading, Text, VStack, HStack, Spinner, SimpleGrid } from "@chakra-ui/react";
 
 export const dynamic = 'force-dynamic';
 
@@ -13,9 +14,9 @@ export default function AccountPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="animate-spin h-8 w-8 rounded-full border-4 border-amber-500 border-t-transparent" />
-      </div>
+      <Box display="flex" minH="screen" alignItems="center" justifyContent="center">
+        <Spinner size="lg" color="orange.500" />
+      </Box>
     );
   }
 
@@ -26,25 +27,33 @@ export default function AccountPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="mx-auto max-w-2xl px-4">
-        <h1 className="font-heading text-3xl font-bold text-gray-900">
+    <Box minH="screen" bg="gray.50" py={12}>
+      <Container maxW="2xl" px={4}>
+        <Heading fontFamily="heading" size="xl" fontWeight="bold" color="gray.900">
           Welcome, {user?.name ?? "User"}
-        </h1>
-        <p className="mt-1 text-gray-500">{user?.email}</p>
-        <div className="mt-8 grid gap-4">
+        </Heading>
+        <Text mt={1} color="gray.500">{user?.email}</Text>
+        <SimpleGrid mt={8} gap={4} columns={1}>
           {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="flex items-center gap-4 rounded-xl bg-white p-5 shadow-md transition-all hover:shadow-lg"
-            >
-              <span className="text-2xl">{link.icon}</span>
-              <span className="text-lg font-medium text-gray-900">{link.label}</span>
+            <Link key={link.href} href={link.href}>
+              <Box
+                display="flex"
+                alignItems="center"
+                gap={4}
+                rounded="xl"
+                bg="white"
+                p={5}
+                shadow="md"
+                transition="all 0.2s"
+                _hover={{ shadow: "lg" }}
+              >
+                <Text fontSize="2xl">{link.icon}</Text>
+                <Text fontSize="lg" fontWeight="medium" color="gray.900">{link.label}</Text>
+              </Box>
             </Link>
           ))}
-        </div>
-      </div>
-    </div>
+        </SimpleGrid>
+      </Container>
+    </Box>
   );
 }

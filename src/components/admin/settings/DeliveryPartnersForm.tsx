@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Button, Flex, Input, Text, VStack } from "@chakra-ui/react";
 
 interface Partner { name: string; url: string; logoUrl: string }
 
@@ -25,20 +26,28 @@ export function DeliveryPartnersForm({ initial, onSave }: { initial: Partner[]; 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
+    <VStack as="form" onSubmit={handleSubmit} gap={4} maxW="xl" align="stretch">
       {partners.map((p, i) => (
-        <div key={i} className="border rounded-lg p-4 space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-sm font-medium">Partner {i + 1}</span>
-            <button type="button" onClick={() => removePartner(i)} className="text-xs text-red-600 hover:underline">Remove</button>
-          </div>
-          <input value={p.name} onChange={(e) => update(i, "name", e.target.value)} placeholder="Name" className="w-full border rounded px-3 py-2 text-sm" />
-          <input value={p.url} onChange={(e) => update(i, "url", e.target.value)} placeholder="Website URL" className="w-full border rounded px-3 py-2 text-sm" />
-          <input value={p.logoUrl} onChange={(e) => update(i, "logoUrl", e.target.value)} placeholder="Logo URL" className="w-full border rounded px-3 py-2 text-sm" />
-        </div>
+        <Box key={i} borderWidth={1} borderRadius="lg" p={4}>
+          <VStack gap={2} align="stretch">
+            <Flex justify="space-between" align="center">
+              <Text fontSize="sm" fontWeight="medium">Partner {i + 1}</Text>
+              <Button type="button" onClick={() => removePartner(i)} size="xs" colorScheme="red" variant="ghost">
+                Remove
+              </Button>
+            </Flex>
+            <Input value={p.name} onChange={(e) => update(i, "name", e.target.value)} placeholder="Name" size="sm" />
+            <Input value={p.url} onChange={(e) => update(i, "url", e.target.value)} placeholder="Website URL" size="sm" />
+            <Input value={p.logoUrl} onChange={(e) => update(i, "logoUrl", e.target.value)} placeholder="Logo URL" size="sm" />
+          </VStack>
+        </Box>
       ))}
-      <button type="button" onClick={addPartner} className="text-sm text-amber-600 hover:underline">+ Add Partner</button>
-      <div><button type="submit" disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">{saving ? "Saving..." : "Save Partners"}</button></div>
-    </form>
+      <Button type="button" onClick={addPartner} size="sm" colorScheme="amber" variant="ghost">
+        + Add Partner
+      </Button>
+      <Button type="submit" disabled={saving} borderRadius="lg" bg="amber.600" color="white" py={2} px={6} _hover={{ bg: "amber.700" }} _disabled={{ opacity: 0.5 }}>
+        {saving ? "Saving..." : "Save Partners"}
+      </Button>
+    </VStack>
   );
 }

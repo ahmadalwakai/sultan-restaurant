@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { Box, Text, VStack } from "@chakra-ui/react";
 
 interface InfoCardProps {
   icon: ReactNode;
@@ -12,12 +13,34 @@ interface InfoCardProps {
 export function InfoCard({ icon, title, description, variant = "default" }: InfoCardProps) {
   const isHighlight = variant === "highlight";
   return (
-    <div className={`rounded-xl p-6 ${isHighlight ? "bg-amber-50 border border-amber-200" : "bg-white border border-gray-100 shadow-sm"}`}>
-      <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg text-lg ${isHighlight ? "bg-amber-500 text-white" : "bg-gray-100 text-gray-600"}`}>
+    <Box
+      rounded="xl"
+      p={6}
+      bg={isHighlight ? "amber.50" : "white"}
+      border="1px"
+      borderColor={isHighlight ? "amber.200" : "gray.100"}
+      shadow={isHighlight ? undefined : "sm"}
+    >
+      <Box
+        mb={3}
+        display="flex"
+        h={10}
+        w={10}
+        alignItems="center"
+        justifyContent="center"
+        rounded="lg"
+        fontSize="lg"
+        bg={isHighlight ? "amber.500" : "gray.100"}
+        color={isHighlight ? "white" : "gray.600"}
+      >
         {icon}
-      </div>
-      <h3 className="font-semibold text-gray-900">{title}</h3>
-      <p className="mt-1 text-sm text-gray-500">{description}</p>
-    </div>
+      </Box>
+      <Text fontWeight="semibold" color="gray.900">
+        {title}
+      </Text>
+      <Text mt={1} fontSize="sm" color="gray.500">
+        {description}
+      </Text>
+    </Box>
   );
 }

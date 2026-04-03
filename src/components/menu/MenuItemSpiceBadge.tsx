@@ -1,5 +1,7 @@
 "use client";
 
+import { HStack, Text } from "@chakra-ui/react";
+
 interface MenuItemSpiceBadgeProps {
   level: number;
   maxLevel?: number;
@@ -9,10 +11,12 @@ export default function MenuItemSpiceBadge({ level, maxLevel = 5 }: MenuItemSpic
   if (level <= 0) return null;
 
   return (
-    <span className="inline-flex items-center gap-0.5" title={`Spice level: ${level}/${maxLevel}`}>
+    <HStack gap={0.5} title={`Spice level: ${level}/${maxLevel}`}>
       {Array.from({ length: maxLevel }).map((_, i) => (
-        <span key={i} className={`text-xs ${i < level ? "text-red-500" : "text-gray-200"}`}>🌶️</span>
+        <Text key={i} fontSize="xs" color={i < level ? "red.500" : "gray.200"}>
+          🌶️
+        </Text>
       ))}
-    </span>
+    </HStack>
   );
 }

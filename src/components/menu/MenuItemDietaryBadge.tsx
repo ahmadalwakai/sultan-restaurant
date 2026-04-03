@@ -1,16 +1,18 @@
 "use client";
 
+import { Badge } from "@chakra-ui/react";
+
 interface MenuItemDietaryBadgeProps {
   type: "vegetarian" | "vegan" | "gluten-free" | "halal" | "dairy-free" | "nut-free";
 }
 
-const badges: Record<string, { label: string; emoji: string; color: string }> = {
-  vegetarian: { label: "Vegetarian", emoji: "🥬", color: "bg-green-100 text-green-700" },
-  vegan: { label: "Vegan", emoji: "🌱", color: "bg-green-100 text-green-800" },
-  "gluten-free": { label: "Gluten Free", emoji: "🌾", color: "bg-blue-100 text-blue-700" },
-  halal: { label: "Halal", emoji: "☪️", color: "bg-emerald-100 text-emerald-700" },
-  "dairy-free": { label: "Dairy Free", emoji: "🥛", color: "bg-purple-100 text-purple-700" },
-  "nut-free": { label: "Nut Free", emoji: "🥜", color: "bg-orange-100 text-orange-700" },
+const badges: Record<string, { label: string; emoji: string; colorScheme: string }> = {
+  vegetarian: { label: "Vegetarian", emoji: "🥬", colorScheme: "green" },
+  vegan: { label: "Vegan", emoji: "🌱", colorScheme: "green" },
+  "gluten-free": { label: "Gluten Free", emoji: "🌾", colorScheme: "blue" },
+  halal: { label: "Halal", emoji: "☪️", colorScheme: "emerald" },
+  "dairy-free": { label: "Dairy Free", emoji: "🥛", colorScheme: "purple" },
+  "nut-free": { label: "Nut Free", emoji: "🥜", colorScheme: "orange" },
 };
 
 export default function MenuItemDietaryBadge({ type }: MenuItemDietaryBadgeProps) {
@@ -18,9 +20,9 @@ export default function MenuItemDietaryBadge({ type }: MenuItemDietaryBadgeProps
   if (!badge) return null;
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${badge.color}`}>
-      <span>{badge.emoji}</span>
+    <Badge colorScheme={badge.colorScheme} borderRadius="full" px={2} py={0.5} fontSize="xs" fontWeight="medium">
+      <span style={{ marginRight: "4px" }}>{badge.emoji}</span>
       {badge.label}
-    </span>
+    </Badge>
   );
 }

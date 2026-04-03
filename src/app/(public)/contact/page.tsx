@@ -1,50 +1,60 @@
+"use client";
+
 import { ContactForm } from "@/components/forms/ContactForm";
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { SITE_CONFIG } from "@/lib/constants/site";
-
-export const metadata = {
-  title: "Contact Us",
-  description:
-    "Get in touch with Sultan Restaurant. Call +44 141 391 8883, email info@sultanrestaurant.co.uk, or visit us at 577 Gallowgate, Glasgow G40 2PE.",
-};
+import { Box, Container, VStack, SimpleGrid, Card, Heading, Text } from "@chakra-ui/react";
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="mx-auto max-w-6xl px-4">
-        <SectionHeader
-          title="Get in Touch"
-          subtitle="We'd love to hear from you. Send us a message and we'll respond as soon as possible."
-        />
+    <Box minH="100vh" bg="bg.canvas" py={{ base: 10, md: 16 }}>
+      <Container maxW="5xl" px={{ base: 4, md: 6, lg: 8 }}>
+        <VStack gap={10}>
+          <SectionHeader
+            title="Get in Touch"
+            subtitle="We'd love to hear from you. Send us a message and we'll respond as soon as possible."
+          />
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-2">
-          <div className="rounded-2xl bg-white p-6 shadow-lg sm:p-8">
-            <ContactForm />
-          </div>
-          <div className="space-y-6">
-            <div className="rounded-2xl bg-white p-6 shadow-md">
-              <h3 className="font-heading text-lg font-bold">Address</h3>
-              <p className="mt-2 text-gray-600">{SITE_CONFIG.contact.address}</p>
-            </div>
-            <div className="rounded-2xl bg-white p-6 shadow-md">
-              <h3 className="font-heading text-lg font-bold">Phone</h3>
-              <p className="mt-2 text-gray-600">{SITE_CONFIG.contact.phone}</p>
-            </div>
-            <div className="rounded-2xl bg-white p-6 shadow-md">
-              <h3 className="font-heading text-lg font-bold">Email</h3>
-              <p className="mt-2 text-gray-600">{SITE_CONFIG.contact.email}</p>
-            </div>
-            <div className="rounded-2xl bg-white p-6 shadow-md">
-              <h3 className="font-heading text-lg font-bold">Opening Hours</h3>
-              <div className="mt-2 space-y-1 text-sm text-gray-600">
-                <p>Mon–Thu: 12:00 PM – 10:00 PM</p>
-                <p>Fri–Sat: 12:00 PM – 11:00 PM</p>
-                <p>Sun: 1:00 PM – 10:00 PM</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={10} w="full">
+            <Card.Root shadow="lg">
+              <Card.Body p={{ base: 6, sm: 8 }}>
+                <ContactForm />
+              </Card.Body>
+            </Card.Root>
+
+            <VStack gap={6} align="stretch">
+              <Card.Root shadow="md">
+                <Card.Body p={6}>
+                  <Heading as="h3" size="md" fontFamily="heading" fontWeight="bold">Address</Heading>
+                  <Text mt={2} color="gray.600">{SITE_CONFIG.contact.address}</Text>
+                </Card.Body>
+              </Card.Root>
+              <Card.Root shadow="md">
+                <Card.Body p={6}>
+                  <Heading as="h3" size="md" fontFamily="heading" fontWeight="bold">Phone</Heading>
+                  <Text mt={2} color="gray.600">{SITE_CONFIG.contact.phone}</Text>
+                </Card.Body>
+              </Card.Root>
+              <Card.Root shadow="md">
+                <Card.Body p={6}>
+                  <Heading as="h3" size="md" fontFamily="heading" fontWeight="bold">Email</Heading>
+                  <Text mt={2} color="gray.600">{SITE_CONFIG.contact.email}</Text>
+                </Card.Body>
+              </Card.Root>
+              <Card.Root shadow="md">
+                <Card.Body p={6}>
+                  <Heading as="h3" size="md" fontFamily="heading" fontWeight="bold">Opening Hours</Heading>
+                  <VStack mt={2} gap={1} align="start" fontSize="sm" color="gray.600">
+                    <Text>Mon–Thu: 12:00 PM – 10:00 PM</Text>
+                    <Text>Fri–Sat: 12:00 PM – 11:00 PM</Text>
+                    <Text>Sun: 1:00 PM – 10:00 PM</Text>
+                  </VStack>
+                </Card.Body>
+              </Card.Root>
+            </VStack>
+          </SimpleGrid>
+        </VStack>
+      </Container>
+    </Box>
   );
 }

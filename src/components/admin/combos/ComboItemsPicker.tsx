@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { Box, Button, Flex, Input, Text, VStack, chakra } from "@chakra-ui/react";
 
 interface MenuItem {
   id: string;
@@ -43,59 +44,68 @@ export function ComboItemsPicker({ selectedItems, onChange }: ComboItemsPickerPr
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Search Menu Items</label>
-        <input
+    <VStack gap={4} align="stretch">
+      <Box>
+        <Text as="label" display="block" mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Search Menu Items</Text>
+        <Input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name..."
-          className="w-full rounded-lg border px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
+          size="sm"
         />
-      </div>
+      </Box>
 
       {search && (
-        <div className="max-h-48 overflow-y-auto rounded-lg border bg-white">
+        <Box maxH="48" overflowY="auto" borderRadius="lg" borderWidth="1px" bg="white">
           {filtered.slice(0, 10).map((item) => (
-            <button
+            <chakra.button
               key={item.id}
               type="button"
               onClick={() => { addItem(item); setSearch(""); }}
-              className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-gray-50"
+              w="full"
+              display="flex"
+              alignItems="center"
+              gap={3}
+              px={3}
+              py={2}
+              textAlign="left"
+              _hover={{ bg: "gray.50" }}
             >
-              <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded">
+              <Box position="relative" h="8" w="8" flexShrink={0} overflow="hidden" borderRadius="md">
                 {item.image ? (
                   <Image src={item.image} alt={item.name} fill className="object-cover" sizes="32px" />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-amber-50 text-sm">🍛</div>
+                  <Flex h="full" w="full" align="center" justify="center" bg="amber.50" fontSize="sm">{String.fromCodePoint(0x1F35B)}</Flex>
                 )}
-              </div>
-              <span className="flex-1 text-sm">{item.name}</span>
-              <span className="text-sm text-amber-600">£{item.price.toFixed(2)}</span>
-            </button>
+              </Box>
+              <Text flex="1" fontSize="sm">{item.name}</Text>
+              <Text fontSize="sm" color="amber.600">{String.fromCharCode(163)}{item.price.toFixed(2)}</Text>
+            </chakra.button>
           ))}
-        </div>
+        </Box>
       )}
 
-      <div className="space-y-2">
+      <VStack gap={2}>
         {selectedItems.map((selected) => {
           const item = menuItems.find((m) => m.id === selected.menuItemId);
           return (
-            <div key={selected.menuItemId} className="flex items-center gap-2 rounded-lg border bg-gray-50 p-2">
-              <span className="flex-1 text-sm">{item?.name || selected.menuItemId}</span>
-              <span className="text-xs text-gray-400">×{selected.quantity}</span>
-              <button
+            <Flex key={selected.menuItemId} align="center" gap={2} borderRadius="lg" borderWidth="1px" bg="gray.50" p={2}>
+              <Text flex="1" fontSize="sm">{item?.name || selected.menuItemId}</Text>
+              <Text fontSize="xs" color="gray.400">{String.fromCharCode(215)}{selected.quantity}</Text>
+              <Button
                 type="button"
+                variant="ghost"
+                size="sm"
+                color="red.500"
                 onClick={() => removeItem(selected.menuItemId)}
-                className="text-sm text-red-500 hover:text-red-600"
               >
-                ✕
-              </button>
-            </div>
+                X
+              </Button>
+            </Flex>
           );
         })}
-      </div>
-    </div>
+      </VStack>
+    </VStack>
   );
 }

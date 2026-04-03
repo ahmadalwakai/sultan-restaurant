@@ -1,5 +1,6 @@
 "use client";
 
+import { HStack, Box, Text } from "@chakra-ui/react";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import type { MenuItemPublic } from "@/types/menu";
 import MenuItemAddButton from "./MenuItemAddButton";
@@ -10,12 +11,24 @@ interface MenuItemQuickAddProps {
 
 export default function MenuItemQuickAdd({ item }: MenuItemQuickAddProps) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-2">
-      <div className="min-w-0 flex-1">
-        <span className="truncate text-sm font-medium text-gray-900">{item.name}</span>
-        <span className="ml-2 text-sm text-amber-600">{formatCurrency(item.price)}</span>
-      </div>
+    <HStack
+      justify="space-between"
+      borderRadius="lg"
+      border="1px solid"
+      borderColor="gray.100"
+      bg="bg.surface"
+      px={4}
+      py={2}
+    >
+      <Box minW={0} flex={1}>
+        <Text fontSize="sm" fontWeight="medium" color="gray.900" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          {item.name}
+        </Text>
+        <Text fontSize="sm" color="amber.600" ml={2}>
+          {formatCurrency(item.price)}
+        </Text>
+      </Box>
       <MenuItemAddButton item={item} />
-    </div>
+    </HStack>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useCallback, ReactNode } from 'react';
-import { cn } from '@/lib/utils/cn';
+import { Box, Button } from '@chakra-ui/react';
 
 interface PinchZoomProps {
   children: ReactNode;
@@ -73,9 +73,11 @@ export default function PinchZoom({
   }, [scale, onScaleChange]);
 
   return (
-    <div
+    <Box
       ref={containerRef}
-      className={cn('relative overflow-hidden', className)}
+      position="relative"
+      overflow="hidden"
+      className={className}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -84,31 +86,40 @@ export default function PinchZoom({
         touchAction: isZooming ? 'none' : 'auto',
       }}
     >
-      <div
-        className="transition-transform duration-200 ease-out"
+      <Box
+        transition="transform 0.2s ease-out"
         style={{
           transform: `scale(${scale})`,
           transformOrigin: 'center center',
         }}
       >
         {children}
-      </div>
+      </Box>
 
       {/* Zoom indicator */}
       {scale !== 1 && (
-        <div className="absolute top-4 right-4 bg-black/75 text-white px-3 py-1 rounded-full text-sm font-medium">
+        <Box position="absolute" top={4} right={4} bg="blackAlpha.750" color="white" px={3} py={1} rounded="full" fontSize="sm" fontWeight="medium">
           {Math.round(scale * 100)}%
-        </div>
+        </Box>
       )}
 
       {/* Reset zoom button */}
       {scale !== 1 && (
-        <button
+        <Button
           onClick={() => {
             setScale(1);
             onScaleChange?.(1);
           }}
-          className="absolute bottom-4 right-4 bg-orange-600 text-white p-3 rounded-full shadow-lg hover:bg-orange-700 transition-colors"
+          position="absolute"
+          bottom={4}
+          right={4}
+          bg="orange.600"
+          color="white"
+          p={3}
+          rounded="full"
+          shadow="lg"
+          _hover={{ bg: "orange.700" }}
+          transition="background 0.2s"
           aria-label="Reset zoom"
         >
           <svg
@@ -126,8 +137,8 @@ export default function PinchZoom({
             <line x1="13" y1="9" x2="9" y2="13" />
             <line x1="9" y1="9" x2="13" y2="13" />
           </svg>
-        </button>
+        </Button>
       )}
-    </div>
+    </Box>
   );
 }

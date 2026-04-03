@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Button, Input, Text, Textarea, VStack } from "@chakra-ui/react";
 
 export function EmailTestSender() {
   const [to, setTo] = useState("");
@@ -24,12 +25,14 @@ export function EmailTestSender() {
   };
 
   return (
-    <form onSubmit={handleSend} className="space-y-4 max-w-xl">
-      <div><label className="block text-sm font-medium mb-1">To</label><input type="email" value={to} onChange={(e) => setTo(e.target.value)} className="w-full border rounded-lg px-3 py-2" required /></div>
-      <div><label className="block text-sm font-medium mb-1">Subject</label><input value={subject} onChange={(e) => setSubject(e.target.value)} className="w-full border rounded-lg px-3 py-2" required /></div>
-      <div><label className="block text-sm font-medium mb-1">Body</label><textarea value={body} onChange={(e) => setBody(e.target.value)} className="w-full border rounded-lg px-3 py-2" rows={4} /></div>
-      {result && <div className={`p-3 rounded text-sm ${result.success ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>{result.message}</div>}
-      <button type="submit" disabled={sending} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">{sending ? "Sending..." : "Send Test Email"}</button>
+    <form onSubmit={handleSend}>
+    <VStack gap={4} maxW="xl" align="stretch">
+      <Box><Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>To</Text><Input type="email" value={to} onChange={(e) => setTo(e.target.value)} required /></Box>
+      <Box><Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>Subject</Text><Input value={subject} onChange={(e) => setSubject(e.target.value)} required /></Box>
+      <Box><Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>Body</Text><Textarea value={body} onChange={(e) => setBody(e.target.value)} rows={4} /></Box>
+      {result && <Box p={3} rounded="md" fontSize="sm" bg={result.success ? "green.50" : "red.50"} color={result.success ? "green.700" : "red.700"}>{result.message}</Box>}
+      <Button type="submit" disabled={sending} bg="amber.600" color="white" _hover={{ bg: "amber.700" }} alignSelf="flex-start">{sending ? "Sending..." : "Send Test Email"}</Button>
+    </VStack>
     </form>
   );
 }

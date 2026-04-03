@@ -1,6 +1,7 @@
 "use client";
 
 import { useOpeningHours } from "@/hooks/api";
+import { Box, Text } from "@chakra-ui/react";
 
 export function OpeningHoursBar() {
   const { data: hours } = useOpeningHours();
@@ -11,14 +12,14 @@ export function OpeningHoursBar() {
   if (!todayHours) return null;
 
   return (
-    <div className="bg-gray-900 py-2 text-center text-sm text-gray-300">
+    <Box bg="gray.900" py={2} textAlign="center" fontSize="sm" color="gray.300">
       {todayHours.isClosed ? (
-        <span>We are closed today</span>
+        <Text>We are closed today</Text>
       ) : (
-        <span>
+        <Text>
           Open today: {todayHours.openTime} &ndash; {todayHours.closeTime}
-        </span>
+        </Text>
       )}
-    </div>
+    </Box>
   );
 }

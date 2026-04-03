@@ -1,5 +1,7 @@
 "use client";
 
+import { NativeSelect } from "@chakra-ui/react";
+
 const STATUSES = ["PENDING", "CONFIRMED", "PREPARING", "READY", "COMPLETED", "CANCELLED"];
 
 interface OrderStatusUpdaterProps {
@@ -10,12 +12,22 @@ interface OrderStatusUpdaterProps {
 
 export function OrderStatusUpdater({ orderId, currentStatus, onUpdate }: OrderStatusUpdaterProps) {
   return (
-    <select
-      value={currentStatus}
-      onChange={(e) => onUpdate(orderId, e.target.value)}
-      className="text-sm px-3 py-2 border rounded-lg"
-    >
-      {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-    </select>
+    <NativeSelect.Root>
+      <NativeSelect.Field
+        value={currentStatus}
+        onChange={(e) => onUpdate(orderId, e.target.value)}
+        fontSize="sm"
+        px={3}
+        py={2}
+        border="1px"
+        rounded="lg"
+      >
+        {STATUSES.map((s) => (
+          <option key={s} value={s}>
+            {s}
+          </option>
+        ))}
+      </NativeSelect.Field>
+    </NativeSelect.Root>
   );
 }

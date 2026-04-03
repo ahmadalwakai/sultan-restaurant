@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { BookingForm } from "@/components/forms/BookingForm";
+import { Box, Flex, Heading, IconButton } from "@chakra-ui/react";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -25,26 +26,38 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div
+    <Flex
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      position="fixed"
+      inset={0}
+      zIndex={50}
+      align="center"
+      justify="center"
+      bg="blackAlpha.600"
+      p={4}
       onClick={(e) => {
         if (e.target === overlayRef.current) onClose();
       }}
     >
-      <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 text-2xl text-gray-400 hover:text-gray-600"
+      <Box position="relative" w="full" maxW="lg" borderRadius="2xl" bg="bg.surface" p={6} shadow="xl">
+        <IconButton
           aria-label="Close"
+          variant="ghost"
+          position="absolute"
+          right={4}
+          top={4}
+          fontSize="2xl"
+          color="gray.400"
+          _hover={{ color: "gray.600" }}
+          onClick={onClose}
         >
           &times;
-        </button>
-        <h2 className="mb-6 font-heading text-2xl font-bold text-gray-900">
+        </IconButton>
+        <Heading mb={6} size="lg" fontWeight="bold" color="gray.900">
           Book a Table
-        </h2>
+        </Heading>
         <BookingForm onSuccess={onClose} />
-      </div>
-    </div>
+      </Box>
+    </Flex>
   );
 }

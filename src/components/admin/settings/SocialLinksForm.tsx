@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 
 interface SocialLinks { facebook: string; instagram: string; twitter: string; tiktok: string; youtube: string }
 
@@ -24,14 +25,16 @@ export function SocialLinksForm({ initial, onSave }: { initial: SocialLinks; onS
   ];
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
+    <VStack as="form" onSubmit={handleSubmit} gap={4} maxW="xl" align="stretch">
       {fields.map((f) => (
-        <div key={f.key}>
-          <label className="block text-sm font-medium mb-1">{f.label}</label>
-          <input value={form[f.key]} onChange={(e) => setForm({ ...form, [f.key]: e.target.value })} placeholder={f.placeholder} className="w-full border rounded-lg px-3 py-2" />
-        </div>
+        <Box key={f.key}>
+          <Text mb={1} fontSize="sm" fontWeight="medium">{f.label}</Text>
+          <Input value={form[f.key]} onChange={(e) => setForm({ ...form, [f.key]: e.target.value })} placeholder={f.placeholder} size="md" />
+        </Box>
       ))}
-      <button type="submit" disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">{saving ? "Saving..." : "Save Changes"}</button>
-    </form>
+      <Button type="submit" disabled={saving} borderRadius="lg" bg="amber.600" color="white" py={2} px={6} _hover={{ bg: "amber.700" }} _disabled={{ opacity: 0.5 }}>
+        {saving ? "Saving..." : "Save Changes"}
+      </Button>
+    </VStack>
   );
 }

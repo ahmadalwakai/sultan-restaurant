@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -26,24 +27,26 @@ export function OpeningHoursForm({ initial, onSave }: { initial: DayHours[]; onS
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 max-w-xl">
+    <VStack as="form" onSubmit={handleSubmit} gap={3} maxW="xl" align="stretch">
       {hours.map((h, i) => (
-        <div key={h.day} className="flex items-center gap-3">
-          <span className="w-24 text-sm font-medium">{h.day}</span>
-          <label className="flex items-center gap-1 text-sm">
+        <HStack key={h.day} gap={3} align="center">
+          <Text w="24" fontSize="sm" fontWeight="medium">{h.day}</Text>
+          <HStack as="label" gap={1} fontSize="sm">
             <input type="checkbox" checked={h.isClosed} onChange={(e) => update(i, "isClosed", e.target.checked)} />
-            Closed
-          </label>
+            <Text>Closed</Text>
+          </HStack>
           {!h.isClosed && (
             <>
-              <input type="time" value={h.open} onChange={(e) => update(i, "open", e.target.value)} className="border rounded px-2 py-1 text-sm" />
-              <span className="text-gray-400">to</span>
-              <input type="time" value={h.close} onChange={(e) => update(i, "close", e.target.value)} className="border rounded px-2 py-1 text-sm" />
+              <Input type="time" value={h.open} onChange={(e) => update(i, "open", e.target.value)} size="sm" w="auto" />
+              <Text color="gray.400">to</Text>
+              <Input type="time" value={h.close} onChange={(e) => update(i, "close", e.target.value)} size="sm" w="auto" />
             </>
           )}
-        </div>
+        </HStack>
       ))}
-      <button type="submit" disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">{saving ? "Saving..." : "Save Hours"}</button>
-    </form>
+      <Button type="submit" disabled={saving} borderRadius="lg" bg="amber.600" color="white" py={2} px={6} _hover={{ bg: "amber.700" }} _disabled={{ opacity: 0.5 }}>
+        {saving ? "Saving..." : "Save Hours"}
+      </Button>
+    </VStack>
   );
 }

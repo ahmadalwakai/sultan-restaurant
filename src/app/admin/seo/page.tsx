@@ -36,7 +36,7 @@ export default function AdminSeoPage() {
       <AdminPageShell>
         <AdminSectionTitle title={adminHeadings.seo.title} description={adminHeadings.seo.description} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "12rem 1fr", gap: adminSpacing.grid }} className="admin-seo-grid">
+        <div style={{ display: "grid", gridTemplateColumns: "12rem 1fr", gap: adminSpacing.grid }}>
           {/* Page selector */}
           <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: "1rem" }}>
             <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#111827", marginBottom: "0.75rem" }}>Pages</h3>

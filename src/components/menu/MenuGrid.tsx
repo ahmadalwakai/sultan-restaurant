@@ -1,5 +1,6 @@
 "use client";
 
+import { SimpleGrid } from "@chakra-ui/react";
 import { useMenu } from "@/hooks/api";
 import { MenuItemCard } from "@/components/cards/MenuItemCard";
 import { LoadingState } from "@/components/shared/LoadingState";
@@ -18,10 +19,10 @@ export function MenuGrid({ params }: MenuGridProps) {
   if (!data?.items?.length) return <EmptyState message="No menu items found" />;
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, xl: 4 }} gap={6}>
       {data.items.map((item) => (
         <MenuItemCard key={item.id} item={item} />
       ))}
-    </div>
+    </SimpleGrid>
   );
 }

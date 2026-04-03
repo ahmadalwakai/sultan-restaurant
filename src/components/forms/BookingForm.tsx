@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { bookingSchema, type BookingFormValues } from "@/lib/validators";
 import { useCreateBooking, useBookingAvailability } from "@/hooks/api";
 import toast from "react-hot-toast";
+import { Box, Button, Input, NativeSelect, SimpleGrid, Text, Textarea, VStack } from "@chakra-ui/react";
 
 interface BookingFormProps {
   onSuccess?: () => void;
@@ -48,43 +49,43 @@ export function BookingForm({ onSuccess }: BookingFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Name</label>
-        <input
+    <VStack as="form" onSubmit={handleSubmit(onSubmit)} gap={4} align="stretch">
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Name</Text>
+        <Input
           {...register("name")}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
           placeholder="Your full name"
+          size="md"
         />
-        {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
-      </div>
+        {errors.name && <Text mt={1} fontSize="xs" color="red.500">{errors.name.message}</Text>}
+      </Box>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Email</label>
-          <input
+      <SimpleGrid gap={4} columns={{ base: 1, sm: 2 }}>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Email</Text>
+          <Input
             {...register("email")}
             type="email"
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
             placeholder="your@email.com"
+            size="md"
           />
-          {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Phone</label>
-          <input
+          {errors.email && <Text mt={1} fontSize="xs" color="red.500">{errors.email.message}</Text>}
+        </Box>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Phone</Text>
+          <Input
             {...register("phone")}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
             placeholder="07xxx xxx xxx"
+            size="md"
           />
-          {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>}
-        </div>
-      </div>
+          {errors.phone && <Text mt={1} fontSize="xs" color="red.500">{errors.phone.message}</Text>}
+        </Box>
+      </SimpleGrid>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Date</label>
-          <input
+      <SimpleGrid gap={4} columns={{ base: 1, sm: 3 }}>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Date</Text>
+          <Input
             {...register("date")}
             type="date"
             min={new Date().toISOString().split("T")[0]}
@@ -92,57 +93,63 @@ export function BookingForm({ onSuccess }: BookingFormProps) {
               setSelectedDate(e.target.value);
               register("date").onChange(e);
             }}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+            size="md"
           />
-          {errors.date && <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>}
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Time</label>
-          <select
-            {...register("time")}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          >
-            <option value="">Select time</option>
-            {availability?.availableSlots?.map((slot) => (
-              <option key={slot} value={slot}>
-                {slot}
-              </option>
-            ))}
-          </select>
-          {errors.time && <p className="mt-1 text-xs text-red-500">{errors.time.message}</p>}
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Guests</label>
-          <input
+          {errors.date && <Text mt={1} fontSize="xs" color="red.500">{errors.date.message}</Text>}
+        </Box>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Time</Text>
+          <NativeSelect.Root size="md">
+            <NativeSelect.Field {...register("time")}>
+              <option value="">Select time</option>
+              {availability?.availableSlots?.map((slot) => (
+                <option key={slot} value={slot}>
+                  {slot}
+                </option>
+              ))}
+            </NativeSelect.Field>
+          </NativeSelect.Root>
+          {errors.time && <Text mt={1} fontSize="xs" color="red.500">{errors.time.message}</Text>}
+        </Box>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Guests</Text>
+          <Input
             {...register("guests", { valueAsNumber: true })}
             type="number"
             min={1}
             max={20}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+            size="md"
           />
-          {errors.guests && <p className="mt-1 text-xs text-red-500">{errors.guests.message}</p>}
-        </div>
-      </div>
+          {errors.guests && <Text mt={1} fontSize="xs" color="red.500">{errors.guests.message}</Text>}
+        </Box>
+      </SimpleGrid>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">
           Special Requests (optional)
-        </label>
-        <textarea
+        </Text>
+        <Textarea
           {...register("specialRequests")}
           rows={3}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
           placeholder="Any dietary requirements or special requests?"
+          size="md"
         />
-      </div>
+      </Box>
 
-      <button
+      <Button
         type="submit"
         disabled={createBooking.isPending}
-        className="w-full rounded-lg bg-amber-500 py-3 font-semibold text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
+        w="full"
+        borderRadius="lg"
+        bg="amber.500"
+        py={3}
+        fontWeight="semibold"
+        color="white"
+        _hover={{ bg: "amber.600" }}
+        _disabled={{ opacity: 0.5 }}
       >
         {createBooking.isPending ? "Booking..." : "Book Table"}
-      </button>
-    </form>
+      </Button>
+    </VStack>
   );
 }

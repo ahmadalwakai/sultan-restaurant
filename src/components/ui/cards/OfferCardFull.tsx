@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { OfferPublic } from "@/types/offer";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface OfferCardFullProps {
   offer: OfferPublic;
@@ -12,49 +13,59 @@ export function OfferCardFull({ offer }: OfferCardFullProps) {
   const validUntil = offer.validUntil ? new Date(offer.validUntil) : null;
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-lg">
-      <div className="relative h-48">
+    <Box overflow="hidden" borderRadius="2xl" bg="white" shadow="lg">
+      <Box position="relative" h={48}>
         {offer.image ? (
           <Image src={offer.image} alt={offer.title} fill className="object-cover" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-400 to-orange-500 text-6xl">🎉</div>
+          <Flex h="full" w="full" align="center" justify="center" bg="linear-gradient(to bottom right, var(--chakra-colors-orange-400), var(--chakra-colors-orange-500))" fontSize="6xl">🎉</Flex>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute bottom-4 left-4 right-4 text-white">
-          <div className="inline-block rounded-full bg-red-500 px-3 py-1 text-sm font-bold">
+        <Box position="absolute" inset={0} bg="linear-gradient(to top, rgba(0,0,0,0.6), transparent)" />
+        <Box position="absolute" bottom={4} left={4} right={4} color="white">
+          <Box display="inline-block" borderRadius="full" bg="red.500" px={3} py={1} fontSize="sm" fontWeight="bold">
             {offer.discountType === "PERCENTAGE" ? `${offer.discount}% OFF` : `£${offer.discount} OFF`}
-          </div>
-        </div>
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900">{offer.title}</h3>
-        {offer.description && <p className="mt-2 text-gray-600">{offer.description}</p>}
-        <div className="mt-4 flex items-center justify-between">
-          <div>
+          </Box>
+        </Box>
+      </Box>
+      <Box p={6}>
+        <Heading as="h3" fontSize="xl" fontWeight="bold" color="gray.900">{offer.title}</Heading>
+        {offer.description && <Text mt={2} color="gray.600">{offer.description}</Text>}
+        <Flex mt={4} align="center" justify="space-between">
+          <Box>
             {offer.code && (
-              <span className="rounded border border-dashed border-amber-300 bg-amber-50 px-3 py-1 font-mono text-sm font-semibold text-amber-700">
+              <Text as="span" borderRadius="md" borderWidth="1px" borderStyle="dashed" borderColor="orange.300" bg="orange.50" px={3} py={1} fontFamily="mono" fontSize="sm" fontWeight={600} color="orange.700">
                 {offer.code}
-              </span>
+              </Text>
             )}
             {offer.minOrder && (
-              <p className="mt-2 text-xs text-gray-400">Min. order: £{Number(offer.minOrder).toFixed(2)}</p>
+              <Text mt={2} fontSize="xs" color="gray.400">Min. order: £{Number(offer.minOrder).toFixed(2)}</Text>
             )}
-          </div>
-          <div className="text-right">
+          </Box>
+          <Box textAlign="right">
             {validUntil && (
-              <p className="text-xs text-gray-400">
+              <Text fontSize="xs" color="gray.400">
                 Expires {validUntil.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
-              </p>
+              </Text>
             )}
-          </div>
-        </div>
-        <Link
-          href="/menu"
-          className="mt-4 block rounded-lg bg-amber-500 py-3 text-center font-semibold text-white transition-colors hover:bg-amber-600"
+          </Box>
+        </Flex>
+        <Link href="/menu">
+        <Box
+          display="block"
+          mt={4}
+          borderRadius="lg"
+          bg="orange.500"
+          py={3}
+          textAlign="center"
+          fontWeight={600}
+          color="white"
+          transition="background 0.2s"
+          _hover={{ bg: "orange.600" }}
         >
           Use This Offer
+        </Box>
         </Link>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

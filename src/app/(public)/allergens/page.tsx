@@ -1,3 +1,5 @@
+import { Box, Container, Heading, Text, SimpleGrid, Flex } from "@chakra-ui/react";
+
 export const metadata = { title: "Allergen Information | Sultan Restaurant" };
 
 const allergens = [
@@ -13,28 +15,33 @@ const allergens = [
 
 export default function AllergensPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="mx-auto max-w-4xl px-4">
-        <h1 className="font-heading text-3xl font-bold">Allergen Information</h1>
-        <p className="mt-4 text-gray-600">
+    <Box minH="screen" bg="gray.50" py={16}>
+      <Container maxW="4xl" px={4}>
+        <Heading fontFamily="heading" size="xl" fontWeight="bold">Allergen Information</Heading>
+        <Text mt={4} color="gray.600">
           We take food allergies very seriously. Please inform staff of any allergies
           when ordering. Below are common allergens found in our dishes.
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        </Text>
+        <SimpleGrid mt={8} gap={4} columns={{ base: 1, sm: 2 }}>
           {allergens.map((allergen) => (
-            <div
+            <Flex
               key={allergen.name}
-              className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md"
+              align="center"
+              gap={4}
+              rounded="xl"
+              bg="white"
+              p={4}
+              shadow="md"
             >
-              <span className="text-3xl">{allergen.icon}</span>
-              <div>
-                <h3 className="font-bold text-gray-900">{allergen.name}</h3>
-                <p className="text-sm text-gray-500">{allergen.description}</p>
-              </div>
-            </div>
+              <Text fontSize="3xl">{allergen.icon}</Text>
+              <Box>
+                <Heading size="md" fontWeight="bold" color="gray.900">{allergen.name}</Heading>
+                <Text fontSize="sm" color="gray.500">{allergen.description}</Text>
+              </Box>
+            </Flex>
           ))}
-        </div>
-      </div>
-    </div>
+        </SimpleGrid>
+      </Container>
+    </Box>
   );
 }

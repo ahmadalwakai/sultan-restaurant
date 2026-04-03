@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { Box, Button, Flex, Input, Text, VStack, chakra } from "@chakra-ui/react";
 
 interface MenuItem {
   id: string;
@@ -31,57 +32,64 @@ export function DishOfDaySelector({ selectedId, onChange }: DishOfDaySelectorPro
   const selected = menuItems.find((m) => m.id === selectedId);
 
   return (
-    <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">Select Menu Item</label>
+    <VStack gap={3} align="stretch">
+      <Text as="label" display="block" fontSize="sm" fontWeight="medium" color="gray.700">Select Menu Item</Text>
 
       {selected && (
-        <div className="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
-          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg">
+        <Flex align="center" gap={3} borderRadius="lg" borderWidth="1px" borderColor="amber.200" bg="amber.50" p={3}>
+          <Box position="relative" h="10" w="10" flexShrink={0} overflow="hidden" borderRadius="lg">
             {selected.image ? (
               <Image src={selected.image} alt={selected.name} fill className="object-cover" sizes="40px" />
             ) : (
-              <div className="flex h-full w-full items-center justify-center bg-amber-100 text-lg">🍛</div>
+              <Flex h="full" w="full" align="center" justify="center" bg="amber.100" fontSize="lg">{String.fromCodePoint(0x1F35B)}</Flex>
             )}
-          </div>
-          <div className="flex-1">
-            <p className="text-sm font-medium text-gray-900">{selected.name}</p>
-            <p className="text-xs text-amber-600">£{selected.price.toFixed(2)}</p>
-          </div>
-          <button type="button" onClick={() => onChange("")} className="text-sm text-gray-400 hover:text-gray-600">Change</button>
-        </div>
+          </Box>
+          <Box flex="1">
+            <Text fontSize="sm" fontWeight="medium" color="gray.900">{selected.name}</Text>
+            <Text fontSize="xs" color="amber.600">{String.fromCharCode(163)}{selected.price.toFixed(2)}</Text>
+          </Box>
+          <Button type="button" variant="ghost" size="sm" color="gray.400" onClick={() => onChange("")}>Change</Button>
+        </Flex>
       )}
 
       {!selected && (
         <>
-          <input
+          <Input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search menu items..."
-            className="w-full rounded-lg border px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
+            size="sm"
           />
-          <div className="max-h-64 overflow-y-auto rounded-lg border bg-white">
+          <Box maxH="64" overflowY="auto" borderRadius="lg" borderWidth="1px" bg="white">
             {filtered.slice(0, 20).map((item) => (
-              <button
+              <chakra.button
                 key={item.id}
                 type="button"
                 onClick={() => { onChange(item.id); setSearch(""); }}
-                className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-gray-50"
+                w="full"
+                display="flex"
+                alignItems="center"
+                gap={3}
+                px={3}
+                py={2}
+                textAlign="left"
+                _hover={{ bg: "gray.50" }}
               >
-                <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded">
+                <Box position="relative" h="8" w="8" flexShrink={0} overflow="hidden" borderRadius="md">
                   {item.image ? (
                     <Image src={item.image} alt={item.name} fill className="object-cover" sizes="32px" />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-amber-50 text-sm">🍛</div>
+                    <Flex h="full" w="full" align="center" justify="center" bg="amber.50" fontSize="sm">{String.fromCodePoint(0x1F35B)}</Flex>
                   )}
-                </div>
-                <span className="flex-1 text-sm">{item.name}</span>
-                <span className="text-sm text-amber-600">£{item.price.toFixed(2)}</span>
-              </button>
+                </Box>
+                <Text flex="1" fontSize="sm">{item.name}</Text>
+                <Text fontSize="sm" color="amber.600">{String.fromCharCode(163)}{item.price.toFixed(2)}</Text>
+              </chakra.button>
             ))}
-          </div>
+          </Box>
         </>
       )}
-    </div>
+    </VStack>
   );
 }

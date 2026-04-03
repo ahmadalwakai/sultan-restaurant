@@ -11,6 +11,17 @@ import type { CheckoutFormValues } from "@/lib/validators";
 import { useCashCheckout } from "@/hooks/checkout";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import {
+  Box,
+  Container,
+  VStack,
+  SimpleGrid,
+  Card,
+  Heading,
+  Text,
+  Flex,
+  Button,
+} from "@chakra-ui/react";
 
 export default function PickupPage() {
   const items = useCartStore((s) => s.items);
@@ -27,17 +38,36 @@ export default function PickupPage() {
 
   if (isEmpty) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
-        <span className="text-6xl">🛒</span>
-        <h2 className="mt-4 font-heading text-2xl font-bold">Your cart is empty</h2>
-        <p className="mt-2 text-gray-500">Add some items from our menu first!</p>
-        <Link
-          href="/menu"
-          className="mt-6 rounded-lg bg-amber-500 px-6 py-3 font-semibold text-white hover:bg-amber-600"
-        >
-          Browse Menu
+      <Flex
+        minH="100vh"
+        direction="column"
+        align="center"
+        justify="center"
+        bg="gray.50"
+        p={4}
+      >
+        <Text fontSize="6xl">🛒</Text>
+        <Heading size="lg" mt={4} fontFamily="heading">
+          Your cart is empty
+        </Heading>
+        <Text mt={2} color="gray.500">
+          Add some items from our menu first!
+        </Text>
+        <Link href="/menu">
+          <Button
+            mt={6}
+            rounded="lg"
+            bg="amber.500"
+            px={6}
+            py={3}
+            fontWeight="semibold"
+            color="white"
+            _hover={{ bg: "amber.600" }}
+          >
+            Browse Menu
+          </Button>
         </Link>
-      </div>
+      </Flex>
     );
   }
 
@@ -59,39 +89,50 @@ export default function PickupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="mx-auto max-w-6xl px-4">
-        <SectionHeader title="Checkout" subtitle="Review your order and complete" />
-        <div className="mt-8 grid gap-8 lg:grid-cols-5">
-          <div className="lg:col-span-3">
-            <div className="rounded-2xl bg-white p-6 shadow-lg">
-              <h3 className="mb-4 font-heading text-lg font-bold">Your Details</h3>
-              <CheckoutForm onSubmit={handleSubmit} isLoading={isLoading} />
-            </div>
-          </div>
-          <div className="lg:col-span-2">
-            <div className="sticky top-24 rounded-2xl bg-white p-6 shadow-lg">
-              <h3 className="mb-4 font-heading text-lg font-bold">Order Summary</h3>
-              <div className="space-y-3">
-                {items.map((item) => (
-                  <CartItemRow key={item.menuItemId} item={item} />
-                ))}
-              </div>
-              <div className="mt-4 border-t pt-4">
-                <div className="flex justify-between text-lg font-bold">
-                  <span>Total</span>
-                  <span className="text-amber-600">{formatCurrency(getTotal() / 100)}</span>
-                </div>
-                {isBelowMinimum && (
-                  <p className="mt-2 text-sm text-red-500">
-                    Minimum order: £{minOrderAmount}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Box minH="100vh" bg="gray.50" py={{ base: 8, md: 12 }}>
+      <Container maxW="6xl" px={{ base: 4, md: 6, lg: 8 }}>
+        <VStack gap={8} align="stretch">
+          <SectionHeader title="Checkout" subtitle="Review your order and complete" />
+          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={8}>
+            <Card.Root shadow="lg">
+              <Card.Body p={6}>
+                <Heading size="md" mb={4} fontFamily="heading">
+                  Your Details
+                </Heading>
+                <CheckoutForm onSubmit={handleSubmit} isLoading={isLoading} />
+              </Card.Body>
+            </Card.Root>
+
+            <Box position={{ lg: "sticky" }} top={{ lg: 24 }} alignSelf="start">
+              <Card.Root shadow="lg">
+                <Card.Body p={6}>
+                  <Heading size="md" mb={4} fontFamily="heading">
+                    Order Summary
+                  </Heading>
+                  <VStack gap={3} align="stretch">
+                    {items.map((item) => (
+                      <CartItemRow key={item.menuItemId} item={item} />
+                    ))}
+                  </VStack>
+                  <Box mt={4} borderTopWidth="1px" pt={4}>
+                    <Flex justify="space-between" fontSize="lg" fontWeight="bold">
+                      <Text>Total</Text>
+                      <Text color="amber.600">
+                        {formatCurrency(getTotal() / 100)}
+                      </Text>
+                    </Flex>
+                    {isBelowMinimum && (
+                      <Text mt={2} fontSize="sm" color="red.500">
+                        Minimum order: £{minOrderAmount}
+                      </Text>
+                    )}
+                  </Box>
+                </Card.Body>
+              </Card.Root>
+            </Box>
+          </SimpleGrid>
+        </VStack>
+      </Container>
+    </Box>
   );
 }

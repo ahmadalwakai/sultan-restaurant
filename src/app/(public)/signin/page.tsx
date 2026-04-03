@@ -2,22 +2,39 @@
 
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { Box, VStack, Text, Button } from "@chakra-ui/react";
 
 export default function SignInPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-lg">
-        <h1 className="text-center font-heading text-2xl font-bold text-gray-900">
-          Sign In
-        </h1>
-        <p className="mt-2 text-center text-sm text-gray-500">
-          Sign in to manage your orders and bookings
-        </p>
-        <button
+    <Box display="flex" minH="100vh" alignItems="center" justifyContent="center" bg="gray.50" p={4}>
+      <Box w="full" maxW="sm" rounded="2xl" bg="white" p={8} shadow="lg">
+        <VStack gap={0} textAlign="center">
+          <Text fontSize="2xl" fontWeight="bold" color="gray.900" fontFamily="heading">
+            Sign In
+          </Text>
+          <Text mt={2} fontSize="sm" color="gray.500">
+            Sign in to manage your orders and bookings
+          </Text>
+        </VStack>
+        <Button
           onClick={() => signIn("google", { callbackUrl: "/" })}
-          className="mt-8 flex w-full items-center justify-center gap-3 rounded-lg border-2 px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50"
+          mt={8}
+          w="full"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          gap={3}
+          rounded="lg"
+          border="2px"
+          px={4}
+          py={3}
+          fontWeight="medium"
+          color="gray.700"
+          transition="colors"
+          _hover={{ bg: "gray.50" }}
+          variant="outline"
         >
-          <svg className="h-5 w-5" viewBox="0 0 24 24">
+          <svg width={20} height={20} viewBox="0 0 24 24">
             <path
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
               fill="#4285F4"
@@ -36,13 +53,13 @@ export default function SignInPage() {
             />
           </svg>
           Continue with Google
-        </button>
-        <p className="mt-6 text-center text-sm text-gray-400">
-          <Link href="/" className="text-amber-600 hover:underline">
+        </Button>
+        <Text mt={6} textAlign="center" fontSize="sm" color="gray.400">
+          <Link href="/" style={{ color: "#D69E2E", textDecoration: "underline" }}>
             Back to Home
           </Link>
-        </p>
-      </div>
-    </div>
+        </Text>
+      </Box>
+    </Box>
   );
 }

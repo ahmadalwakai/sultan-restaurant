@@ -1,0 +1,4 @@
+Contact: mailto:info@sultanrestaurant.co.uk
+Preferred-Languages: en, ar
+Canonical: https://sultanrestaurant.co.uk/.well-known/security.txt
+Policy: https://sultanrestaurant.co.uk/privacy

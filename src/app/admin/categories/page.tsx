@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { AdminTableShell } from "@/components/admin/tables";
-import { adminTableStyles } from "@/lib/admin-ui";
+import { VStack, HStack, Button } from "@chakra-ui/react";
 import { adminHeadings, adminActions } from "@/lib/admin-content";
 
 interface Category {
@@ -39,41 +39,43 @@ export default function AdminCategoriesPage() {
   return (
     <AdminShell>
       <AdminPageShell>
-        <AdminSectionTitle title={adminHeadings.categories.title} description={adminHeadings.categories.description} actionLabel={adminActions.addCategory} actionHref="/admin/categories/new" />
+        <VStack gap={0} align="stretch">
+          <AdminSectionTitle title={adminHeadings.categories.title} description={adminHeadings.categories.description} actionLabel={adminActions.addCategory} actionHref="/admin/categories/new" />
 
-        {loading ? (
-          <AdminLoadingState rows={4} height="3.5rem" />
-        ) : (
-          <AdminTableShell>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr style={adminTableStyles.head}>
-                  <th style={adminTableStyles.headCell}>Name</th>
-                  <th style={adminTableStyles.headCell}>Slug</th>
-                  <th style={adminTableStyles.headCell}>Items</th>
-                  <th style={adminTableStyles.headCell}>Order</th>
-                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories.map((cat) => (
-                  <tr key={cat.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
-                    <td style={{ ...adminTableStyles.cell, fontWeight: 500 }}>{cat.name}</td>
-                    <td style={{ ...adminTableStyles.cell, color: "#6B7280" }}>{cat.slug}</td>
-                    <td style={adminTableStyles.cell}>{cat._count?.menuItems ?? 0}</td>
-                    <td style={adminTableStyles.cell}>{cat.sortOrder}</td>
-                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
-                      <span style={{ display: "inline-flex", gap: "0.75rem" }}>
-                        <Link href={`/admin/categories/${cat.id}/edit`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>{adminActions.edit}</Link>
-                        <button onClick={() => deleteCategory(cat.id)} style={{ fontSize: "0.875rem", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>{adminActions.delete}</button>
-                      </span>
-                    </td>
+          {loading ? (
+            <AdminLoadingState rows={4} height="3.5rem" />
+          ) : (
+            <AdminTableShell>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#F9FAFB" }}>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Name</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Slug</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Items</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Order</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "right", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </AdminTableShell>
-        )}
+                </thead>
+                <tbody>
+                  {categories.map((cat) => (
+                    <tr key={cat.id} style={{ borderTop: "1px solid #F3F4F6" }}>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", fontWeight: 500 }}>{cat.name}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", color: "#6B7280" }}>{cat.slug}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>{cat._count?.menuItems ?? 0}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>{cat.sortOrder}</td>
+                      <td style={{ padding: "0.75rem 1rem", textAlign: "right" }}>
+                        <HStack gap={3} justify="flex-end">
+                          <Link href={`/admin/categories/${cat.id}/edit`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>{adminActions.edit}</Link>
+                          <Button size="xs" variant="plain" color="red.600" onClick={() => deleteCategory(cat.id)}>{adminActions.delete}</Button>
+                        </HStack>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </AdminTableShell>
+          )}
+        </VStack>
       </AdminPageShell>
     </AdminShell>
   );

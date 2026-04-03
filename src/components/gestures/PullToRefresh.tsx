@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, ReactNode } from 'react';
 import { RefreshCw } from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+import { Box, HStack, Text } from '@chakra-ui/react';
 
 interface PullToRefreshProps {
   children: ReactNode;
@@ -82,66 +82,82 @@ export default function PullToRefresh({
   const rotation = progress * 360;
 
   return (
-    <div
+    <Box
       ref={containerRef}
-      className={cn('relative overflow-hidden', className)}
+      position="relative"
+      overflow="hidden"
+      className={className}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       {/* Pull indicator */}
-      <div
-        className={cn(
-          'absolute top-0 left-0 right-0 z-10 flex items-center justify-center',
-          'bg-white border-b border-gray-200 transition-transform duration-200',
-          'safe-area-top pt-safe'
-        )}
-        style={{
-          transform: `translateY(${Math.max(-60, pullDistance - 60)}px)`,
-          height: '60px',
-        }}
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        zIndex={10}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        bg="white"
+        borderBottom="1px"
+        borderColor="gray.200"
+        transition="transform 0.2s"
+        pt={4}
+        transform={`translateY(${Math.max(-60, pullDistance - 60)}px)`}
+        h="60px"
       >
-        <div className="flex items-center space-x-3">
+        <HStack gap={3}>
           <RefreshCw
             size={20}
-            className={cn(
-              'text-gray-500 transition-transform duration-200',
-              (refreshState === 'refreshing' || refreshState === 'release') &&
-                'text-orange-600'
-            )}
+            color={
+              (refreshState === 'refreshing' || refreshState === 'release')
+                ? 'orange.600'
+                : 'gray.500'
+            }
             style={{
               transform: `rotate(${rotation}deg)`,
+              transition: 'transform 0.2s',
             }}
           />
-          <span className="text-sm font-medium text-gray-600">
+          <Text fontSize="sm" fontWeight="medium" color="gray.600">
             {refreshState === 'refreshing' && refreshingText}
             {refreshState === 'release' && releaseText}
             {refreshState === 'pulling' && pullText}
-          </span>
-        </div>
-      </div>
+          </Text>
+        </HStack>
+      </Box>
 
       {/* Content */}
-      <div
-        className="transition-transform duration-200"
-        style={{
-          transform: `translateY(${Math.max(0, pullDistance)}px)`,
-        }}
+      <Box
+        transition="transform 0.2s"
+        transform={`translateY(${Math.max(0, pullDistance)}px)`}
       >
         {children}
-      </div>
+      </Box>
 
       {/* Loading overlay */}
       {isRefreshing && (
-        <div className="absolute inset-0 z-20 bg-white/80 backdrop-blur-sm flex items-center justify-center">
-          <div className="flex items-center space-x-3">
-            <RefreshCw size={24} className="text-orange-600 animate-spin" />
-            <span className="text-lg font-medium text-gray-900">
+        <Box
+          position="absolute"
+          inset={0}
+          zIndex={20}
+          bg="whiteAlpha.800"
+          backdropFilter="blur(4px)"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <HStack gap={3}>
+            <RefreshCw size={24} color="orange.600" className="animate-spin" />
+            <Text fontSize="lg" fontWeight="medium" color="gray.900">
               {refreshingText}
-            </span>
-          </div>
-        </div>
+            </Text>
+          </HStack>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }

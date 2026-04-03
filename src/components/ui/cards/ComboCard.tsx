@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import type { ComboPublic } from "@/types/combo";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface ComboCardProps {
   combo: ComboPublic;
@@ -11,40 +12,42 @@ interface ComboCardProps {
 
 export function ComboCard({ combo }: ComboCardProps) {
   return (
-    <div className="group overflow-hidden rounded-2xl bg-white shadow-md transition-all hover:shadow-xl hover:-translate-y-1">
-      <div className="relative aspect-[16/10]">
+    <Box overflow="hidden" borderRadius="2xl" bg="white" shadow="md" transition="all 0.2s" _hover={{ shadow: "xl", transform: "translateY(-4px)" }} role="group">
+      <Box position="relative" css={{ aspectRatio: "16/10" }}>
         {combo.image ? (
           <Image src={combo.image} alt={combo.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-100 to-orange-100 text-5xl">🍱</div>
+          <Flex h="full" w="full" align="center" justify="center" bg="linear-gradient(to bottom right, var(--chakra-colors-orange-100), var(--chakra-colors-orange-200))" fontSize="5xl">🍱</Flex>
         )}
         {combo.savings > 0 && (
-          <div className="absolute left-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
+          <Box position="absolute" left={3} top={3} borderRadius="full" bg="red.500" px={3} py={1} fontSize="xs" fontWeight="bold" color="white">
             Save {formatCurrency(combo.savings)}
-          </div>
+          </Box>
         )}
-        <div className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-gray-700">
+        <Box position="absolute" right={3} top={3} borderRadius="full" bg="whiteAlpha.900" px={3} py={1} fontSize="xs" fontWeight="medium" color="gray.700">
           Serves {combo.servesCount}
-        </div>
-      </div>
-      <div className="p-5">
-        <h3 className="text-lg font-bold text-gray-900">{combo.name}</h3>
-        {combo.description && <p className="mt-1 text-sm text-gray-500 line-clamp-2">{combo.description}</p>}
-        <div className="mt-2 text-xs text-gray-400">
+        </Box>
+      </Box>
+      <Box p={5}>
+        <Heading as="h3" fontSize="lg" fontWeight="bold" color="gray.900">{combo.name}</Heading>
+        {combo.description && <Text mt={1} fontSize="sm" color="gray.500" lineClamp={2}>{combo.description}</Text>}
+        <Text mt={2} fontSize="xs" color="gray.400">
           {combo.items.map((item) => `${item.quantity}× ${item.menuItemName}`).join(" • ")}
-        </div>
-        <div className="mt-4 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-amber-600">{formatCurrency(combo.price)}</span>
+        </Text>
+        <Flex mt={4} align="center" justify="space-between">
+          <Flex align="baseline" gap={2}>
+            <Text as="span" fontSize="xl" fontWeight="bold" color="orange.600">{formatCurrency(combo.price)}</Text>
             {combo.originalPrice > combo.price && (
-              <span className="text-sm text-gray-400 line-through">{formatCurrency(combo.originalPrice)}</span>
+              <Text as="span" fontSize="sm" color="gray.400" textDecoration="line-through">{formatCurrency(combo.originalPrice)}</Text>
             )}
-          </div>
-          <Link href="/menu" className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-600">
-            Order
+          </Flex>
+          <Link href="/menu">
+            <Box borderRadius="lg" bg="orange.500" px={4} py={2} fontSize="sm" fontWeight={600} color="white" transition="background 0.2s" _hover={{ bg: "orange.600" }}>
+              Order
+            </Box>
           </Link>
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </Box>
+    </Box>
   );
 }

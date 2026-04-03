@@ -1,5 +1,7 @@
 "use client";
 
+import { chakra } from "@chakra-ui/react";
+
 interface AdminExportButtonProps {
   href: string;
   label?: string;
@@ -7,12 +9,20 @@ interface AdminExportButtonProps {
 
 export function AdminExportButton({ href, label = "Export CSV" }: AdminExportButtonProps) {
   return (
-    <a
+    <chakra.a
       href={href}
       download
-      className="inline-flex items-center px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+      display="inline-flex"
+      alignItems="center"
+      px={3}
+      py={2}
+      fontSize="sm"
+      borderWidth="1px"
+      borderColor="gray.300"
+      borderRadius="lg"
+      _hover={{ bg: "gray.50" }}
     >
       📥 {label}
-    </a>
+    </chakra.a>
   );
 }

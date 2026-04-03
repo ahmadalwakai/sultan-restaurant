@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Button, Flex, Input, SimpleGrid, Text, Textarea, VStack } from "@chakra-ui/react";
 
 interface ComboFormData {
   name: string;
@@ -51,102 +52,80 @@ export function ComboForm({ initialData, onSubmit, submitLabel = "Save" }: Combo
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Name</label>
-        <input
-          type="text"
-          required
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="w-full rounded-lg border px-3 py-2 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-        />
-      </div>
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Description</label>
-        <textarea
-          value={form.description}
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
-          rows={3}
-          className="w-full rounded-lg border px-3 py-2 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Price (£)</label>
-          <input
-            type="number"
-            step="0.01"
-            required
-            value={form.price}
-            onChange={(e) => setForm({ ...form, price: e.target.value })}
-            className="w-full rounded-lg border px-3 py-2 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Serves</label>
-          <input
-            type="number"
-            min="1"
-            value={form.servesCount}
-            onChange={(e) => setForm({ ...form, servesCount: e.target.value })}
-            className="w-full rounded-lg border px-3 py-2 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-          />
-        </div>
-      </div>
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Image URL</label>
-        <input
-          type="text"
-          value={form.image}
-          onChange={(e) => setForm({ ...form, image: e.target.value })}
-          className="w-full rounded-lg border px-3 py-2 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-        />
-      </div>
-      <div>
-        <div className="mb-2 flex items-center justify-between">
-          <label className="text-sm font-medium text-gray-700">Combo Items</label>
-          <button type="button" onClick={addItem} className="text-sm text-amber-600 hover:underline">+ Add Item</button>
-        </div>
-        <div className="space-y-2">
+    <form onSubmit={handleSubmit}>
+    <VStack gap={6} align="stretch">
+      <Box>
+        <Text as="label" display="block" mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Name</Text>
+        <Input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+      </Box>
+      <Box>
+        <Text as="label" display="block" mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Description</Text>
+        <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} />
+      </Box>
+      <SimpleGrid columns={2} gap={4}>
+        <Box>
+          <Text as="label" display="block" mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Price</Text>
+          <Input type="number" step="0.01" required value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
+        </Box>
+        <Box>
+          <Text as="label" display="block" mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Serves</Text>
+          <Input type="number" min="1" value={form.servesCount} onChange={(e) => setForm({ ...form, servesCount: e.target.value })} />
+        </Box>
+      </SimpleGrid>
+      <Box>
+        <Text as="label" display="block" mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Image URL</Text>
+        <Input type="text" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} />
+      </Box>
+      <Box>
+        <Flex mb={2} align="center" justify="space-between">
+          <Text as="label" fontSize="sm" fontWeight="medium" color="gray.700">Combo Items</Text>
+          <Button type="button" variant="ghost" size="sm" color="amber.600" onClick={addItem}>+ Add Item</Button>
+        </Flex>
+        <VStack gap={2}>
           {form.items.map((item, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <input
+            <Flex key={i} align="center" gap={2} w="full">
+              <Input
                 type="text"
                 placeholder="Menu Item ID"
                 value={item.menuItemId}
                 onChange={(e) => updateItem(i, "menuItemId", e.target.value)}
-                className="flex-1 rounded-lg border px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
+                flex="1"
+                size="sm"
               />
-              <input
+              <Input
                 type="number"
                 min="1"
                 value={item.quantity}
                 onChange={(e) => updateItem(i, "quantity", parseInt(e.target.value, 10))}
-                className="w-20 rounded-lg border px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
+                w="20"
+                size="sm"
               />
-              <button type="button" onClick={() => removeItem(i)} className="text-red-500 hover:text-red-600">✕</button>
-            </div>
+              <Button type="button" variant="ghost" size="sm" color="red.500" onClick={() => removeItem(i)}>X</Button>
+            </Flex>
           ))}
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
+        </VStack>
+      </Box>
+      <Flex align="center" gap={2}>
         <input
           type="checkbox"
           id="comboActive"
           checked={form.isActive}
           onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
-          className="rounded border-gray-300"
         />
-        <label htmlFor="comboActive" className="text-sm text-gray-700">Active</label>
-      </div>
-      <button
+        <label htmlFor="comboActive"><Text fontSize="sm" color="gray.700">Active</Text></label>
+      </Flex>
+      <Button
         type="submit"
         disabled={saving}
-        className="rounded-lg bg-amber-500 px-6 py-2 font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+        bg="amber.500"
+        color="white"
+        _hover={{ bg: "amber.600" }}
+        fontWeight="medium"
+        alignSelf="flex-start"
       >
         {saving ? "Saving..." : submitLabel}
-      </button>
+      </Button>
+    </VStack>
     </form>
   );
 }

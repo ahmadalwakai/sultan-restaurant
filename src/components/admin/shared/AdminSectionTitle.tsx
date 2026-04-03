@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { brandColors, brandRadii, brandTypography } from "@/theme/branding";
-import { adminLayout } from "@/lib/admin-ui";
+import { HStack, VStack, Heading, Text, Button } from "@chakra-ui/react";
 
 interface AdminSectionTitleProps {
   title: string;
@@ -20,56 +19,31 @@ export function AdminSectionTitle({
   actionHref,
   onAction,
 }: AdminSectionTitleProps) {
-  const btnStyle: React.CSSProperties = {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "0.375rem",
-    padding: "0.5rem 1rem",
-    fontSize: "0.875rem",
-    fontWeight: brandTypography.weights.medium,
-    color: adminLayout.primaryBtn.color,
-    background: adminLayout.primaryBtn.background,
-    borderRadius: brandRadii.lg,
-    border: "none",
-    cursor: "pointer",
-    transition: "background 0.15s",
-  };
+  const actionButton = actionLabel ? (
+    actionHref ? (
+      <Button asChild size="sm" bg="yellow.500" color="white" _hover={{ bg: "yellow.600" }}>
+        <Link href={actionHref}>+ {actionLabel}</Link>
+      </Button>
+    ) : onAction ? (
+      <Button size="sm" bg="yellow.500" color="white" _hover={{ bg: "yellow.600" }} onClick={onAction}>
+        + {actionLabel}
+      </Button>
+    ) : null
+  ) : null;
 
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
-      <div>
-        <h1
-          style={{
-            fontSize: "1.5rem",
-            fontWeight: brandTypography.weights.bold,
-            color: brandColors.charcoal,
-            fontFamily: brandTypography.fonts.body,
-            lineHeight: 1.2,
-          }}
-        >
+    <HStack justify="space-between" align="center" mb={6} w="full">
+      <VStack align="start" gap={0.5}>
+        <Heading size="xl" color="gray.900" lineHeight={1.2}>
           {title}
-        </h1>
+        </Heading>
         {description && (
-          <p style={{ marginTop: "0.25rem", fontSize: "0.875rem", color: "#6B7280" }}>
+          <Text fontSize="sm" color="gray.500">
             {description}
-          </p>
+          </Text>
         )}
-      </div>
-
-      {actionLabel && actionHref && (
-        <Link href={actionHref} style={btnStyle} className="admin-primary-btn">
-          + {actionLabel}
-        </Link>
-      )}
-      {actionLabel && onAction && !actionHref && (
-        <button onClick={onAction} style={btnStyle} className="admin-primary-btn">
-          + {actionLabel}
-        </button>
-      )}
-
-      <style>{`
-        .admin-primary-btn:hover { background: ${adminLayout.primaryBtn.hoverBg} !important; }
-      `}</style>
-    </div>
+      </VStack>
+      {actionButton}
+    </HStack>
   );
 }

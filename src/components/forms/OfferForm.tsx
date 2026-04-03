@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { offerAdminSchema, type OfferAdminFormValues } from "@/lib/validators";
+import { Box, Button, Input, NativeSelect, SimpleGrid, Text, Textarea, VStack } from "@chakra-ui/react";
 
 interface OfferFormProps {
   defaultValues?: Partial<OfferAdminFormValues>;
@@ -21,75 +22,62 @@ export function OfferForm({ defaultValues, onSubmit, isLoading }: OfferFormProps
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Title</label>
-        <input
-          {...register("title")}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-        />
-        {errors.title && <p className="mt-1 text-xs text-red-500">{errors.title.message}</p>}
-      </div>
+    <VStack as="form" onSubmit={handleSubmit(onSubmit)} gap={4} align="stretch">
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Title</Text>
+        <Input {...register("title")} size="md" />
+        {errors.title && <Text mt={1} fontSize="xs" color="red.500">{errors.title.message}</Text>}
+      </Box>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Description</label>
-        <textarea
-          {...register("description")}
-          rows={3}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-        />
-      </div>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Description</Text>
+        <Textarea {...register("description")} rows={3} size="md" />
+      </Box>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Discount Type</label>
-          <select
-            {...register("discountType")}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          >
-            <option value="PERCENTAGE">Percentage</option>
-            <option value="FIXED">Fixed Amount</option>
-          </select>
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Discount Value</label>
-          <input
-            {...register("discount", { valueAsNumber: true })}
-            type="number"
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          />
+      <SimpleGrid gap={4} columns={{ base: 1, sm: 2 }}>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Discount Type</Text>
+          <NativeSelect.Root size="md">
+            <NativeSelect.Field {...register("discountType")}>
+              <option value="PERCENTAGE">Percentage</option>
+              <option value="FIXED">Fixed Amount</option>
+            </NativeSelect.Field>
+          </NativeSelect.Root>
+        </Box>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Discount Value</Text>
+          <Input {...register("discount", { valueAsNumber: true })} type="number" size="md" />
           {errors.discount && (
-            <p className="mt-1 text-xs text-red-500">{errors.discount.message}</p>
+            <Text mt={1} fontSize="xs" color="red.500">{errors.discount.message}</Text>
           )}
-        </div>
-      </div>
+        </Box>
+      </SimpleGrid>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Valid From</label>
-          <input
-            {...register("validFrom")}
-            type="date"
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Valid Until</label>
-          <input
-            {...register("validUntil")}
-            type="date"
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          />
-        </div>
-      </div>
+      <SimpleGrid gap={4} columns={{ base: 1, sm: 2 }}>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Valid From</Text>
+          <Input {...register("validFrom")} type="date" size="md" />
+        </Box>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Valid Until</Text>
+          <Input {...register("validUntil")} type="date" size="md" />
+        </Box>
+      </SimpleGrid>
 
-      <button
+      <Button
         type="submit"
         disabled={isLoading}
-        className="rounded-lg bg-amber-500 px-6 py-2.5 font-semibold text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
+        borderRadius="lg"
+        bg="amber.500"
+        px={6}
+        py={2.5}
+        fontWeight="semibold"
+        color="white"
+        _hover={{ bg: "amber.600" }}
+        _disabled={{ opacity: 0.5 }}
       >
         {isLoading ? "Saving..." : defaultValues ? "Update Offer" : "Create Offer"}
-      </button>
-    </form>
+      </Button>
+    </VStack>
   );
 }

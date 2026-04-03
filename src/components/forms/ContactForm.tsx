@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactFormValues } from "@/lib/validators";
 import { useSubmitContact } from "@/hooks/api";
 import toast from "react-hot-toast";
+import { Box, Button, Input, SimpleGrid, Text, Textarea, VStack } from "@chakra-ui/react";
 
 export function ContactForm() {
   const submitContact = useSubmitContact();
@@ -29,66 +30,51 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Name</label>
-          <input
-            {...register("name")}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-            placeholder="Your name"
-          />
-          {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Email</label>
-          <input
-            {...register("email")}
-            type="email"
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-            placeholder="your@email.com"
-          />
-          {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
-        </div>
-      </div>
+    <VStack as="form" onSubmit={handleSubmit(onSubmit)} gap={4} align="stretch">
+      <SimpleGrid gap={4} columns={{ base: 1, sm: 2 }}>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Name</Text>
+          <Input {...register("name")} placeholder="Your name" size="md" />
+          {errors.name && <Text mt={1} fontSize="xs" color="red.500">{errors.name.message}</Text>}
+        </Box>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Email</Text>
+          <Input {...register("email")} type="email" placeholder="your@email.com" size="md" />
+          {errors.email && <Text mt={1} fontSize="xs" color="red.500">{errors.email.message}</Text>}
+        </Box>
+      </SimpleGrid>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Phone (optional)</label>
-        <input
-          {...register("phone")}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          placeholder="07xxx xxx xxx"
-        />
-      </div>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Phone (optional)</Text>
+        <Input {...register("phone")} placeholder="07xxx xxx xxx" size="md" />
+      </Box>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Subject</label>
-        <input
-          {...register("subject")}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          placeholder="What's this about?"
-        />
-        {errors.subject && <p className="mt-1 text-xs text-red-500">{errors.subject.message}</p>}
-      </div>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Subject</Text>
+        <Input {...register("subject")} placeholder="What's this about?" size="md" />
+        {errors.subject && <Text mt={1} fontSize="xs" color="red.500">{errors.subject.message}</Text>}
+      </Box>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Message</label>
-        <textarea
-          {...register("message")}
-          rows={5}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          placeholder="Your message..."
-        />
-        {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>}
-      </div>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Message</Text>
+        <Textarea {...register("message")} rows={5} placeholder="Your message..." size="md" />
+        {errors.message && <Text mt={1} fontSize="xs" color="red.500">{errors.message.message}</Text>}
+      </Box>
 
-      <button
+      <Button
         type="submit"
         disabled={submitContact.isPending}
-        className="w-full rounded-lg bg-amber-500 py-3 font-semibold text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
+        w="full"
+        borderRadius="lg"
+        bg="amber.500"
+        py={3}
+        fontWeight="semibold"
+        color="white"
+        _hover={{ bg: "amber.600" }}
+        _disabled={{ opacity: 0.5 }}
       >
         {submitContact.isPending ? "Sending..." : "Send Message"}
-      </button>
-    </form>
+      </Button>
+    </VStack>
   );
 }

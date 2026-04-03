@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Box, VStack, HStack, Image } from "@chakra-ui/react";
 import { SectionTitle } from "@/components/shared/SectionTitle";
 
 const partners = [
@@ -11,30 +11,36 @@ const partners = [
 
 export function DeliveryPartnersSection() {
   return (
-    <section className="py-16">
-      <div className="mx-auto max-w-5xl px-4 text-center">
+    <Box as="section" py={16}>
+      <Box maxW="5xl" mx="auto" px={4} textAlign="center">
         <SectionTitle
           title="Order Through Our Partners"
           subtitle="Available on all major delivery platforms"
         />
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-12">
+        <HStack mt={10} flexWrap="wrap" justify="center" gap={12}>
           {partners.map((partner) => (
-            <div
+            <Box
               key={partner.name}
-              className="flex h-20 w-40 items-center justify-center grayscale transition-all hover:grayscale-0"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              h={20}
+              w={40}
+              filter="grayscale(100%)"
+              transition="all"
+              _hover={{ filter: "grayscale(0%)" }}
             >
               <Image
                 src={partner.logo}
                 alt={partner.name}
-                width={160}
-                height={80}
-                className="object-contain"
-                unoptimized
+                w="full"
+                h="full"
+                objectFit="contain"
               />
-            </div>
+            </Box>
           ))}
-        </div>
-      </div>
-    </section>
+        </HStack>
+      </Box>
+    </Box>
   );
 }

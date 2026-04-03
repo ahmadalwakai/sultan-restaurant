@@ -1,5 +1,7 @@
 "use client";
 
+import { SimpleGrid, Card, Text } from "@chakra-ui/react";
+
 interface CouponUsageStatsProps {
   usedCount: number;
   maxUses?: number | null;
@@ -10,33 +12,39 @@ export function CouponUsageStats({ usedCount, maxUses, totalRevenue }: CouponUsa
   const usagePercent = maxUses ? Math.round((usedCount / maxUses) * 100) : null;
 
   return (
-    <div className="grid grid-cols-3 gap-4">
-      <div className="bg-white border rounded-lg p-4 text-center">
-        <p className="text-2xl font-bold text-amber-600">{usedCount}</p>
-        <p className="text-xs text-gray-500">Times Used</p>
-      </div>
-      <div className="bg-white border rounded-lg p-4 text-center">
-        <p className="text-2xl font-bold">{maxUses ?? "\u221e"}</p>
-        <p className="text-xs text-gray-500">Max Uses</p>
-      </div>
-      <div className="bg-white border rounded-lg p-4 text-center">
-        {usagePercent !== null ? (
-          <>
-            <p className="text-2xl font-bold">{usagePercent}%</p>
-            <p className="text-xs text-gray-500">Usage Rate</p>
-          </>
-        ) : totalRevenue !== undefined ? (
-          <>
-            <p className="text-2xl font-bold">£{(totalRevenue / 100).toFixed(0)}</p>
-            <p className="text-xs text-gray-500">Revenue</p>
-          </>
-        ) : (
-          <>
-            <p className="text-2xl font-bold">-</p>
-            <p className="text-xs text-gray-500">No Limit</p>
-          </>
-        )}
-      </div>
-    </div>
+    <SimpleGrid columns={3} gap={4}>
+      <Card.Root bg="bg.surface" borderRadius="lg">
+        <Card.Body p={4} textAlign="center">
+          <Text fontSize="2xl" fontWeight="bold" color="amber.600">{usedCount}</Text>
+          <Text fontSize="xs" color="gray.500">Times Used</Text>
+        </Card.Body>
+      </Card.Root>
+      <Card.Root bg="bg.surface" borderRadius="lg">
+        <Card.Body p={4} textAlign="center">
+          <Text fontSize="2xl" fontWeight="bold">{maxUses ?? "\u221e"}</Text>
+          <Text fontSize="xs" color="gray.500">Max Uses</Text>
+        </Card.Body>
+      </Card.Root>
+      <Card.Root bg="bg.surface" borderRadius="lg">
+        <Card.Body p={4} textAlign="center">
+          {usagePercent !== null ? (
+            <>
+              <Text fontSize="2xl" fontWeight="bold">{usagePercent}%</Text>
+              <Text fontSize="xs" color="gray.500">Usage Rate</Text>
+            </>
+          ) : totalRevenue !== undefined ? (
+            <>
+              <Text fontSize="2xl" fontWeight="bold">£{(totalRevenue / 100).toFixed(0)}</Text>
+              <Text fontSize="xs" color="gray.500">Revenue</Text>
+            </>
+          ) : (
+            <>
+              <Text fontSize="2xl" fontWeight="bold">-</Text>
+              <Text fontSize="xs" color="gray.500">No Limit</Text>
+            </>
+          )}
+        </Card.Body>
+      </Card.Root>
+    </SimpleGrid>
   );
 }

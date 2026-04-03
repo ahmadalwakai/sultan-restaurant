@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { OfferPublic } from "@/types/offer";
+import { Card, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface OfferCardProps {
   offer: OfferPublic;
@@ -10,47 +11,68 @@ interface OfferCardProps {
 
 export function OfferCard({ offer }: OfferCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 p-7 sm:p-8 text-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
+    <Card.Root
+      overflow="hidden"
+      position="relative"
+      bgGradient="to-br"
+      gradientFrom="amber.500"
+      gradientTo="orange.600"
+      color="white"
+      shadow="sm"
+      borderRadius="xl"
+      transition="all 0.2s"
+      _hover={{ shadow: "lg", transform: "translateY(-4px)" }}
+    >
       {offer.image && (
         <Image
           src={offer.image}
           alt={offer.title}
           fill
-          className="object-cover opacity-15"
+          style={{ objectFit: "cover", opacity: 0.15 }}
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       )}
-      <div className="relative z-10 flex flex-col gap-3">
-        <span className="inline-block self-start rounded-full bg-white/20 px-3.5 py-1 text-xs font-bold uppercase tracking-wider">
+      <Card.Body p={{ base: 7, sm: 8 }} position="relative" zIndex={1} display="flex" flexDirection="column" gap={3}>
+        <Box alignSelf="flex-start" borderRadius="full" bg="whiteAlpha.300" px={3.5} py={1} fontSize="xs" fontWeight="bold" textTransform="uppercase" letterSpacing="wider">
           {offer.discountType === "PERCENTAGE"
             ? `${offer.discount}% OFF`
             : `£${(offer.discount / 100).toFixed(2)} OFF`}
-        </span>
-        <h3 className="text-xl font-bold font-heading leading-snug">{offer.title}</h3>
+        </Box>
+        <Heading as="h3" fontSize="xl" fontWeight="bold" fontFamily="heading" lineHeight="snug">{offer.title}</Heading>
         {offer.description && (
-          <p className="text-sm leading-relaxed text-white/85 line-clamp-2">
+          <Text fontSize="sm" lineHeight="relaxed" color="whiteAlpha.800" lineClamp={2}>
             {offer.description}
-          </p>
+          </Text>
         )}
-        <div className="mt-auto flex items-center justify-between gap-4 pt-2">
-          <Link
-            href="/menu"
-            className="inline-block rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-amber-700 transition-colors hover:bg-white/90"
-          >
-            Order Now
+        <Flex mt="auto" align="center" justify="space-between" gap={4} pt={2}>
+          <Link href="/menu">
+            <Box
+              display="inline-block"
+              borderRadius="lg"
+              bg="white"
+              px={5}
+              py={2.5}
+              fontSize="sm"
+              fontWeight="semibold"
+              color="amber.700"
+              transition="background 0.2s"
+              _hover={{ bg: "whiteAlpha.900" }}
+            >
+              Order Now
+            </Box>
           </Link>
           {offer.validUntil && (
-            <p className="text-xs text-white/60">
+            <Text fontSize="xs" color="whiteAlpha.600">
               Until{" "}
               {new Date(offer.validUntil).toLocaleDateString("en-GB", {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
               })}
-            </p>
+            </Text>
           )}
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </Card.Body>
+    </Card.Root>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Card, Flex, VStack, HStack, Text, Box } from "@chakra-ui/react";
 
 interface Order {
   id: string;
@@ -12,25 +13,31 @@ interface Order {
 
 export function RecentOrders({ orders }: { orders: Order[] }) {
   return (
-    <div className="bg-white border rounded-lg p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-gray-900">Recent Orders</h3>
-        <Link href="/admin/orders" className="text-sm text-amber-600 hover:underline">View all</Link>
-      </div>
-      <div className="space-y-3">
-        {orders.map((order) => (
-          <Link key={order.id} href={`/admin/orders/${order.id}`} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
-            <div>
-              <p className="font-medium text-sm">#{order.orderNumber}</p>
-              <p className="text-xs text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</p>
-            </div>
-            <div className="text-right">
-              <p className="font-medium text-sm">£{(Number(order.total) / 100).toFixed(2)}</p>
-              <span className="text-xs px-2 py-0.5 rounded bg-gray-100">{order.status}</span>
-            </div>
+    <Card.Root bg="bg.surface" shadow="sm" borderRadius="xl">
+      <Card.Body p={5}>
+        <Flex align="center" justify="space-between" mb={4}>
+          <Text fontWeight="semibold" color="gray.900">Recent Orders</Text>
+          <Link href="/admin/orders">
+            <Text fontSize="sm" color="amber.600" _hover={{ textDecoration: "underline" }}>View all</Text>
           </Link>
-        ))}
-      </div>
-    </div>
+        </Flex>
+        <VStack gap={3} align="stretch">
+          {orders.map((order) => (
+            <Link key={order.id} href={`/admin/orders/${order.id}`}>
+              <Flex align="center" justify="space-between" p={3} borderRadius="lg" _hover={{ bg: "gray.50" }}>
+                <Box>
+                  <Text fontWeight="medium" fontSize="sm">#{order.orderNumber}</Text>
+                  <Text fontSize="xs" color="gray.500">{new Date(order.createdAt).toLocaleDateString()}</Text>
+                </Box>
+                <Box textAlign="right">
+                  <Text fontWeight="medium" fontSize="sm">£{(Number(order.total) / 100).toFixed(2)}</Text>
+                  <Box as="span" fontSize="xs" px={2} py={0.5} borderRadius="md" bg="gray.100">{order.status}</Box>
+                </Box>
+              </Flex>
+            </Link>
+          ))}
+        </VStack>
+      </Card.Body>
+    </Card.Root>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ShoppingCart, RefreshCw, CheckCircle, AlertCircle } from 'lucide-react';
+import { Box, Button, Flex, Text, VStack } from '@chakra-ui/react';
 
 interface QueuedCartAction {
   id: string;
@@ -30,7 +31,6 @@ export default function OfflineCartSync() {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Load queued actions from storage
     loadQueuedActions();
 
     return () => {
@@ -74,7 +74,6 @@ export default function OfflineCartSync() {
     setQueuedActions(updatedActions);
     saveQueuedActions(updatedActions);
 
-    // Try to sync immediately if online
     if (isOnline) {
       syncQueuedActions();
     }
@@ -89,28 +88,23 @@ export default function OfflineCartSync() {
       const pendingActions = queuedActions.filter(action => action.status === 'pending');
 
       for (const action of pendingActions) {
-        // Update status to syncing
         setQueuedActions(prev =>
           prev.map(a => a.id === action.id ? { ...a, status: 'syncing' } : a)
         );
 
         try {
-          // Simulate API call - replace with actual cart API
           await new Promise(resolve => setTimeout(resolve, 1000));
 
-          // Update status to completed
           setQueuedActions(prev =>
             prev.map(a => a.id === action.id ? { ...a, status: 'completed' } : a)
           );
         } catch (error) {
-          // Update status to failed
           setQueuedActions(prev =>
             prev.map(a => a.id === action.id ? { ...a, status: 'failed' } : a)
           );
         }
       }
 
-      // Clean up completed actions after a delay
       setTimeout(() => {
         setQueuedActions(prev => prev.filter(a => a.status !== 'completed'));
         saveQueuedActions(queuedActions.filter(a => a.status !== 'completed'));
@@ -126,109 +120,124 @@ export default function OfflineCartSync() {
   const pendingCount = queuedActions.filter(a => a.status === 'pending').length;
   const failedCount = queuedActions.filter(a => a.status === 'failed').length;
 
+  const STATUS_COLORS: Record<string, string> = {
+    completed: 'bg-green-500',
+    failed: 'bg-red-500',
+    syncing: 'bg-blue-500 animate-pulse',
+    pending: 'bg-gray-400',
+  };
+
   if (queuedActions.length === 0) {
     return null;
   }
 
   return (
-    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2">
+    <Box bg="blue.50" borderWidth="1px" borderColor="blue.200" borderRadius="lg" p={4} mb={4}>
+      <Flex align="center" justify="space-between">
+        <Flex align="center" gap={3}>
+          <Flex align="center" gap={2}>
             <ShoppingCart size={18} className="text-blue-600" />
-            <span className="font-medium text-blue-900">Cart Sync</span>
-          </div>
+            <Text fontWeight="medium" color="blue.900">Cart Sync</Text>
+          </Flex>
 
           {!isOnline && (
-            <div className="flex items-center space-x-1 text-sm text-blue-700">
+            <Flex align="center" gap={1} fontSize="sm" color="blue.700">
               <AlertCircle size={14} />
-              <span>Offline - actions queued</span>
-            </div>
+              <Text>Offline - actions queued</Text>
+            </Flex>
           )}
 
           {isOnline && isSyncing && (
-            <div className="flex items-center space-x-1 text-sm text-blue-700">
+            <Flex align="center" gap={1} fontSize="sm" color="blue.700">
               <RefreshCw size={16} className="animate-spin" />
-              <span>Syncing...</span>
-            </div>
+              <Text>Syncing...</Text>
+            </Flex>
           )}
 
           {isOnline && !isSyncing && pendingCount > 0 && (
-            <div className="flex items-center space-x-1 text-sm text-green-700">
+            <Flex align="center" gap={1} fontSize="sm" color="green.700">
               <CheckCircle size={14} />
-              <span>Sync complete</span>
-            </div>
+              <Text>Sync complete</Text>
+            </Flex>
           )}
-        </div>
+        </Flex>
 
-        <div className="flex items-center space-x-4 text-sm">
+        <Flex align="center" gap={4} fontSize="sm">
           {pendingCount > 0 && (
-            <span className="text-blue-600">
+            <Text color="blue.600">
               {pendingCount} pending
-            </span>
+            </Text>
           )}
           {failedCount > 0 && (
-            <span className="text-red-600">
+            <Text color="red.600">
               {failedCount} failed
-            </span>
+            </Text>
           )}
-        </div>
-      </div>
+        </Flex>
+      </Flex>
 
       {queuedActions.length > 0 && (
-        <div className="mt-3 space-y-2">
+        <VStack mt={3} gap={2} align="stretch">
           {queuedActions.slice(0, 3).map((action) => (
-            <div
+            <Flex
               key={action.id}
-              className="flex items-center justify-between text-sm bg-white rounded p-2"
+              align="center"
+              justify="space-between"
+              fontSize="sm"
+              bg="white"
+              borderRadius="md"
+              p={2}
             >
-              <div className="flex items-center space-x-2">
-                <span className="capitalize text-gray-600">{action.type}</span>
-                <span className="text-gray-900">Item {action.itemId}</span>
-                <span className="text-gray-500">×{action.quantity}</span>
-              </div>
+              <Flex align="center" gap={2}>
+                <Text textTransform="capitalize" color="gray.600">{action.type}</Text>
+                <Text color="gray.900">Item {action.itemId}</Text>
+                <Text color="gray.500">{String.fromCharCode(215)}{action.quantity}</Text>
+              </Flex>
 
-              <div className="flex items-center space-x-2">
-                <span className="text-xs text-gray-500">
+              <Flex align="center" gap={2}>
+                <Text fontSize="xs" color="gray.500">
                   {action.timestamp.toLocaleTimeString()}
-                </span>
-                <div className={`w-2 h-2 rounded-full ${
-                  action.status === 'completed' ? 'bg-green-500' :
-                  action.status === 'failed' ? 'bg-red-500' :
-                  action.status === 'syncing' ? 'bg-blue-500 animate-pulse' :
-                  'bg-gray-400'
-                }`} />
-              </div>
-            </div>
+                </Text>
+                <Box
+                  w={2}
+                  h={2}
+                  borderRadius="full"
+                  className={STATUS_COLORS[action.status] || 'bg-gray-400'}
+                />
+              </Flex>
+            </Flex>
           ))}
 
           {queuedActions.length > 3 && (
-            <p className="text-xs text-gray-600 text-center">
+            <Text fontSize="xs" color="gray.600" textAlign="center">
               +{queuedActions.length - 3} more actions
-            </p>
+            </Text>
           )}
-        </div>
+        </VStack>
       )}
 
       {failedCount > 0 && (
-        <div className="mt-3">
-          <button
+        <Box mt={3}>
+          <Button
             onClick={syncQueuedActions}
             disabled={isSyncing}
-            className="text-sm bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-3 py-1 rounded transition-colors"
+            size="sm"
+            bg="blue.600"
+            color="white"
+            _hover={{ bg: "blue.700" }}
+            _disabled={{ bg: "blue.400" }}
           >
             Retry Failed Actions
-          </button>
-        </div>
+          </Button>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 
 // Export hook for adding cart actions
 export function useOfflineCartSync() {
   const addAction = (action: Omit<QueuedCartAction, 'id' | 'timestamp' | 'status'>) => {
-    // This would be called from cart components
     const event = new CustomEvent('offline-cart-action', { detail: action });
     window.dispatchEvent(event);
   };

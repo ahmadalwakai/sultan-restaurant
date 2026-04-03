@@ -1,5 +1,7 @@
 "use client";
 
+import { VStack, HStack, Box, Text, Button, Image } from "@chakra-ui/react";
+
 interface GalleryDragReorderProps {
   images: Array<{ id: string; url: string; order: number }>;
   onReorder: (orderedIds: string[]) => void;
@@ -17,15 +19,15 @@ export function GalleryDragReorder({ images, onReorder }: GalleryDragReorderProp
   const sorted = [...images].sort((a, b) => a.order - b.order);
 
   return (
-    <div className="space-y-2">
+    <VStack gap={2} align="stretch">
       {sorted.map((img, i) => (
-        <div key={img.id} className="flex items-center gap-3 p-2 bg-white border rounded-lg">
-          <img src={img.url} alt="" className="w-12 h-12 object-cover rounded" />
-          <span className="text-sm text-gray-500 flex-1">Position {i + 1}</span>
-          <button onClick={() => moveItem(i, "up")} disabled={i === 0} className="px-2 py-1 text-xs border rounded disabled:opacity-30">↑</button>
-          <button onClick={() => moveItem(i, "down")} disabled={i === sorted.length - 1} className="px-2 py-1 text-xs border rounded disabled:opacity-30">↓</button>
-        </div>
+        <HStack key={img.id} gap={3} p={2} bg="bg.surface" border="1px solid" borderColor="gray.200" borderRadius="lg">
+          <Image src={img.url} alt="" w={12} h={12} objectFit="cover" borderRadius="md" />
+          <Text fontSize="sm" color="gray.500" flex={1}>Position {i + 1}</Text>
+          <Button size="xs" variant="outline" onClick={() => moveItem(i, "up")} disabled={i === 0}>↑</Button>
+          <Button size="xs" variant="outline" onClick={() => moveItem(i, "down")} disabled={i === sorted.length - 1}>↓</Button>
+        </HStack>
       ))}
-    </div>
+    </VStack>
   );
 }

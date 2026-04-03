@@ -1,15 +1,17 @@
 {
   "name": "Sultan Restaurant",
   "short_name": "Sultan",
-  "description": "Authentic Middle Eastern cuisine in Glasgow - Order online, book tables, delivery available",
+  "description": "Custom-built restaurant platform — order online, reserve tables, and explore authentic Middle Eastern & Indian cuisine.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a202c",
-  "theme_color": "#d69e2e",
+  "background_color": "#FDFAF6",
+  "theme_color": "#2D1810",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en-GB",
   "categories": ["food", "restaurant", "lifestyle"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icons/icon-72x72.png",

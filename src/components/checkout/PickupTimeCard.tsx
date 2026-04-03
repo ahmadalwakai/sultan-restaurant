@@ -1,5 +1,7 @@
 "use client";
 
+import { Box, Text, Button } from "@chakra-ui/react";
+
 interface PickupTimeCardProps {
   time: string;
   label: string;
@@ -10,19 +12,24 @@ interface PickupTimeCardProps {
 
 export function PickupTimeCard({ time, label, selected, onSelect, available = true }: PickupTimeCardProps) {
   return (
-    <button
+    <Button
       onClick={() => available && onSelect(time)}
       disabled={!available}
-      className={`rounded-lg border-2 px-4 py-3 text-center transition-all ${
-        !available
-          ? "cursor-not-allowed border-gray-100 bg-gray-50 text-gray-300"
-          : selected
-          ? "border-amber-500 bg-amber-50 text-amber-700"
-          : "border-gray-100 bg-white text-gray-700 hover:border-gray-200"
-      }`}
+      borderRadius="lg"
+      border="2px solid"
+      borderColor={!available ? "gray.100" : selected ? "amber.500" : "gray.100"}
+      bg={!available ? "gray.50" : selected ? "amber.50" : "bg.surface"}
+      color={!available ? "gray.300" : selected ? "amber.700" : "gray.700"}
+      px={4}
+      py={3}
+      textAlign="center"
+      transition="all 0.2s"
+      cursor={!available ? "not-allowed" : "pointer"}
+      _hover={available && !selected ? { borderColor: "gray.200" } : undefined}
+      w="full"
     >
-      <p className={`text-sm font-semibold ${selected ? "text-amber-700" : ""}`}>{label}</p>
-      {!available && <p className="text-xs text-gray-300">Unavailable</p>}
-    </button>
+      <Text fontSize="sm" fontWeight="semibold" color={selected ? "amber.700" : undefined}>{label}</Text>
+      {!available && <Text fontSize="xs" color="gray.300">Unavailable</Text>}
+    </Button>
   );
 }

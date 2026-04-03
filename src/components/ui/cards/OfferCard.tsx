@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { OfferPublic } from "@/types/offer";
+import { Box, Heading, Text } from "@chakra-ui/react";
 
 interface OfferCardProps {
   offer: OfferPublic;
@@ -10,27 +11,29 @@ interface OfferCardProps {
 
 export function OfferCard({ offer }: OfferCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 p-6 shadow-md transition-all hover:shadow-xl hover:-translate-y-1">
+    <Box role="group" position="relative" overflow="hidden" borderRadius="2xl" bgGradient="to-br" gradientFrom="amber.500" gradientTo="orange.500" p={6} shadow="md" transition="all 0.2s" _hover={{ shadow: "xl", translateY: "-1px" }}>
       {offer.image && (
-        <Image src={offer.image} alt="" fill className="object-cover opacity-20" />
+        <Image src={offer.image} alt="" fill className="object-cover" style={{ opacity: 0.2 }} />
       )}
-      <div className="relative z-10">
-        <div className="inline-block rounded-full bg-white/20 px-3 py-1 text-sm font-bold text-white">
+      <Box position="relative" zIndex={10}>
+        <Box display="inline-block" borderRadius="full" bg="whiteAlpha.200" px={3} py={1} fontSize="sm" fontWeight="bold" color="white">
           {offer.discountType === "PERCENTAGE" ? `${offer.discount}% OFF` : `£${offer.discount} OFF`}
-        </div>
-        <h3 className="mt-3 text-xl font-bold text-white">{offer.title}</h3>
-        {offer.description && <p className="mt-2 text-sm text-white/80 line-clamp-2">{offer.description}</p>}
+        </Box>
+        <Heading mt={3} size="md" fontWeight="bold" color="white">{offer.title}</Heading>
+        {offer.description && <Text mt={2} fontSize="sm" color="whiteAlpha.800" lineClamp={2}>{offer.description}</Text>}
         {offer.code && (
-          <div className="mt-3 inline-block rounded border border-dashed border-white/40 bg-white/10 px-3 py-1 font-mono text-sm text-white">
+          <Box mt={3} display="inline-block" borderRadius="md" border="1px dashed" borderColor="whiteAlpha.400" bg="whiteAlpha.100" px={3} py={1} fontFamily="mono" fontSize="sm" color="white">
             {offer.code}
-          </div>
+          </Box>
         )}
-        <div className="mt-4">
-          <Link href="/menu" className="text-sm font-semibold text-white underline underline-offset-2 hover:no-underline">
-            Order Now →
+        <Box mt={4}>
+          <Link href="/menu">
+            <Text as="span" fontSize="sm" fontWeight="semibold" color="white" textDecoration="underline" textUnderlineOffset="2px" _hover={{ textDecoration: "none" }}>
+              Order Now →
+            </Text>
           </Link>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }

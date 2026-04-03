@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+import { Box, Flex, Text, Button } from '@chakra-ui/react';
+import { keyframes } from '@emotion/react';
 
 interface NotificationToastProps {
   id: string;
@@ -19,30 +20,39 @@ interface NotificationToastProps {
 
 const toastStyles = {
   success: {
-    bg: 'bg-green-50 border-green-200',
-    text: 'text-green-800',
+    bg: 'green.50',
+    borderColor: 'green.200',
+    textColor: 'green.800',
     icon: CheckCircle,
-    iconColor: 'text-green-600',
+    iconColor: 'green.600',
   },
   error: {
-    bg: 'bg-red-50 border-red-200',
-    text: 'text-red-800',
+    bg: 'red.50',
+    borderColor: 'red.200',
+    textColor: 'red.800',
     icon: AlertCircle,
-    iconColor: 'text-red-600',
+    iconColor: 'red.600',
   },
   warning: {
-    bg: 'bg-yellow-50 border-yellow-200',
-    text: 'text-yellow-800',
+    bg: 'yellow.50',
+    borderColor: 'yellow.200',
+    textColor: 'yellow.800',
     icon: AlertTriangle,
-    iconColor: 'text-yellow-600',
+    iconColor: 'yellow.600',
   },
   info: {
-    bg: 'bg-blue-50 border-blue-200',
-    text: 'text-blue-800',
+    bg: 'blue.50',
+    borderColor: 'blue.200',
+    textColor: 'blue.800',
     icon: Info,
-    iconColor: 'text-blue-600',
+    iconColor: 'blue.600',
   },
 };
+
+const shrink = keyframes`
+  from { width: 100%; }
+  to { width: 0%; }
+`;
 
 export default function NotificationToast({
   id,
@@ -81,73 +91,80 @@ export default function NotificationToast({
   };
 
   return (
-    <div
-      className={cn(
-        'fixed top-4 right-4 z-50 max-w-sm w-full transition-all duration-300 ease-in-out',
-        'safe-area-top mt-safe',
-        isVisible && !isExiting
-          ? 'opacity-100 translate-y-0 scale-100'
-          : 'opacity-0 translate-y-2 scale-95'
-      )}
+    <Box
+      position="fixed"
+      top={4}
+      right={4}
+      zIndex={50}
+      maxW="sm"
+      w="full"
+      transition="all 0.3s ease-in-out"
+      transform={isVisible && !isExiting ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.95)'}
+      opacity={isVisible && !isExiting ? 1 : 0}
     >
-      <div
-        className={cn(
-          'relative p-4 rounded-lg border shadow-lg backdrop-blur-sm',
-          style.bg,
-          style.text
-        )}
+      <Box
+        position="relative"
+        p={4}
+        rounded="lg"
+        border="1px"
+        borderColor={style.borderColor}
+        bg={style.bg}
+        color={style.textColor}
+        shadow="lg"
+        backdropFilter="blur(4px)"
       >
-        <div className="flex items-start space-x-3">
-          <Icon className={cn('w-5 h-5 mt-0.5 flex-shrink-0', style.iconColor)} />
+        <Flex align="flex-start" gap={3}>
+          <Box flexShrink={0} mt={0.5}>
+            <Icon size={20} color={style.iconColor} />
+          </Box>
 
-          <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-semibold">{title}</h4>
+          <Box flex={1} minW={0}>
+            <Text fontSize="sm" fontWeight="semibold">{title}</Text>
             {message && (
-              <p className="text-sm opacity-90 mt-1">{message}</p>
+              <Text fontSize="sm" opacity={0.9} mt={1}>{message}</Text>
             )}
 
             {action && (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
+                fontWeight="medium"
+                textDecoration="underline"
+                mt={2}
+                _hover={{ opacity: 0.8 }}
                 onClick={action.onClick}
-                className="text-sm font-medium underline mt-2 hover:opacity-80 transition-opacity"
               >
                 {action.label}
-              </button>
+              </Button>
             )}
-          </div>
+          </Box>
 
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
+            p={1}
+            rounded="md"
+            _hover={{ bg: "blackAlpha.100" }}
+            flexShrink={0}
             onClick={handleClose}
-            className="p-1 rounded-md hover:bg-black/10 transition-colors flex-shrink-0"
             aria-label="Close notification"
           >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+            <X size={16} />
+          </Button>
+        </Flex>
 
         {/* Progress bar for auto-close */}
         {duration > 0 && (
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10 rounded-b-lg overflow-hidden">
-            <div
-              className="h-full bg-current opacity-50 transition-all duration-100 ease-linear"
-              style={{
-                animation: `shrink ${duration}ms linear forwards`,
-              }}
+          <Box position="absolute" bottom={0} left={0} right={0} h={1} bg="blackAlpha.100" roundedBottom="lg" overflow="hidden">
+            <Box
+              h="full"
+              bg="currentColor"
+              opacity={0.5}
+              animation={`${shrink} ${duration}ms linear forwards`}
             />
-          </div>
+          </Box>
         )}
-      </div>
-
-      <style jsx>{`
-        @keyframes shrink {
-          from {
-            width: 100%;
-          }
-          to {
-            width: 0%;
-          }
-        }
-      `}</style>
-    </div>
+      </Box>
+    </Box>
   );
 }

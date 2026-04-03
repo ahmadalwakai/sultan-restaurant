@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface AdminPageHeaderProps {
   title: string;
@@ -12,27 +13,23 @@ interface AdminPageHeaderProps {
 
 export function AdminPageHeader({ title, description, actionLabel, actionHref, onAction }: AdminPageHeaderProps) {
   return (
-    <div className="flex items-center justify-between mb-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-        {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
-      </div>
+    <Flex align="center" justify="space-between" mb={6}>
+      <Box>
+        <Heading as="h1" fontSize="2xl" fontWeight="bold" color="gray.900">{title}</Heading>
+        {description && <Text mt={1} fontSize="sm" color="gray.500">{description}</Text>}
+      </Box>
       {actionLabel && actionHref && (
-        <Link
-          href={actionHref}
-          className="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 text-sm font-medium"
-        >
-          + {actionLabel}
+        <Link href={actionHref}>
+          <Button size="sm" bg="orange.600" color="white" _hover={{ bg: "orange.700" }}>
+            + {actionLabel}
+          </Button>
         </Link>
       )}
       {actionLabel && onAction && !actionHref && (
-        <button
-          onClick={onAction}
-          className="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 text-sm font-medium"
-        >
+        <Button onClick={onAction} size="sm" bg="orange.600" color="white" _hover={{ bg: "orange.700" }}>
           {actionLabel}
-        </button>
+        </Button>
       )}
-    </div>
+    </Flex>
   );
 }

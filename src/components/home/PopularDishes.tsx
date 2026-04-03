@@ -5,42 +5,53 @@ import { usePopularMenu } from "@/hooks/api";
 import { MenuItemCard } from "@/components/cards/MenuItemCard";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { SectionHeader } from "@/components/sections/SectionHeader";
-import { SectionShell } from "@/components/shared/SectionShell";
+import { Box, Container, VStack, SimpleGrid, Text } from "@chakra-ui/react";
 
 export function PopularDishes() {
   const { data: items, isLoading, isError } = usePopularMenu();
 
   return (
-    <SectionShell>
-      <SectionHeader
-        title="Most Popular Dishes"
-        subtitle="Our customers' all-time favourites"
-      />
-      {isLoading ? (
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-72 animate-pulse rounded-xl bg-gray-200" />
-          ))}
-        </div>
-      ) : isError || !items || items.length === 0 ? (
-        <p className="mt-12 text-center text-gray-500">
-          Our full menu is available on the menu page.
-        </p>
-      ) : (
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {items.slice(0, 8).map((item) => (
-            <MenuItemCard key={item.id} item={item} />
-          ))}
-        </div>
-      )}
-      <div className="mt-12 text-center">
-        <Link
-          href="/menu"
-          className="rounded-lg border-2 border-amber-500 px-8 py-3 font-semibold text-amber-600 transition-colors hover:bg-amber-500 hover:text-white"
-        >
-          See Full Menu
-        </Link>
-      </div>
-    </SectionShell>
+    <Box as="section" py={{ base: 12, md: 16 }} bg="bg.subtle">
+      <Container maxW="7xl" px={{ base: 4, md: 6, lg: 8 }}>
+        <VStack gap={8}>
+          <SectionHeader
+            title="Most Popular Dishes"
+            subtitle="Our customers' all-time favourites"
+          />
+          {isLoading ? (
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={6} w="full">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Box key={i} h="72" borderRadius="xl" bg="gray.200" animation="pulse 2s infinite" />
+              ))}
+            </SimpleGrid>
+          ) : isError || !items || items.length === 0 ? (
+            <Text textAlign="center" color="gray.500">
+              Our full menu is available on the menu page.
+            </Text>
+          ) : (
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={6} w="full">
+              {items.slice(0, 8).map((item) => (
+                <MenuItemCard key={item.id} item={item} />
+              ))}
+            </SimpleGrid>
+          )}
+          <Link href="/menu">
+            <Box
+              borderRadius="lg"
+              borderWidth="2px"
+              borderColor="amber.500"
+              px={8}
+              py={3}
+              fontWeight="semibold"
+              color="amber.600"
+              transition="all 0.2s"
+              _hover={{ bg: "amber.500", color: "white" }}
+            >
+              See Full Menu
+            </Box>
+          </Link>
+        </VStack>
+      </Container>
+    </Box>
   );
 }

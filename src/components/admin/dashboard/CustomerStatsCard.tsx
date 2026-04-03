@@ -1,5 +1,7 @@
 "use client";
 
+import { Card, SimpleGrid, Box, Text } from "@chakra-ui/react";
+
 interface CustomerStatsCardProps {
   totalCustomers: number;
   newToday: number;
@@ -8,19 +10,21 @@ interface CustomerStatsCardProps {
 
 export function CustomerStatsCard({ totalCustomers, newToday, returningRate }: CustomerStatsCardProps) {
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-      <h3 className="text-sm text-gray-500">Customers</h3>
-      <p className="mt-2 text-3xl font-bold text-gray-900">{totalCustomers.toLocaleString()}</p>
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        <div>
-          <p className="text-xs text-gray-400">New Today</p>
-          <p className="text-lg font-semibold text-green-600">+{newToday}</p>
-        </div>
-        <div>
-          <p className="text-xs text-gray-400">Returning</p>
-          <p className="text-lg font-semibold text-amber-600">{returningRate}%</p>
-        </div>
-      </div>
-    </div>
+    <Card.Root bg="bg.surface" shadow="sm" borderRadius="xl">
+      <Card.Body p={6}>
+        <Text fontSize="sm" color="gray.500">Customers</Text>
+        <Text mt={2} fontSize="3xl" fontWeight="bold" color="gray.900">{totalCustomers.toLocaleString()}</Text>
+        <SimpleGrid mt={4} columns={2} gap={4}>
+          <Box>
+            <Text fontSize="xs" color="gray.400">New Today</Text>
+            <Text fontSize="lg" fontWeight="semibold" color="green.600">+{newToday}</Text>
+          </Box>
+          <Box>
+            <Text fontSize="xs" color="gray.400">Returning</Text>
+            <Text fontSize="lg" fontWeight="semibold" color="amber.600">{returningRate}%</Text>
+          </Box>
+        </SimpleGrid>
+      </Card.Body>
+    </Card.Root>
   );
 }

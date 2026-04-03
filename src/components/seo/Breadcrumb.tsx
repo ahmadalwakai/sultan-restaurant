@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { HiChevronRight } from 'react-icons/hi';
+import { Flex, Text } from '@chakra-ui/react';
 import { generateBreadcrumbSchema, createBreadcrumbData } from '@/lib/seo/schemas/breadcrumb-schema';
 import { JsonLd } from './JsonLd';
 
@@ -26,10 +27,10 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
   return (
     <>
       <JsonLd data={schemaData} />
-      <nav className={`flex ${className}`} aria-label="Breadcrumb">
-        <ol className="flex items-center space-x-2">
+      <Flex as="nav" className={className} aria-label="Breadcrumb">
+        <Flex as="ol" align="center" gap={2}>
           {items.map((item, index) => (
-            <li key={item.href} className="flex items-center">
+            <Flex as="li" key={item.href} align="center">
               {index > 0 && (
                 <HiChevronRight
                   className="h-4 w-4 text-gray-400 mx-2"
@@ -37,24 +38,31 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
                 />
               )}
               {item.current ? (
-                <span
-                  className="text-sm font-medium text-gray-900"
+                <Text
+                  as="span"
+                  fontSize="sm"
+                  fontWeight="medium"
+                  color="gray.900"
                   aria-current="page"
                 >
                   {item.name}
-                </span>
+                </Text>
               ) : (
-                <Link
-                  href={item.href}
-                  className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
-                >
-                  {item.name}
+                <Link href={item.href}>
+                  <Text
+                    fontSize="sm"
+                    color="gray.500"
+                    _hover={{ color: "gray.700" }}
+                    transition="colors 0.2s"
+                  >
+                    {item.name}
+                  </Text>
                 </Link>
               )}
-            </li>
+            </Flex>
           ))}
-        </ol>
-      </nav>
+        </Flex>
+      </Flex>
     </>
   );
 }

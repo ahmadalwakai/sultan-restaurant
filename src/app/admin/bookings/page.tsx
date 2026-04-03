@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { AdminTableShell, AdminTableToolbar, AdminTableFilters, AdminTablePagination, AdminStatusBadge } from "@/components/admin/tables";
-import { adminTableStyles, adminFormStyles } from "@/lib/admin-ui";
+import { VStack, NativeSelect } from "@chakra-ui/react";
 import { adminHeadings } from "@/lib/admin-content";
 
 const BOOKING_STATUSES = [
@@ -47,54 +47,57 @@ export default function AdminBookingsPage() {
   return (
     <AdminShell>
       <AdminPageShell>
-        <AdminSectionTitle title={adminHeadings.bookings.title} description={adminHeadings.bookings.description} />
+        <VStack gap={0} align="stretch">
+          <AdminSectionTitle title={adminHeadings.bookings.title} description={adminHeadings.bookings.description} />
 
-        <AdminTableToolbar>
-          <AdminTableFilters value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={BOOKING_STATUSES} label="Status" />
-        </AdminTableToolbar>
+          <AdminTableToolbar>
+            <AdminTableFilters value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={BOOKING_STATUSES} label="Status" />
+          </AdminTableToolbar>
 
-        {loading ? (
-          <AdminLoadingState rows={5} height="3.5rem" />
-        ) : (
-          <AdminTableShell>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr style={adminTableStyles.head}>
-                  <th style={adminTableStyles.headCell}>Name</th>
-                  <th style={adminTableStyles.headCell}>Date</th>
-                  <th style={adminTableStyles.headCell}>Time</th>
-                  <th style={adminTableStyles.headCell}>Guests</th>
-                  <th style={adminTableStyles.headCell}>Status</th>
-                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookings.map((b) => (
-                  <tr key={b.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
-                    <td style={{ ...adminTableStyles.cell, fontWeight: 500 }}>{b.name}</td>
-                    <td style={adminTableStyles.cell}>{new Date(b.date).toLocaleDateString()}</td>
-                    <td style={adminTableStyles.cell}>{b.time}</td>
-                    <td style={adminTableStyles.cell}>{b.guests}</td>
-                    <td style={adminTableStyles.cell}>
-                      <select
-                        value={b.status}
-                        onChange={(e) => updateStatus(b.id, e.target.value)}
-                        style={{ ...adminFormStyles.select, width: "auto", padding: "0.25rem 0.5rem", fontSize: "0.75rem" }}
-                      >
-                        {BOOKING_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-                      </select>
-                    </td>
-                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
-                      <Link href={`/admin/bookings/${b.id}`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>View</Link>
-                    </td>
+          {loading ? (
+            <AdminLoadingState rows={5} height="3.5rem" />
+          ) : (
+            <AdminTableShell>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#F9FAFB" }}>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Name</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Date</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Time</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Guests</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Status</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "right", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </AdminTableShell>
-        )}
+                </thead>
+                <tbody>
+                  {bookings.map((b) => (
+                    <tr key={b.id} style={{ borderTop: "1px solid #F3F4F6" }}>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", fontWeight: 500 }}>{b.name}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>{new Date(b.date).toLocaleDateString()}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>{b.time}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>{b.guests}</td>
+                      <td style={{ padding: "0.75rem 1rem" }}>
+                        <NativeSelect.Root size="xs" maxW="8rem">
+                          <NativeSelect.Field
+                            value={b.status}
+                            onChange={(e) => updateStatus(b.id, e.target.value)}
+                          >
+                            {BOOKING_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                          </NativeSelect.Field>
+                        </NativeSelect.Root>
+                      </td>
+                      <td style={{ padding: "0.75rem 1rem", textAlign: "right" }}>
+                        <Link href={`/admin/bookings/${b.id}`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>View</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </AdminTableShell>
+          )}
 
-        <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+          <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+        </VStack>
       </AdminPageShell>
     </AdminShell>
   );

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { AdminTableShell, AdminTableToolbar, AdminTableSearch, AdminTableFilters, AdminTablePagination, AdminStatusBadge } from "@/components/admin/tables";
-import { adminTableStyles } from "@/lib/admin-ui";
+import { VStack } from "@chakra-ui/react";
 import { adminHeadings } from "@/lib/admin-content";
 
 const ORDER_STATUSES = [
@@ -42,47 +42,49 @@ export default function AdminOrdersPage() {
   return (
     <AdminShell>
       <AdminPageShell>
-        <AdminSectionTitle title={adminHeadings.orders.title} description={adminHeadings.orders.description} />
+        <VStack gap={0} align="stretch">
+          <AdminSectionTitle title={adminHeadings.orders.title} description={adminHeadings.orders.description} />
 
-        <AdminTableToolbar>
-          <AdminTableSearch value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search orders..." />
-          <AdminTableFilters value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={ORDER_STATUSES} label="Status" />
-        </AdminTableToolbar>
+          <AdminTableToolbar>
+            <AdminTableSearch value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search orders..." />
+            <AdminTableFilters value={status} onChange={(v) => { setStatus(v); setPage(1); }} options={ORDER_STATUSES} label="Status" />
+          </AdminTableToolbar>
 
-        {loading ? (
-          <AdminLoadingState rows={5} height="3.5rem" />
-        ) : (
-          <AdminTableShell>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr style={adminTableStyles.head}>
-                  <th style={adminTableStyles.headCell}>Order #</th>
-                  <th style={adminTableStyles.headCell}>Customer</th>
-                  <th style={adminTableStyles.headCell}>Total</th>
-                  <th style={adminTableStyles.headCell}>Status</th>
-                  <th style={adminTableStyles.headCell}>Date</th>
-                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order) => (
-                  <tr key={order.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
-                    <td style={{ ...adminTableStyles.cell, fontWeight: 500 }}>#{order.orderNumber}</td>
-                    <td style={adminTableStyles.cell}>{order.customerName}</td>
-                    <td style={adminTableStyles.cell}>£{(Number(order.total) / 100).toFixed(2)}</td>
-                    <td style={adminTableStyles.cell}><AdminStatusBadge status={order.status} /></td>
-                    <td style={{ ...adminTableStyles.cell, color: "#6B7280" }}>{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
-                      <Link href={`/admin/orders/${order.id}`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>View</Link>
-                    </td>
+          {loading ? (
+            <AdminLoadingState rows={5} height="3.5rem" />
+          ) : (
+            <AdminTableShell>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#F9FAFB" }}>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Order #</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Customer</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Total</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Status</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Date</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "right", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </AdminTableShell>
-        )}
+                </thead>
+                <tbody>
+                  {orders.map((order) => (
+                    <tr key={order.id} style={{ borderTop: "1px solid #F3F4F6" }}>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", fontWeight: 500 }}>#{order.orderNumber}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>{order.customerName}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>£{(Number(order.total) / 100).toFixed(2)}</td>
+                      <td style={{ padding: "0.75rem 1rem" }}><AdminStatusBadge status={order.status} /></td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", color: "#6B7280" }}>{new Date(order.createdAt).toLocaleDateString()}</td>
+                      <td style={{ padding: "0.75rem 1rem", textAlign: "right" }}>
+                        <Link href={`/admin/orders/${order.id}`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>View</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </AdminTableShell>
+          )}
 
-        <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+          <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+        </VStack>
       </AdminPageShell>
     </AdminShell>
   );

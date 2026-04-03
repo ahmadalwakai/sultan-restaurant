@@ -40,18 +40,18 @@ export default function MonitoringPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: adminSpacing.stack }}>
           <HealthStatusPanel health={healthData?.health ?? null} isLoading={healthLoading} />
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: adminSpacing.grid }} className="admin-monitor-3col">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: adminSpacing.grid }}>
             <ErrorRateChart stats={errorStats.data ?? null} isLoading={errorStats.isLoading} />
             <ResponseTimeChart stats={perfStats.data ?? null} isLoading={perfStats.isLoading} />
             <RequestVolumeChart stats={perfStats.data ?? null} isLoading={perfStats.isLoading} />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: adminSpacing.grid }} className="admin-monitor-2col">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: adminSpacing.grid }}>
             <RecentErrorsList errors={errorLogs.data?.logs ?? []} isLoading={errorLogs.isLoading} />
             <SlowQueriesList queries={perfLogs.data?.logs ?? []} isLoading={perfLogs.isLoading} />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: adminSpacing.grid }} className="admin-monitor-2col">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: adminSpacing.grid }}>
             <SystemInfoCard system={healthData?.system ?? null} isLoading={healthLoading} />
             <AlertHistory alerts={alertData?.alerts ?? []} isLoading={alertsLoading} />
           </div>

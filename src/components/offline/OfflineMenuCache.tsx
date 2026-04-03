@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Menu, Clock, Wifi, WifiOff } from 'lucide-react';
+import { Box, Button, Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 
 interface CachedMenuItem {
   id: string;
@@ -60,69 +61,72 @@ export default function OfflineMenuCache() {
   }
 
   return (
-    <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-6">
-      <div className="flex items-center space-x-3 mb-4">
-        <div className="flex items-center space-x-2 text-amber-700">
+    <Box bg="amber.50" borderWidth="1px" borderColor="amber.200" borderRadius="lg" p={6} mb={6}>
+      <Flex align="center" gap={3} mb={4}>
+        <Flex align="center" gap={2} color="amber.700">
           <WifiOff size={20} />
-          <span className="font-medium">Offline Mode</span>
-        </div>
+          <Text fontWeight="medium">Offline Mode</Text>
+        </Flex>
         {lastUpdated && (
-          <div className="flex items-center space-x-1 text-sm text-amber-600">
+          <Flex align="center" gap={1} fontSize="sm" color="amber.600">
             <Clock size={14} />
-            <span>Last updated: {lastUpdated.toLocaleDateString()}</span>
-          </div>
+            <Text>Last updated: {lastUpdated.toLocaleDateString()}</Text>
+          </Flex>
         )}
-      </div>
+      </Flex>
 
-      <div className="space-y-4">
-        <div className="flex items-center space-x-2 text-amber-800">
+      <VStack gap={4} align="stretch">
+        <Flex align="center" gap={2} color="amber.800">
           <Menu size={18} />
-          <span className="font-medium">Cached Menu Available</span>
-        </div>
+          <Text fontWeight="medium">Cached Menu Available</Text>
+        </Flex>
 
-        <p className="text-amber-700 text-sm">
-          You're viewing a cached version of our menu. Prices and availability may have changed.
+        <Text color="amber.700" fontSize="sm">
+          You&apos;re viewing a cached version of our menu. Prices and availability may have changed.
           Connect to the internet to see the latest menu and place orders.
-        </p>
+        </Text>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4} mt={4}>
           {cachedMenu.slice(0, 6).map((category) => (
-            <div key={category.id} className="bg-white rounded-lg p-4 border border-amber-200">
-              <h3 className="font-medium text-gray-900 mb-2">{category.name}</h3>
-              <div className="space-y-2">
+            <Box key={category.id} bg="white" borderRadius="lg" p={4} borderWidth="1px" borderColor="amber.200">
+              <Heading size="sm" color="gray.900" mb={2}>{category.name}</Heading>
+              <VStack gap={2} align="stretch">
                 {category.items.slice(0, 3).map((item) => (
-                  <div key={item.id} className="flex justify-between items-center">
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                      <p className="text-xs text-gray-600 line-clamp-1">{item.description}</p>
-                    </div>
-                    <span className="text-sm font-medium text-amber-700 ml-2">
-                      £{item.price.toFixed(2)}
-                    </span>
-                  </div>
+                  <Flex key={item.id} justify="space-between" align="center">
+                    <Box flex="1">
+                      <Text fontSize="sm" fontWeight="medium" color="gray.900">{item.name}</Text>
+                      <Text fontSize="xs" color="gray.600" lineClamp={1}>{item.description}</Text>
+                    </Box>
+                    <Text fontSize="sm" fontWeight="medium" color="amber.700" ml={2}>
+                      {String.fromCharCode(163)}{item.price.toFixed(2)}
+                    </Text>
+                  </Flex>
                 ))}
                 {category.items.length > 3 && (
-                  <p className="text-xs text-gray-500">
+                  <Text fontSize="xs" color="gray.500">
                     +{category.items.length - 3} more items
-                  </p>
+                  </Text>
                 )}
-              </div>
-            </div>
+              </VStack>
+            </Box>
           ))}
-        </div>
+        </SimpleGrid>
 
-        <div className="flex items-center justify-between pt-4 border-t border-amber-200">
-          <p className="text-sm text-amber-700">
+        <Flex align="center" justify="space-between" pt={4} borderTopWidth="1px" borderColor="amber.200">
+          <Text fontSize="sm" color="amber.700">
             Showing {cachedMenu.reduce((total, cat) => total + cat.items.length, 0)} cached items
-          </p>
-          <button
+          </Text>
+          <Button
             onClick={() => window.location.reload()}
-            className="text-sm bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded transition-colors"
+            size="sm"
+            bg="amber.600"
+            color="white"
+            _hover={{ bg: "amber.700" }}
           >
             Refresh when online
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Flex>
+      </VStack>
+    </Box>
   );
 }

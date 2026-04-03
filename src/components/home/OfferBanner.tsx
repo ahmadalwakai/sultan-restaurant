@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useOffers } from "@/hooks/api";
+import { Box, Text } from "@chakra-ui/react";
 
 export function OfferBanner() {
   const { data: offers } = useOffers();
@@ -10,7 +11,7 @@ export function OfferBanner() {
   if (!topOffer) return null;
 
   return (
-    <div className="bg-amber-500 py-2 text-center text-sm font-medium text-white">
+    <Box bg="amber.500" py={2} textAlign="center" fontSize="sm" fontWeight="medium" color="white">
       <Link href="/offers" className="hover:underline">
         🎉 {topOffer.title} &mdash;{" "}
         {topOffer.discountType === "PERCENTAGE"
@@ -18,6 +19,6 @@ export function OfferBanner() {
           : `£${(topOffer.discount / 100).toFixed(2)} OFF`}
         {" "}&rarr;
       </Link>
-    </div>
+    </Box>
   );
 }

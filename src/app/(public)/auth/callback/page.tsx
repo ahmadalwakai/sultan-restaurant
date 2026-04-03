@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Box, Spinner } from "@chakra-ui/react";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
@@ -11,8 +12,8 @@ export default function AuthCallbackPage() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="animate-spin h-8 w-8 rounded-full border-4 border-amber-500 border-t-transparent" />
-    </div>
+    <Box display="flex" minH="screen" alignItems="center" justifyContent="center">
+      <Spinner size="lg" color="orange.500" />
+    </Box>
   );
 }

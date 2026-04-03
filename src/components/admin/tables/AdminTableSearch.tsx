@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { adminFormStyles } from "@/lib/admin-ui";
+import { Input } from "@chakra-ui/react";
 
 interface AdminTableSearchProps {
   value: string;
@@ -19,13 +19,15 @@ export function AdminTableSearch({ value, onChange, placeholder = "Search..." }:
   }, [local, onChange]);
 
   return (
-    <input
+    <Input
       type="text"
       value={local}
       onChange={(e) => setLocal(e.target.value)}
       placeholder={placeholder}
-      style={{ ...adminFormStyles.input, maxWidth: "16rem" }}
-      className="admin-table-search"
+      maxW="16rem"
+      size="sm"
+      borderColor="gray.300"
+      _focus={{ borderColor: "yellow.500", boxShadow: "0 0 0 1px var(--chakra-colors-yellow-500)" }}
     />
   );
 }

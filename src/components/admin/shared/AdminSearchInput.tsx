@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Input } from "@chakra-ui/react";
 
 interface AdminSearchInputProps {
   value: string;
@@ -17,12 +18,13 @@ export function AdminSearchInput({ value, onChange, placeholder = "Search..." }:
   }, [local, onChange]);
 
   return (
-    <input
+    <Input
       type="text"
       value={local}
       onChange={(e) => setLocal(e.target.value)}
       placeholder={placeholder}
-      className="w-full max-w-xs px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+      maxW="xs"
+      size="sm"
     />
   );
 }

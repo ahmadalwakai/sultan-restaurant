@@ -2,6 +2,8 @@
 
 // ─── Audit Log Table ─────────────────────────────────────
 
+import { Box, Card, Heading, Text, Table } from "@chakra-ui/react";
+
 interface AuditEntry {
   id: string;
   adminEmail: string;
@@ -16,68 +18,79 @@ interface AuditLogTableProps {
   isLoading?: boolean;
 }
 
-const actionColors: Record<string, string> = {
-  CREATE: "bg-green-100 text-green-800",
-  UPDATE: "bg-blue-100 text-blue-800",
-  DELETE: "bg-red-100 text-red-800",
-  LOGIN: "bg-purple-100 text-purple-800",
-  LOGOUT: "bg-gray-100 text-gray-800",
-  STATUS_CHANGE: "bg-yellow-100 text-yellow-800",
-  SETTINGS_UPDATE: "bg-indigo-100 text-indigo-800",
-  REFUND: "bg-orange-100 text-orange-800",
+const actionColors: Record<string, { bg: string; color: string }> = {
+  CREATE: { bg: "green.100", color: "green.800" },
+  UPDATE: { bg: "blue.100", color: "blue.800" },
+  DELETE: { bg: "red.100", color: "red.800" },
+  LOGIN: { bg: "purple.100", color: "purple.800" },
+  LOGOUT: { bg: "gray.100", color: "gray.800" },
+  STATUS_CHANGE: { bg: "yellow.100", color: "yellow.800" },
+  SETTINGS_UPDATE: { bg: "indigo.100", color: "indigo.800" },
+  REFUND: { bg: "orange.100", color: "orange.800" },
 };
 
 export function AuditLogTable({ logs, isLoading }: AuditLogTableProps) {
   if (isLoading) {
     return (
-      <div className="bg-white border rounded-lg p-6">
-        <div className="h-5 w-28 bg-gray-100 rounded animate-pulse mb-4" />
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-10 bg-gray-50 rounded animate-pulse mb-2" />
-        ))}
-      </div>
+      <Card.Root>
+        <Card.Body p={6}>
+          <Box h="5" w="28" bg="gray.100" rounded="md" animation="pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite" mb={4} />
+          {[...Array(5)].map((_, i) => (
+            <Box key={i} h="10" bg="gray.50" rounded="md" animation="pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite" mb={2} />
+          ))}
+        </Card.Body>
+      </Card.Root>
     );
   }
 
   return (
-    <div className="bg-white border rounded-lg overflow-hidden">
-      <div className="p-6 border-b">
-        <h3 className="text-lg font-semibold text-gray-900">Audit Log</h3>
-      </div>
+    <Card.Root overflow="hidden">
+      <Box p={6} borderBottomWidth="1px">
+        <Heading size="md" color="gray.900">Audit Log</Heading>
+      </Box>
       {logs.length === 0 ? (
-        <p className="p-6 text-sm text-gray-500">No audit entries</p>
+        <Text p={6} fontSize="sm" color="gray.500">No audit entries</Text>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="text-left px-4 py-2 font-medium text-gray-600">Admin</th>
-                <th className="text-left px-4 py-2 font-medium text-gray-600">Action</th>
-                <th className="text-left px-4 py-2 font-medium text-gray-600">Entity</th>
-                <th className="text-left px-4 py-2 font-medium text-gray-600">Time</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
+        <Box overflowX="auto">
+          <Table.Root size="sm">
+            <Table.Header>
+              <Table.Row bg="gray.50">
+                <Table.ColumnHeader textAlign="left" px={4} py={2} fontWeight="medium" color="gray.600">Admin</Table.ColumnHeader>
+                <Table.ColumnHeader textAlign="left" px={4} py={2} fontWeight="medium" color="gray.600">Action</Table.ColumnHeader>
+                <Table.ColumnHeader textAlign="left" px={4} py={2} fontWeight="medium" color="gray.600">Entity</Table.ColumnHeader>
+                <Table.ColumnHeader textAlign="left" px={4} py={2} fontWeight="medium" color="gray.600">Time</Table.ColumnHeader>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
               {logs.map((log) => (
-                <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 text-gray-700">{log.adminEmail}</td>
-                  <td className="px-4 py-2">
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded ${actionColors[log.action] ?? "bg-gray-100"}`}>
+                <Table.Row key={log.id} _hover={{ bg: "gray.50" }}>
+                  <Table.Cell px={4} py={2} color="gray.700">{log.adminEmail}</Table.Cell>
+                  <Table.Cell px={4} py={2}>
+                    <Box
+                      as="span"
+                      fontSize="xs"
+                      fontWeight="medium"
+                      px={2}
+                      py={0.5}
+                      rounded="md"
+                      bg={actionColors[log.action]?.bg ?? "gray.100"}
+                      color={actionColors[log.action]?.color}
+                    >
                       {log.action}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2 text-gray-700">
+                    </Box>
+                  </Table.Cell>
+                  <Table.Cell px={4} py={2} color="gray.700">
                     {log.entity}{log.entityId ? `/${log.entityId}` : ""}
-                  </td>
-                  <td className="px-4 py-2 text-gray-500">
+                  </Table.Cell>
+                  <Table.Cell px={4} py={2} color="gray.500">
                     {new Date(log.createdAt).toLocaleString()}
-                  </td>
-                </tr>
+                  </Table.Cell>
+                </Table.Row>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </Table.Body>
+          </Table.Root>
+        </Box>
       )}
-    </div>
+    </Card.Root>
   );
 }

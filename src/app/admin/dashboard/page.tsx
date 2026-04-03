@@ -6,8 +6,8 @@ import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/componen
 import { AdminStatCard } from "@/components/admin/cards/AdminStatCard";
 import { AdminInfoCard } from "@/components/admin/cards/AdminInfoCard";
 import { AdminQuickActions } from "@/components/admin/navigation/AdminQuickActions";
-import { adminSpacing } from "@/lib/admin-ui";
 import { adminHeadings } from "@/lib/admin-content";
+import { SimpleGrid, VStack, HStack, Text, Heading, Box } from "@chakra-ui/react";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<{ totalOrders: number; totalRevenue: number; totalBookings: number; totalCustomers: number } | null>(null);
@@ -30,63 +30,61 @@ export default function DashboardPage() {
   return (
     <AdminShell>
       <AdminPageShell>
-        <AdminSectionTitle title={adminHeadings.dashboard.title} description={adminHeadings.dashboard.description} />
+        <VStack gap={8} align="stretch">
+          <AdminSectionTitle title={adminHeadings.dashboard.title} description={adminHeadings.dashboard.description} />
 
-        {/* Stats Grid */}
-        {!stats ? (
-          <AdminLoadingState rows={1} height="5rem" />
-        ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(14rem, 1fr))", gap: adminSpacing.grid }}>
-            {statCards.map((s) => (
-              <AdminStatCard key={s.label} label={s.label} value={s.value} icon={s.icon} />
-            ))}
-          </div>
-        )}
+          {/* Stats Grid */}
+          {!stats ? (
+            <AdminLoadingState rows={1} height="5rem" />
+          ) : (
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={5}>
+              {statCards.map((s) => (
+                <AdminStatCard key={s.label} label={s.label} value={s.value} icon={s.icon} />
+              ))}
+            </SimpleGrid>
+          )}
 
-        {/* Quick Actions */}
-        <div style={{ marginTop: adminSpacing.stack }}>
-          <h2 style={{ fontSize: "1rem", fontWeight: 600, color: "#111827", marginBottom: "0.75rem" }}>Quick Actions</h2>
-          <AdminQuickActions />
-        </div>
+          {/* Quick Actions */}
+          <Box>
+            <Heading size="sm" color="gray.900" mb={3}>
+              Quick Actions
+            </Heading>
+            <AdminQuickActions />
+          </Box>
 
-        {/* Recent Activity */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: adminSpacing.grid, marginTop: adminSpacing.stack }} className="admin-dashboard-grid">
-          <AdminInfoCard title="Recent Orders">
-            {recent.recentOrders.length === 0 ? (
-              <p style={{ fontSize: "0.875rem", color: "#9CA3AF" }}>No recent orders</p>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                {recent.recentOrders.slice(0, 5).map((o) => (
-                  <div key={o.id} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem" }}>
-                    <span style={{ color: "#374151" }}>#{o.orderNumber}</span>
-                    <span style={{ color: "#6B7280" }}>£{(Number(o.total) / 100).toFixed(2)}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </AdminInfoCard>
+          {/* Recent Activity */}
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={5}>
+            <AdminInfoCard title="Recent Orders">
+              {recent.recentOrders.length === 0 ? (
+                <Text fontSize="sm" color="gray.400">No recent orders</Text>
+              ) : (
+                <VStack gap={2} align="stretch">
+                  {recent.recentOrders.slice(0, 5).map((o) => (
+                    <HStack key={o.id} justify="space-between" fontSize="sm">
+                      <Text color="gray.700">#{o.orderNumber}</Text>
+                      <Text color="gray.500">£{(Number(o.total) / 100).toFixed(2)}</Text>
+                    </HStack>
+                  ))}
+                </VStack>
+              )}
+            </AdminInfoCard>
 
-          <AdminInfoCard title="Recent Bookings">
-            {recent.recentBookings.length === 0 ? (
-              <p style={{ fontSize: "0.875rem", color: "#9CA3AF" }}>No recent bookings</p>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                {recent.recentBookings.slice(0, 5).map((b) => (
-                  <div key={b.id} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem" }}>
-                    <span style={{ color: "#374151" }}>{b.name}</span>
-                    <span style={{ color: "#6B7280" }}>{b.date}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </AdminInfoCard>
-        </div>
-
-        <style>{`
-          @media (max-width: 768px) {
-            .admin-dashboard-grid { grid-template-columns: 1fr !important; }
-          }
-        `}</style>
+            <AdminInfoCard title="Recent Bookings">
+              {recent.recentBookings.length === 0 ? (
+                <Text fontSize="sm" color="gray.400">No recent bookings</Text>
+              ) : (
+                <VStack gap={2} align="stretch">
+                  {recent.recentBookings.slice(0, 5).map((b) => (
+                    <HStack key={b.id} justify="space-between" fontSize="sm">
+                      <Text color="gray.700">{b.name}</Text>
+                      <Text color="gray.500">{b.date}</Text>
+                    </HStack>
+                  ))}
+                </VStack>
+              )}
+            </AdminInfoCard>
+          </SimpleGrid>
+        </VStack>
       </AdminPageShell>
     </AdminShell>
   );

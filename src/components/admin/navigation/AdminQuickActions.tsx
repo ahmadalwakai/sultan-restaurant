@@ -1,7 +1,7 @@
 "use client";
 
 import { AdminActionCard } from "@/components/admin/cards/AdminActionCard";
-import { adminSpacing } from "@/lib/admin-ui";
+import { SimpleGrid } from "@chakra-ui/react";
 
 /** Dashboard quick-action grid */
 export function AdminQuickActions() {
@@ -15,16 +15,10 @@ export function AdminQuickActions() {
   ];
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(12rem, 1fr))",
-        gap: adminSpacing.grid,
-      }}
-    >
+    <SimpleGrid columns={{ base: 2, sm: 3, lg: 6 }} gap={5}>
       {actions.map((a) => (
         <AdminActionCard key={a.href} icon={a.icon} title={a.title} href={a.href} />
       ))}
-    </div>
+    </SimpleGrid>
   );
 }

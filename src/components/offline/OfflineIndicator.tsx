@@ -2,12 +2,26 @@
 
 import { useState, useEffect } from 'react';
 import { Wifi, WifiOff } from 'lucide-react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 interface OfflineIndicatorProps {
   position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
   showLabel?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
+
+const POSITION_PROPS: Record<string, Record<string, number>> = {
+  'top-right': { top: 4, right: 4 },
+  'top-left': { top: 4, left: 4 },
+  'bottom-right': { bottom: 4, right: 4 },
+  'bottom-left': { bottom: 4, left: 4 },
+};
+
+const SIZE_MAP: Record<string, { box: number; icon: number }> = {
+  sm: { box: 8, icon: 16 },
+  md: { box: 10, icon: 20 },
+  lg: { box: 12, icon: 24 },
+};
 
 export default function OfflineIndicator({
   position = 'top-right',
@@ -23,7 +37,6 @@ export default function OfflineIndicator({
     const handleOnline = () => {
       setIsOnline(true);
       setShowIndicator(true);
-      // Auto-hide after 3 seconds when back online
       setTimeout(() => setShowIndicator(false), 3000);
     };
 
@@ -43,60 +56,55 @@ export default function OfflineIndicator({
 
   if (isOnline && !showIndicator) return null;
 
-  const positionClasses = {
-    'top-right': 'top-4 right-4',
-    'top-left': 'top-4 left-4',
-    'bottom-right': 'bottom-4 right-4',
-    'bottom-left': 'bottom-4 left-4',
-  };
-
-  const sizeClasses = {
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10',
-    lg: 'w-12 h-12',
-  };
-
-  const iconSizes = {
-    sm: 16,
-    md: 20,
-    lg: 24,
-  };
+  const pos = POSITION_PROPS[position];
+  const sizeConfig = SIZE_MAP[size];
 
   return (
-    <div
-      className={`fixed ${positionClasses[position]} z-40 transition-all duration-300 ${
-        showIndicator ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-      }`}
+    <Box
+      position="fixed"
+      {...pos}
+      zIndex={40}
+      transition="all 0.3s"
+      opacity={showIndicator ? 1 : 0}
+      transform={showIndicator ? 'translateY(0)' : 'translateY(0.5rem)'}
     >
-      <div
-        className={`${
-          sizeClasses[size]
-        } rounded-full flex items-center justify-center shadow-lg ${
-          isOnline
-            ? 'bg-green-500 text-white'
-            : 'bg-red-500 text-white animate-pulse'
-        }`}
+      <Flex
+        w={sizeConfig.box}
+        h={sizeConfig.box}
+        borderRadius="full"
+        align="center"
+        justify="center"
+        shadow="lg"
+        bg={isOnline ? 'green.500' : 'red.500'}
+        color="white"
+        className={!isOnline ? 'animate-pulse' : undefined}
         role="status"
         aria-label={isOnline ? 'Online' : 'Offline'}
       >
         {isOnline ? (
-          <Wifi size={iconSizes[size]} />
+          <Wifi size={sizeConfig.icon} />
         ) : (
-          <WifiOff size={iconSizes[size]} />
+          <WifiOff size={sizeConfig.icon} />
         )}
-      </div>
+      </Flex>
 
       {showLabel && (
-        <div
-          className={`absolute top-full mt-2 px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
-            isOnline
-              ? 'bg-green-500 text-white'
-              : 'bg-red-500 text-white'
-          }`}
+        <Text
+          position="absolute"
+          top="full"
+          mt={2}
+          px={2}
+          py={1}
+          borderRadius="md"
+          fontSize="xs"
+          fontWeight="medium"
+          whiteSpace="nowrap"
+          bg={isOnline ? 'green.500' : 'red.500'}
+          color="white"
         >
           {isOnline ? 'Online' : 'Offline'}
-        </div>
+        </Text>
       )}
-    </div>
+    </Box>
   );
 }

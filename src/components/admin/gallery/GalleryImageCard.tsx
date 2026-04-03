@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 
 interface GalleryImageCardProps {
   image: { id: string; url: string; alt?: string };
@@ -13,19 +14,25 @@ export function GalleryImageCard({ image, onDelete, onMoveUp, onMoveDown }: Gall
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div
-      className="relative aspect-square rounded-lg overflow-hidden border bg-gray-50 group"
+    <Box
+      position="relative"
+      aspectRatio="1/1"
+      borderRadius="lg"
+      overflow="hidden"
+      border="1px solid"
+      borderColor="gray.200"
+      bg="gray.50"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <img src={image.url} alt={image.alt ?? ""} className="w-full h-full object-cover" />
+      <Image src={image.url} alt={image.alt ?? ""} w="full" h="full" objectFit="cover" />
       {hovered && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center gap-2">
-          {onMoveUp && <button onClick={onMoveUp} className="w-8 h-8 bg-white rounded-full text-sm font-bold">↑</button>}
-          {onMoveDown && <button onClick={onMoveDown} className="w-8 h-8 bg-white rounded-full text-sm font-bold">↓</button>}
-          <button onClick={onDelete} className="w-8 h-8 bg-red-500 text-white rounded-full text-sm font-bold">×</button>
-        </div>
+        <Flex position="absolute" inset={0} bg="blackAlpha.600" align="center" justify="center" gap={2}>
+          {onMoveUp && <IconButton aria-label="Move up" size="sm" borderRadius="full" bg="white" onClick={onMoveUp}>↑</IconButton>}
+          {onMoveDown && <IconButton aria-label="Move down" size="sm" borderRadius="full" bg="white" onClick={onMoveDown}>↓</IconButton>}
+          <IconButton aria-label="Delete" size="sm" borderRadius="full" bg="red.500" color="white" onClick={onDelete}>×</IconButton>
+        </Flex>
       )}
-    </div>
+    </Box>
   );
 }

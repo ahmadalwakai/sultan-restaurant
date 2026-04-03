@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/hooks";
 import { redirect } from "next/navigation";
+import { Box, Container, Heading, VStack, Text } from "@chakra-ui/react";
 
 export const dynamic = 'force-dynamic';
 
@@ -12,22 +13,22 @@ export default function ProfilePage() {
   if (isLoading) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="mx-auto max-w-2xl px-4">
-        <h1 className="font-heading text-2xl font-bold">Profile</h1>
-        <div className="mt-6 rounded-2xl bg-white p-6 shadow-lg">
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-500">Name</label>
-              <p className="text-gray-900">{user?.name ?? "-"}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-500">Email</label>
-              <p className="text-gray-900">{user?.email ?? "-"}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Box minH="screen" bg="gray.50" py={12}>
+      <Container maxW="2xl" px={4}>
+        <Heading fontFamily="heading" size="lg" fontWeight="bold">Profile</Heading>
+        <Box mt={6} rounded="2xl" bg="white" p={6} shadow="lg">
+          <VStack gap={4} align="stretch">
+            <Box>
+              <Text fontSize="sm" fontWeight="medium" color="gray.500">Name</Text>
+              <Text color="gray.900">{user?.name ?? "-"}</Text>
+            </Box>
+            <Box>
+              <Text fontSize="sm" fontWeight="medium" color="gray.500">Email</Text>
+              <Text color="gray.900">{user?.email ?? "-"}</Text>
+            </Box>
+          </VStack>
+        </Box>
+      </Container>
+    </Box>
   );
 }

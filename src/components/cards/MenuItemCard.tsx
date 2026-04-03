@@ -4,12 +4,18 @@ import Image from "next/image";
 import { useState } from "react";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import { useCartStore } from "@/lib/cart";
-import { CardSurface } from "@/components/shared/CardSurface";
+import { Card, Box, Flex, HStack, Heading, Text, Button } from "@chakra-ui/react";
 import type { MenuItemPublic } from "@/types/menu";
 
 interface MenuItemCardProps {
   item: MenuItemPublic;
 }
+
+const badgeColors: Record<string, string> = {
+  V: "green.500",
+  VG: "green.600",
+  GF: "blue.500",
+};
 
 export function MenuItemCard({ item }: MenuItemCardProps) {
   const addItem = useCartStore((s) => s.addItem);
@@ -24,79 +30,95 @@ export function MenuItemCard({ item }: MenuItemCardProps) {
   };
 
   const dietaryBadges = [
-    item.isVegetarian && { label: "V", color: "bg-green-500" },
-    item.isVegan && { label: "VG", color: "bg-green-600" },
-    item.isGlutenFree && { label: "GF", color: "bg-blue-500" },
-  ].filter(Boolean) as { label: string; color: string }[];
+    item.isVegetarian && { label: "V" },
+    item.isVegan && { label: "VG" },
+    item.isGlutenFree && { label: "GF" },
+  ].filter(Boolean) as { label: string }[];
 
   const [imgError, setImgError] = useState(false);
 
   return (
-    <CardSurface className="group flex flex-col transition-all hover:shadow-lg">
-      <div className="relative aspect-[4/3] overflow-hidden">
-        {item.image && !imgError ? (
-          <Image
-            src={item.image}
-            alt={item.name}
-            fill
-            unoptimized
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50">
-            <span className="text-5xl">🍛</span>
-          </div>
-        )}
-        {item.isPopular && (
-          <span className="absolute top-3 left-3 rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-bold text-white">
-            Popular
-          </span>
-        )}
-        {dietaryBadges.length > 0 && (
-          <div className="absolute top-3 right-3 flex gap-1">
-            {dietaryBadges.map((badge) => (
-              <span
-                key={badge.label}
-                className={`${badge.color} rounded-full px-1.5 py-0.5 text-[10px] font-bold text-white`}
-              >
-                {badge.label}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
+    <Card.Root overflow="hidden" bg="bg.surface" shadow="sm" borderRadius="xl" transition="all 0.2s" _hover={{ shadow: "lg" }}>
+      <Card.Header p={0}>
+        <Box position="relative" css={{ aspectRatio: "4/3" }} overflow="hidden">
+          {item.image && !imgError ? (
+            <Image
+              src={item.image}
+              alt={item.name}
+              fill
+              unoptimized
+              style={{ objectFit: "cover", transition: "transform 0.5s" }}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            <Flex h="full" w="full" align="center" justify="center" bgGradient="to-br" gradientFrom="amber.50" gradientTo="orange.50">
+              <Text fontSize="5xl">🍛</Text>
+            </Flex>
+          )}
+          {item.isPopular && (
+            <Box position="absolute" top={3} left={3} borderRadius="full" bg="amber.500" px={2.5} py={0.5} fontSize="xs" fontWeight="bold" color="white">
+              Popular
+            </Box>
+          )}
+          {dietaryBadges.length > 0 && (
+            <HStack position="absolute" top={3} right={3} gap={1}>
+              {dietaryBadges.map((badge) => (
+                <Box
+                  key={badge.label}
+                  borderRadius="full"
+                  bg={badgeColors[badge.label]}
+                  px={1.5}
+                  py={0.5}
+                  fontSize="10px"
+                  fontWeight="bold"
+                  color="white"
+                >
+                  {badge.label}
+                </Box>
+              ))}
+            </HStack>
+          )}
+        </Box>
+      </Card.Header>
 
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className="font-heading text-lg font-bold text-gray-900">
+      <Card.Body p={4} display="flex" flexDirection="column" flex={1}>
+        <Heading as="h3" fontFamily="heading" fontSize="lg" fontWeight="bold" color="gray.900">
           {item.name}
-        </h3>
+        </Heading>
         {item.description && (
-          <p className="mt-1 text-sm text-gray-500 line-clamp-2">
+          <Text mt={1} fontSize="sm" color="gray.500" lineClamp={2}>
             {item.description}
-          </p>
+          </Text>
         )}
         {item.spiceLevel > 0 && (
-          <div className="mt-2 flex items-center gap-0.5">
+          <HStack mt={2} gap={0.5}>
             {Array.from({ length: item.spiceLevel }).map((_, i) => (
-              <span key={i} className="text-xs">🌶️</span>
+              <Text key={i} fontSize="xs">🌶️</Text>
             ))}
-          </div>
+          </HStack>
         )}
-        <div className="mt-auto flex items-center justify-between pt-3">
-          <span className="text-lg font-bold text-amber-600">
+        <Flex mt="auto" align="center" justify="space-between" pt={3}>
+          <Text fontSize="lg" fontWeight="bold" color="amber.600">
             {formatCurrency(item.price)}
-          </span>
-          <button
+          </Text>
+          <Button
             onClick={handleAdd}
             disabled={!item.isAvailable}
-            className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+            borderRadius="lg"
+            bg="amber.500"
+            px={4}
+            py={2}
+            fontSize="sm"
+            fontWeight="semibold"
+            color="white"
+            _hover={{ bg: "amber.600" }}
+            _disabled={{ cursor: "not-allowed", opacity: 0.5 }}
           >
             {item.isAvailable ? "Add to Cart" : "Unavailable"}
-          </button>
-        </div>
-      </div>
-    </CardSurface>
+          </Button>
+        </Flex>
+      </Card.Body>
+    </Card.Root>
   );
 }

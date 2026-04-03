@@ -1,5 +1,6 @@
 "use client";
 
+import { Card, Heading, VStack, HStack, Text, Box } from "@chakra-ui/react";
 import type { BookingPublic } from "@/types/booking";
 
 interface BookingSummaryCardProps {
@@ -8,34 +9,36 @@ interface BookingSummaryCardProps {
 
 export function BookingSummaryCard({ booking }: BookingSummaryCardProps) {
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
-      <h3 className="font-bold text-gray-900">Booking Summary</h3>
-      <div className="mt-4 space-y-3">
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-500">Name</span>
-          <span className="font-medium text-gray-900">{booking.name}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-500">Date</span>
-          <span className="font-medium text-gray-900">
-            {new Date(booking.date).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })}
-          </span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-500">Time</span>
-          <span className="font-medium text-gray-900">{booking.time}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-500">Guests</span>
-          <span className="font-medium text-gray-900">{booking.guests} {booking.guests === 1 ? "person" : "people"}</span>
-        </div>
-        {booking.specialRequests && (
-          <div className="border-t pt-3">
-            <p className="text-sm text-gray-500">Special Requests</p>
-            <p className="mt-1 text-sm text-gray-700">{booking.specialRequests}</p>
-          </div>
-        )}
-      </div>
-    </div>
+    <Card.Root bg="bg.surface" shadow="sm" borderRadius="xl">
+      <Card.Body p={5}>
+        <Heading as="h3" fontSize="md" fontWeight="bold" color="gray.900">Booking Summary</Heading>
+        <VStack mt={4} gap={3} align="stretch">
+          <HStack justify="space-between" fontSize="sm">
+            <Text color="gray.500">Name</Text>
+            <Text fontWeight="medium" color="gray.900">{booking.name}</Text>
+          </HStack>
+          <HStack justify="space-between" fontSize="sm">
+            <Text color="gray.500">Date</Text>
+            <Text fontWeight="medium" color="gray.900">
+              {new Date(booking.date).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })}
+            </Text>
+          </HStack>
+          <HStack justify="space-between" fontSize="sm">
+            <Text color="gray.500">Time</Text>
+            <Text fontWeight="medium" color="gray.900">{booking.time}</Text>
+          </HStack>
+          <HStack justify="space-between" fontSize="sm">
+            <Text color="gray.500">Guests</Text>
+            <Text fontWeight="medium" color="gray.900">{booking.guests} {booking.guests === 1 ? "person" : "people"}</Text>
+          </HStack>
+          {booking.specialRequests && (
+            <Box borderTopWidth="1px" pt={3}>
+              <Text fontSize="sm" color="gray.500">Special Requests</Text>
+              <Text mt={1} fontSize="sm" color="gray.700">{booking.specialRequests}</Text>
+            </Box>
+          )}
+        </VStack>
+      </Card.Body>
+    </Card.Root>
   );
 }

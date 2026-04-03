@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { AdminTableShell, AdminTableToolbar, AdminTableSearch, AdminTablePagination, AdminStatusBadge } from "@/components/admin/tables";
-import { adminTableStyles } from "@/lib/admin-ui";
+import { VStack, HStack, Button } from "@chakra-ui/react";
 import { adminHeadings, adminActions } from "@/lib/admin-content";
 
 interface MenuItem {
@@ -51,51 +51,53 @@ export default function AdminMenuPage() {
   return (
     <AdminShell>
       <AdminPageShell>
-        <AdminSectionTitle title={adminHeadings.menu.title} description={adminHeadings.menu.description} actionLabel={adminActions.addItem} actionHref="/admin/menu/new" />
+        <VStack gap={0} align="stretch">
+          <AdminSectionTitle title={adminHeadings.menu.title} description={adminHeadings.menu.description} actionLabel={adminActions.addItem} actionHref="/admin/menu/new" />
 
-        <AdminTableToolbar>
-          <AdminTableSearch value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search menu items..." />
-        </AdminTableToolbar>
+          <AdminTableToolbar>
+            <AdminTableSearch value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search menu items..." />
+          </AdminTableToolbar>
 
-        {loading ? (
-          <AdminLoadingState rows={5} height="3.5rem" />
-        ) : (
-          <AdminTableShell>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr style={adminTableStyles.head}>
-                  <th style={adminTableStyles.headCell}>Item</th>
-                  <th style={adminTableStyles.headCell}>Category</th>
-                  <th style={adminTableStyles.headCell}>Price</th>
-                  <th style={adminTableStyles.headCell}>Status</th>
-                  <th style={{ ...adminTableStyles.headCell, textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item) => (
-                  <tr key={item.id} style={{ cursor: "pointer" }} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
-                    <td style={{ ...adminTableStyles.cell, fontWeight: 500 }}>{item.name}</td>
-                    <td style={{ ...adminTableStyles.cell, color: "#6B7280" }}>{item.category?.name ?? "-"}</td>
-                    <td style={adminTableStyles.cell}>£{(item.price / 100).toFixed(2)}</td>
-                    <td style={adminTableStyles.cell}>
-                      <button onClick={() => toggleAvailability(item.id)} style={{ border: "none", cursor: "pointer", background: "none", padding: 0 }}>
-                        <AdminStatusBadge status={item.isAvailable ? "Available" : "Unavailable"} />
-                      </button>
-                    </td>
-                    <td style={{ ...adminTableStyles.cell, textAlign: "right" }}>
-                      <span style={{ display: "inline-flex", gap: "0.75rem" }}>
-                        <Link href={`/admin/menu/${item.id}/edit`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>{adminActions.edit}</Link>
-                        <button onClick={() => deleteItem(item.id)} style={{ fontSize: "0.875rem", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>{adminActions.delete}</button>
-                      </span>
-                    </td>
+          {loading ? (
+            <AdminLoadingState rows={5} height="3.5rem" />
+          ) : (
+            <AdminTableShell>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#F9FAFB" }}>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Item</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Category</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Price</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "left", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Status</th>
+                    <th style={{ padding: "0.75rem 1rem", textAlign: "right", fontSize: "0.75rem", fontWeight: 600, color: "#6B7280", textTransform: "uppercase" }}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </AdminTableShell>
-        )}
+                </thead>
+                <tbody>
+                  {items.map((item) => (
+                    <tr key={item.id} style={{ borderTop: "1px solid #F3F4F6", cursor: "pointer" }}>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", fontWeight: 500 }}>{item.name}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", color: "#6B7280" }}>{item.category?.name ?? "-"}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>£{(item.price / 100).toFixed(2)}</td>
+                      <td style={{ padding: "0.75rem 1rem" }}>
+                        <Button size="xs" variant="plain" p={0} onClick={() => toggleAvailability(item.id)}>
+                          <AdminStatusBadge status={item.isAvailable ? "Available" : "Unavailable"} />
+                        </Button>
+                      </td>
+                      <td style={{ padding: "0.75rem 1rem", textAlign: "right" }}>
+                        <HStack gap={3} justify="flex-end">
+                          <Link href={`/admin/menu/${item.id}/edit`} style={{ fontSize: "0.875rem", color: "#D97706", textDecoration: "none" }}>{adminActions.edit}</Link>
+                          <Button size="xs" variant="plain" color="red.600" onClick={() => deleteItem(item.id)}>{adminActions.delete}</Button>
+                        </HStack>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </AdminTableShell>
+          )}
 
-        <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+          <AdminTablePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+        </VStack>
       </AdminPageShell>
     </AdminShell>
   );

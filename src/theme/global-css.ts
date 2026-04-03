@@ -2,7 +2,7 @@ import { defineGlobalStyles } from "@chakra-ui/react";
 
 export const globalCss = defineGlobalStyles({
   "html, body": {
-    bg: "bg.page",
+    bg: "bg.canvas",
     color: "text.primary",
     minHeight: "100vh",
   },

@@ -1,17 +1,22 @@
 "use client";
 
 import { AdminSignInForm } from "@/components/admin/auth/AdminSignInForm";
+import { Box, VStack, Text } from "@chakra-ui/react";
 
 export default function AdminSignInPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-xl shadow-sm border w-full max-w-md">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Sultan Admin</h1>
-          <p className="text-sm text-gray-500 mt-1">Sign in to manage your restaurant</p>
-        </div>
+    <Box minH="100vh" display="flex" alignItems="center" justifyContent="center" bg="gray.50">
+      <Box bg="white" p={8} rounded="xl" shadow="sm" border="1px" w="full" maxW="md">
+        <VStack textAlign="center" mb={6}>
+          <Text fontSize="2xl" fontWeight="bold" color="gray.900">
+            Sultan Admin
+          </Text>
+          <Text fontSize="sm" color="gray.500" mt={1}>
+            Sign in to manage your restaurant
+          </Text>
+        </VStack>
         <AdminSignInForm />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

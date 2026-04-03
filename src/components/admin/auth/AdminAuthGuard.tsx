@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { Box, Flex } from "@chakra-ui/react";
 
 export function AdminAuthGuard({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -28,9 +29,9 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin h-8 w-8 border-4 border-amber-500 border-t-transparent rounded-full" />
-      </div>
+      <Flex align="center" justify="center" minH="100vh">
+        <Box className="animate-spin" h={8} w={8} borderWidth="4px" borderColor="amber.500" borderTopColor="transparent" rounded="full" />
+      </Flex>
     );
   }
 

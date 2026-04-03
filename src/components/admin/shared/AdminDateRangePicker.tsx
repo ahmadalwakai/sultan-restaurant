@@ -1,5 +1,7 @@
 "use client";
 
+import { Flex, Input, Text } from "@chakra-ui/react";
+
 interface AdminDateRangePickerProps {
   from: string;
   to: string;
@@ -9,20 +11,20 @@ interface AdminDateRangePickerProps {
 
 export function AdminDateRangePicker({ from, to, onFromChange, onToChange }: AdminDateRangePickerProps) {
   return (
-    <div className="flex items-center gap-2">
-      <input
+    <Flex align="center" gap={2}>
+      <Input
         type="date"
         value={from}
         onChange={(e) => onFromChange(e.target.value)}
-        className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+        size="sm"
       />
-      <span className="text-gray-400">to</span>
-      <input
+      <Text color="gray.400">to</Text>
+      <Input
         type="date"
         value={to}
         onChange={(e) => onToChange(e.target.value)}
-        className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+        size="sm"
       />
-    </div>
+    </Flex>
   );
 }

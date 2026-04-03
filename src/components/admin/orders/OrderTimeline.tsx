@@ -1,5 +1,7 @@
 "use client";
 
+import { HStack, Box, Text, VStack } from "@chakra-ui/react";
+
 const STEPS = ["PENDING", "CONFIRMED", "PREPARING", "READY", "COMPLETED"];
 
 export function OrderTimeline({ currentStatus }: { currentStatus: string }) {
@@ -7,24 +9,49 @@ export function OrderTimeline({ currentStatus }: { currentStatus: string }) {
   const isCancelled = currentStatus === "CANCELLED";
 
   if (isCancelled) {
-    return <div className="text-center py-4"><span className="text-red-600 font-medium">Order Cancelled</span></div>;
+    return (
+      <Box textAlign="center" py={4}>
+        <Text color="red.600" fontWeight="medium">Order Cancelled</Text>
+      </Box>
+    );
   }
 
   return (
-    <div className="flex items-center gap-1">
+    <HStack align="center" gap={1}>
       {STEPS.map((step, i) => (
-        <div key={step} className="flex items-center flex-1">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${i <= currentIndex ? "bg-amber-500 text-white" : "bg-gray-200 text-gray-400"}`}>
+        <HStack key={step} align="center" flex={1}>
+          <Box
+            w={8}
+            h={8}
+            borderRadius="full"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            fontSize="xs"
+            fontWeight="medium"
+            bg={i <= currentIndex ? "amber.500" : "gray.200"}
+            color={i <= currentIndex ? "white" : "gray.400"}
+          >
             {i + 1}
-          </div>
-          <div className="flex-1 text-center">
-            <p className={`text-xs ${i <= currentIndex ? "text-amber-600 font-medium" : "text-gray-400"}`}>{step}</p>
-          </div>
+          </Box>
+          <VStack flex={1} align="center" gap={0}>
+            <Text
+              fontSize="xs"
+              color={i <= currentIndex ? "amber.600" : "gray.400"}
+              fontWeight={i <= currentIndex ? "medium" : "normal"}
+            >
+              {step}
+            </Text>
+          </VStack>
           {i < STEPS.length - 1 && (
-            <div className={`flex-1 h-0.5 ${i < currentIndex ? "bg-amber-500" : "bg-gray-200"}`} />
+            <Box
+              flex={1}
+              h="0.5"
+              bg={i < currentIndex ? "amber.500" : "gray.200"}
+            />
           )}
-        </div>
+        </HStack>
       ))}
-    </div>
+    </HStack>
   );
 }

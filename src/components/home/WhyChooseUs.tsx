@@ -1,6 +1,7 @@
+"use client";
+
 import { SectionHeader } from "@/components/sections/SectionHeader";
-import { SectionShell } from "@/components/shared/SectionShell";
-import { CardSurface } from "@/components/shared/CardSurface";
+import { Box, Container, VStack, SimpleGrid, Card, Flex, Heading, Text } from "@chakra-ui/react";
 
 const features = [
   {
@@ -27,27 +28,35 @@ const features = [
 
 export function WhyChooseUs() {
   return (
-    <SectionShell>
-      <SectionHeader
-        title="Why Choose Sultan?"
-        subtitle="What makes us stand out from the rest"
-      />
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {features.map((feature) => (
-          <CardSurface
-            key={feature.title}
-            className="px-6 py-8 text-center transition-all hover:border-amber-200 hover:shadow-md"
-          >
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-amber-50 text-xl">
-              {feature.icon}
-            </div>
-            <h3 className="font-heading text-sm font-bold uppercase tracking-wide text-gray-900">
-              {feature.title}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-gray-500">{feature.description}</p>
-          </CardSurface>
-        ))}
-      </div>
-    </SectionShell>
+    <Box as="section" py={{ base: 12, md: 16 }} bg="bg.canvas">
+      <Container maxW="7xl" px={{ base: 4, md: 6, lg: 8 }}>
+        <VStack gap={8}>
+          <SectionHeader
+            title="Why Choose Sultan?"
+            subtitle="What makes us stand out from the rest"
+          />
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={6} w="full">
+            {features.map((feature) => (
+              <Card.Root
+                key={feature.title}
+                variant="outline"
+                transition="all 0.2s"
+                _hover={{ borderColor: "orange.200", shadow: "md" }}
+              >
+                <Card.Body px={6} py={8} display="flex" flexDirection="column" alignItems="center" textAlign="center" gap={3}>
+                  <Flex w={12} h={12} align="center" justify="center" borderRadius="lg" bg="orange.50" fontSize="xl">
+                    {feature.icon}
+                  </Flex>
+                  <Heading as="h3" fontSize="sm" fontWeight="bold" textTransform="uppercase" letterSpacing="wide" color="gray.900">
+                    {feature.title}
+                  </Heading>
+                  <Text fontSize="sm" lineHeight="relaxed" color="gray.500">{feature.description}</Text>
+                </Card.Body>
+              </Card.Root>
+            ))}
+          </SimpleGrid>
+        </VStack>
+      </Container>
+    </Box>
   );
 }

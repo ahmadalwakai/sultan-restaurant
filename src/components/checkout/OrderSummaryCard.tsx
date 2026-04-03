@@ -1,5 +1,6 @@
 "use client";
 
+import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import { formatCurrency } from "@/lib/utils/format-currency";
 
 interface OrderSummaryItem {
@@ -18,34 +19,34 @@ interface OrderSummaryCardProps {
 
 export function OrderSummaryCard({ items, subtotal, discount, total, couponCode }: OrderSummaryCardProps) {
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
-      <h3 className="font-bold text-gray-900">Order Summary</h3>
-      <div className="mt-4 space-y-2">
+    <Box borderRadius="xl" borderWidth="1px" borderColor="gray.100" bg="white" p={5} shadow="sm">
+      <Heading size="sm" color="gray.900">Order Summary</Heading>
+      <VStack mt={4} gap={2} align="stretch">
         {items.map((item, i) => (
-          <div key={i} className="flex justify-between text-sm">
-            <span className="text-gray-600">{item.quantity}× {item.name}</span>
-            <span className="font-medium text-gray-900">{formatCurrency(item.price * item.quantity)}</span>
-          </div>
+          <Flex key={i} justify="space-between" fontSize="sm">
+            <Text color="gray.600">{item.quantity}{String.fromCharCode(215)} {item.name}</Text>
+            <Text fontWeight="medium" color="gray.900">{formatCurrency(item.price * item.quantity)}</Text>
+          </Flex>
         ))}
-      </div>
-      <div className="mt-4 space-y-2 border-t pt-4">
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-500">Subtotal</span>
-          <span className="text-gray-900">{formatCurrency(subtotal)}</span>
-        </div>
+      </VStack>
+      <VStack mt={4} gap={2} align="stretch" borderTopWidth="1px" pt={4}>
+        <Flex justify="space-between" fontSize="sm">
+          <Text color="gray.500">Subtotal</Text>
+          <Text color="gray.900">{formatCurrency(subtotal)}</Text>
+        </Flex>
         {discount && discount > 0 && (
-          <div className="flex justify-between text-sm">
-            <span className="text-green-600">
+          <Flex justify="space-between" fontSize="sm">
+            <Text color="green.600">
               Discount{couponCode ? ` (${couponCode})` : ""}
-            </span>
-            <span className="font-medium text-green-600">-{formatCurrency(discount)}</span>
-          </div>
+            </Text>
+            <Text fontWeight="medium" color="green.600">-{formatCurrency(discount)}</Text>
+          </Flex>
         )}
-        <div className="flex justify-between border-t pt-2 text-lg font-bold">
-          <span className="text-gray-900">Total</span>
-          <span className="text-amber-600">{formatCurrency(total)}</span>
-        </div>
-      </div>
-    </div>
+        <Flex justify="space-between" borderTopWidth="1px" pt={2} fontSize="lg" fontWeight="bold">
+          <Text color="gray.900">Total</Text>
+          <Text color="amber.600">{formatCurrency(total)}</Text>
+        </Flex>
+      </VStack>
+    </Box>
   );
 }

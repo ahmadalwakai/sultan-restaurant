@@ -1,5 +1,7 @@
 "use client";
 
+import { Box, chakra } from "@chakra-ui/react";
+
 interface MenuAvailabilityToggleProps {
   isAvailable: boolean;
   onToggle: () => void;
@@ -7,11 +9,28 @@ interface MenuAvailabilityToggleProps {
 
 export function MenuAvailabilityToggle({ isAvailable, onToggle }: MenuAvailabilityToggleProps) {
   return (
-    <button
+    <chakra.button
       onClick={onToggle}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isAvailable ? "bg-green-500" : "bg-gray-300"}`}
+      type="button"
+      position="relative"
+      display="inline-flex"
+      h="6"
+      w="11"
+      alignItems="center"
+      rounded="full"
+      bg={isAvailable ? "green.500" : "gray.300"}
+      transition="background-color 0.2s"
     >
-      <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isAvailable ? "translate-x-6" : "translate-x-1"}`} />
-    </button>
+      <Box
+        as="span"
+        display="inline-block"
+        h="4"
+        w="4"
+        rounded="full"
+        bg="white"
+        transition="transform 0.2s"
+        transform={isAvailable ? "translateX(24px)" : "translateX(4px)"}
+      />
+    </chakra.button>
   );
 }

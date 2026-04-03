@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { Box, Button, VStack } from "@chakra-ui/react";
 
 interface Tab { key: string; label: string }
 
@@ -13,21 +14,30 @@ interface SettingsTabsProps {
 
 export function SettingsTabs({ tabs, activeTab, onTabChange, children }: SettingsTabsProps) {
   return (
-    <div className="flex gap-6">
-      <nav className="w-48 shrink-0 space-y-1">
+    <Box display="flex" gap={6}>
+      <VStack w="48" gap={1} flexShrink={0}>
         {tabs.map((tab) => (
-          <button
+          <Button
             key={tab.key}
             onClick={() => onTabChange(tab.key)}
-            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-              activeTab === tab.key ? "bg-amber-50 text-amber-700 font-medium" : "text-gray-600 hover:bg-gray-50"
-            }`}
+            w="full"
+            textAlign="left"
+            px={3}
+            py={2}
+            borderRadius="lg"
+            fontSize="sm"
+            transition="colors"
+            bg={activeTab === tab.key ? "amber.50" : undefined}
+            color={activeTab === tab.key ? "amber.700" : "gray.600"}
+            fontWeight={activeTab === tab.key ? "medium" : undefined}
+            _hover={{ bg: activeTab === tab.key ? "amber.50" : "gray.50" }}
+            variant="ghost"
           >
             {tab.label}
-          </button>
+          </Button>
         ))}
-      </nav>
-      <div className="flex-1 min-w-0">{children}</div>
-    </div>
+      </VStack>
+      <Box flex={1} minW={0}>{children}</Box>
+    </Box>
   );
 }

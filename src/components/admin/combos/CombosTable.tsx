@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Box, Button, Flex, Text, Table } from "@chakra-ui/react";
 import { formatCurrency } from "@/lib/utils/format-currency";
 
 interface ComboRow {
@@ -22,47 +23,59 @@ interface CombosTableProps {
 
 export function CombosTable({ combos, onDelete }: CombosTableProps) {
   return (
-    <div className="overflow-hidden rounded-lg border bg-white">
-      <table className="min-w-full divide-y">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Combo</th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Price</th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Savings</th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Serves</th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Status</th>
-            <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
+    <Box overflow="hidden" borderRadius="lg" borderWidth="1px" bg="white">
+      <Table.Root size="sm">
+        <Table.Header>
+          <Table.Row bg="gray.50">
+            <Table.ColumnHeader px={4} py={3} textAlign="left" fontSize="xs" fontWeight="medium" textTransform="uppercase" color="gray.500">Combo</Table.ColumnHeader>
+            <Table.ColumnHeader px={4} py={3} textAlign="left" fontSize="xs" fontWeight="medium" textTransform="uppercase" color="gray.500">Price</Table.ColumnHeader>
+            <Table.ColumnHeader px={4} py={3} textAlign="left" fontSize="xs" fontWeight="medium" textTransform="uppercase" color="gray.500">Savings</Table.ColumnHeader>
+            <Table.ColumnHeader px={4} py={3} textAlign="left" fontSize="xs" fontWeight="medium" textTransform="uppercase" color="gray.500">Serves</Table.ColumnHeader>
+            <Table.ColumnHeader px={4} py={3} textAlign="left" fontSize="xs" fontWeight="medium" textTransform="uppercase" color="gray.500">Status</Table.ColumnHeader>
+            <Table.ColumnHeader px={4} py={3} textAlign="right" fontSize="xs" fontWeight="medium" textTransform="uppercase" color="gray.500">Actions</Table.ColumnHeader>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {combos.map((c) => (
-            <tr key={c.id} className="hover:bg-gray-50">
-              <td className="flex items-center gap-3 px-4 py-3">
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg">
-                  {c.image ? (
-                    <Image src={c.image} alt={c.name} fill className="object-cover" sizes="40px" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-amber-50 text-lg">🍱</div>
-                  )}
-                </div>
-                <span className="text-sm font-medium">{c.name}</span>
-              </td>
-              <td className="px-4 py-3 text-sm">{formatCurrency(c.price)}</td>
-              <td className="px-4 py-3 text-sm text-green-600">Save {formatCurrency(c.savings)}</td>
-              <td className="px-4 py-3 text-sm">{c.servesCount}</td>
-              <td className="px-4 py-3">
-                <span className={`rounded px-2 py-1 text-xs ${c.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+            <Table.Row key={c.id} _hover={{ bg: "gray.50" }}>
+              <Table.Cell px={4} py={3}>
+                <Flex align="center" gap={3}>
+                  <Box position="relative" h="10" w="10" flexShrink={0} overflow="hidden" borderRadius="lg">
+                    {c.image ? (
+                      <Image src={c.image} alt={c.name} fill className="object-cover" sizes="40px" />
+                    ) : (
+                      <Flex h="full" w="full" align="center" justify="center" bg="amber.50" fontSize="lg">{String.fromCodePoint(0x1F371)}</Flex>
+                    )}
+                  </Box>
+                  <Text fontSize="sm" fontWeight="medium">{c.name}</Text>
+                </Flex>
+              </Table.Cell>
+              <Table.Cell px={4} py={3}><Text fontSize="sm">{formatCurrency(c.price)}</Text></Table.Cell>
+              <Table.Cell px={4} py={3}><Text fontSize="sm" color="green.600">Save {formatCurrency(c.savings)}</Text></Table.Cell>
+              <Table.Cell px={4} py={3}><Text fontSize="sm">{c.servesCount}</Text></Table.Cell>
+              <Table.Cell px={4} py={3}>
+                <Box
+                  as="span"
+                  borderRadius="md"
+                  px={2}
+                  py={1}
+                  fontSize="xs"
+                  bg={c.isActive ? "green.100" : "red.100"}
+                  color={c.isActive ? "green.700" : "red.700"}
+                >
                   {c.isActive ? "Active" : "Inactive"}
-                </span>
-              </td>
-              <td className="px-4 py-3 text-right space-x-2">
-                <Link href={`/admin/combos/${c.id}/edit`} className="text-sm text-amber-600 hover:underline">Edit</Link>
-                <button onClick={() => onDelete(c.id)} className="text-sm text-red-600 hover:underline">Delete</button>
-              </td>
-            </tr>
+                </Box>
+              </Table.Cell>
+              <Table.Cell px={4} py={3}>
+                <Flex justify="flex-end" gap={2}>
+                  <Link href={`/admin/combos/${c.id}/edit`}><Button variant="ghost" size="sm" color="amber.600">Edit</Button></Link>
+                  <Button variant="ghost" size="sm" color="red.600" onClick={() => onDelete(c.id)}>Delete</Button>
+                </Flex>
+              </Table.Cell>
+            </Table.Row>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </Table.Body>
+      </Table.Root>
+    </Box>
   );
 }

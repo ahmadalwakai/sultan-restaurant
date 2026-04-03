@@ -1,26 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 
 interface Booking { id: string; date: string; time: string; guests: number; status: string }
 
 export function CustomerBookingHistory({ bookings }: { bookings: Booking[] }) {
-  if (!bookings.length) return <p className="text-sm text-gray-400">No bookings yet.</p>;
+  if (!bookings.length) return <Text fontSize="sm" color="gray.400">No bookings yet.</Text>;
 
   return (
-    <div className="space-y-2">
+    <VStack gap={2}>
       {bookings.map((b) => (
-        <Link key={b.id} href={`/admin/bookings/${b.id}`} className="flex justify-between items-center p-3 border rounded-lg hover:bg-gray-50">
-          <div>
-            <span className="font-medium text-sm">{new Date(b.date).toLocaleDateString()}</span>
-            <span className="text-xs text-gray-400 ml-2">{b.time}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500">{b.guests} guests</span>
-            <span className="text-xs px-2 py-0.5 rounded bg-gray-100">{b.status}</span>
-          </div>
+        <Link key={b.id} href={`/admin/bookings/${b.id}`} style={{ width: '100%' }}>
+          <Flex justify="space-between" align="center" p={3} borderWidth="1px" rounded="lg" _hover={{ bg: "gray.50" }} w="full">
+          <Box>
+            <Text as="span" fontWeight="medium" fontSize="sm">{new Date(b.date).toLocaleDateString()}</Text>
+            <Text as="span" fontSize="xs" color="gray.400" ml={2}>{b.time}</Text>
+          </Box>
+          <Flex align="center" gap={2}>
+            <Text fontSize="xs" color="gray.500">{b.guests} guests</Text>
+            <Box as="span" fontSize="xs" px={2} py={0.5} rounded="md" bg="gray.100">{b.status}</Box>
+          </Flex>
+        </Flex>
         </Link>
       ))}
-    </div>
+    </VStack>
   );
 }

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Box, SimpleGrid, VStack, Text, Input, Button } from "@chakra-ui/react";
+import { NativeSelect } from "@chakra-ui/react";
 
 interface CouponFormProps {
   initialData?: { id?: string; code: string; discountType: string; discountValue: number; minOrder?: number; maxUses?: number | null; expiresAt?: string | null };
@@ -33,18 +35,45 @@ export function CouponForm({ initialData }: CouponFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl space-y-4">
-      <div><label className="block text-sm font-medium mb-1">Code</label><input value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })} className="w-full border rounded-lg px-3 py-2 font-mono" required /></div>
-      <div className="grid grid-cols-2 gap-4">
-        <div><label className="block text-sm font-medium mb-1">Type</label><select value={form.discountType} onChange={(e) => setForm({ ...form, discountType: e.target.value })} className="w-full border rounded-lg px-3 py-2"><option value="PERCENTAGE">Percentage</option><option value="FIXED">Fixed</option></select></div>
-        <div><label className="block text-sm font-medium mb-1">Value</label><input type="number" value={form.discountValue} onChange={(e) => setForm({ ...form, discountValue: Number(e.target.value) })} className="w-full border rounded-lg px-3 py-2" required /></div>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div><label className="block text-sm font-medium mb-1">Min Order (£)</label><input type="number" value={form.minOrder} onChange={(e) => setForm({ ...form, minOrder: Number(e.target.value) })} className="w-full border rounded-lg px-3 py-2" /></div>
-        <div><label className="block text-sm font-medium mb-1">Max Uses</label><input type="number" value={form.maxUses} onChange={(e) => setForm({ ...form, maxUses: e.target.value })} placeholder="Unlimited" className="w-full border rounded-lg px-3 py-2" /></div>
-      </div>
-      <div><label className="block text-sm font-medium mb-1">Expires At</label><input type="date" value={form.expiresAt} onChange={(e) => setForm({ ...form, expiresAt: e.target.value })} className="w-full border rounded-lg px-3 py-2" /></div>
-      <button type="submit" disabled={saving} className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50">{saving ? "Saving..." : isEdit ? "Update Coupon" : "Create Coupon"}</button>
-    </form>
+    <Box as="form" onSubmit={handleSubmit} maxW="xl">
+      <VStack gap={4} align="stretch">
+        <Box>
+          <Text fontSize="sm" fontWeight="medium" mb={1}>Code</Text>
+          <Input value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })} fontFamily="mono" required />
+        </Box>
+        <SimpleGrid columns={2} gap={4}>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={1}>Type</Text>
+            <NativeSelect.Root>
+              <NativeSelect.Field value={form.discountType} onChange={(e) => setForm({ ...form, discountType: e.target.value })}>
+                <option value="PERCENTAGE">Percentage</option>
+                <option value="FIXED">Fixed</option>
+              </NativeSelect.Field>
+            </NativeSelect.Root>
+          </Box>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={1}>Value</Text>
+            <Input type="number" value={form.discountValue} onChange={(e) => setForm({ ...form, discountValue: Number(e.target.value) })} required />
+          </Box>
+        </SimpleGrid>
+        <SimpleGrid columns={2} gap={4}>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={1}>Min Order (£)</Text>
+            <Input type="number" value={form.minOrder} onChange={(e) => setForm({ ...form, minOrder: Number(e.target.value) })} />
+          </Box>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={1}>Max Uses</Text>
+            <Input type="number" value={form.maxUses} onChange={(e) => setForm({ ...form, maxUses: e.target.value })} placeholder="Unlimited" />
+          </Box>
+        </SimpleGrid>
+        <Box>
+          <Text fontSize="sm" fontWeight="medium" mb={1}>Expires At</Text>
+          <Input type="date" value={form.expiresAt} onChange={(e) => setForm({ ...form, expiresAt: e.target.value })} />
+        </Box>
+        <Button type="submit" disabled={saving} bg="amber.600" color="white" borderRadius="lg" _hover={{ bg: "amber.700" }} _disabled={{ opacity: 0.5 }}>
+          {saving ? "Saving..." : isEdit ? "Update Coupon" : "Create Coupon"}
+        </Button>
+      </VStack>
+    </Box>
   );
 }

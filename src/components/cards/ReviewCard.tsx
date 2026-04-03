@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CardSurface } from "@/components/shared/CardSurface";
+import { Card, Flex, Text, Box, HStack, VStack } from "@chakra-ui/react";
 
 interface ReviewCardProps {
   review: {
@@ -16,45 +16,44 @@ interface ReviewCardProps {
 
 export function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <CardSurface className="flex flex-col p-6 transition-all hover:shadow-md hover:border-gray-200">
-      <div className="flex items-center gap-3">
-        {review.userImage ? (
-          <Image
-            src={review.userImage}
-            alt={review.userName}
-            width={40}
-            height={40}
-            className="rounded-full object-cover"
-          />
-        ) : (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-600 font-bold">
-            {review.userName.charAt(0).toUpperCase()}
-          </div>
-        )}
-        <div>
-          <p className="font-semibold text-gray-900">{review.userName}</p>
-          <div className="flex gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <span
-                key={i}
-                className={i < review.rating ? "text-amber-400" : "text-gray-200"}
-              >
-                ★
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-      <p className="mt-4 flex-1 text-sm text-gray-600 line-clamp-4">
-        {review.comment}
-      </p>
-      <p className="mt-3 text-xs text-gray-400">
-        {new Date(review.createdAt).toLocaleDateString("en-GB", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        })}
-      </p>
-    </CardSurface>
+    <Card.Root bg="bg.surface" shadow="sm" borderRadius="xl" transition="all 0.2s" _hover={{ shadow: "md" }}>
+      <Card.Body p={6} display="flex" flexDirection="column" gap={4}>
+        <HStack gap={3}>
+          {review.userImage ? (
+            <Image
+              src={review.userImage}
+              alt={review.userName}
+              width={40}
+              height={40}
+              style={{ borderRadius: "50%", objectFit: "cover" }}
+            />
+          ) : (
+            <Flex h={10} w={10} align="center" justify="center" borderRadius="full" bg="amber.100" color="amber.600" fontWeight="bold">
+              {review.userName.charAt(0).toUpperCase()}
+            </Flex>
+          )}
+          <VStack align="start" gap={0}>
+            <Text fontWeight="semibold" color="gray.900">{review.userName}</Text>
+            <HStack gap={0.5}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Text key={i} color={i < review.rating ? "amber.400" : "gray.200"}>
+                  ★
+                </Text>
+              ))}
+            </HStack>
+          </VStack>
+        </HStack>
+        <Text flex={1} fontSize="sm" color="gray.600" lineClamp={4}>
+          {review.comment}
+        </Text>
+        <Text fontSize="xs" color="gray.400">
+          {new Date(review.createdAt).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })}
+        </Text>
+      </Card.Body>
+    </Card.Root>
   );
 }

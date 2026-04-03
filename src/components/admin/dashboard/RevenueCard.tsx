@@ -1,6 +1,7 @@
 "use client";
 
 import { formatCurrency } from "@/lib/utils/format-currency";
+import { Card, Flex, Text } from "@chakra-ui/react";
 
 interface RevenueCardProps {
   title: string;
@@ -13,17 +14,19 @@ export function RevenueCard({ title, amount, previousAmount, period }: RevenueCa
   const change = previousAmount ? ((amount - previousAmount) / previousAmount) * 100 : null;
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-      <p className="text-sm text-gray-500">{title}</p>
-      <p className="mt-2 text-3xl font-bold text-gray-900">{formatCurrency(amount)}</p>
-      <div className="mt-2 flex items-center justify-between">
-        <span className="text-xs text-gray-400">{period}</span>
-        {change !== null && (
-          <span className={`text-sm font-medium ${change >= 0 ? "text-green-600" : "text-red-600"}`}>
-            {change >= 0 ? "↑" : "↓"} {Math.abs(change).toFixed(1)}%
-          </span>
-        )}
-      </div>
-    </div>
+    <Card.Root bg="bg.surface" shadow="sm" borderRadius="xl">
+      <Card.Body p={6}>
+        <Text fontSize="sm" color="gray.500">{title}</Text>
+        <Text mt={2} fontSize="3xl" fontWeight="bold" color="gray.900">{formatCurrency(amount)}</Text>
+        <Flex mt={2} align="center" justify="space-between">
+          <Text fontSize="xs" color="gray.400">{period}</Text>
+          {change !== null && (
+            <Text fontSize="sm" fontWeight="medium" color={change >= 0 ? "green.600" : "red.600"}>
+              {change >= 0 ? "↑" : "↓"} {Math.abs(change).toFixed(1)}%
+            </Text>
+          )}
+        </Flex>
+      </Card.Body>
+    </Card.Root>
   );
 }

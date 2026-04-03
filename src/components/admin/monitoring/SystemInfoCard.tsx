@@ -2,6 +2,7 @@
 
 // ─── System Info Card ────────────────────────────────────
 
+import { Box, Card, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import type { SystemInfo } from "@/types/monitoring";
 
 interface SystemInfoCardProps {
@@ -20,14 +21,16 @@ function formatBytes(bytes: number): string {
 export function SystemInfoCard({ system, isLoading }: SystemInfoCardProps) {
   if (isLoading || !system) {
     return (
-      <div className="bg-white border rounded-lg p-6">
-        <div className="h-5 w-28 bg-gray-100 rounded animate-pulse mb-4" />
-        <div className="space-y-2">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-5 bg-gray-50 rounded animate-pulse" />
-          ))}
-        </div>
-      </div>
+      <Card.Root>
+        <Card.Body p={6}>
+          <Box h="5" w="28" bg="gray.100" rounded="md" className="animate-pulse" mb={4} />
+          <VStack gap={2}>
+            {[...Array(4)].map((_, i) => (
+              <Box key={i} h="5" bg="gray.50" rounded="md" className="animate-pulse" w="full" />
+            ))}
+          </VStack>
+        </Card.Body>
+      </Card.Root>
     );
   }
 
@@ -41,16 +44,18 @@ export function SystemInfoCard({ system, isLoading }: SystemInfoCardProps) {
   ];
 
   return (
-    <div className="bg-white border rounded-lg p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">System Info</h3>
-      <div className="space-y-2">
-        {items.map((item) => (
-          <div key={item.label} className="flex items-center justify-between text-sm">
-            <span className="text-gray-500">{item.label}</span>
-            <span className="font-medium text-gray-900">{item.value}</span>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Card.Root>
+      <Card.Body p={6}>
+        <Heading size="md" color="gray.900" mb={4}>System Info</Heading>
+        <VStack gap={2}>
+          {items.map((item) => (
+            <Flex key={item.label} align="center" justify="space-between" w="full" fontSize="sm">
+              <Text color="gray.500">{item.label}</Text>
+              <Text fontWeight="medium" color="gray.900">{item.value}</Text>
+            </Flex>
+          ))}
+        </VStack>
+      </Card.Body>
+    </Card.Root>
   );
 }

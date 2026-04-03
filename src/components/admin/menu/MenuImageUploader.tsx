@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Box, Text, chakra } from "@chakra-ui/react";
 
 interface MenuImageUploaderProps {
   currentImage?: string | null;
@@ -23,12 +24,12 @@ export function MenuImageUploader({ currentImage, onUpload }: MenuImageUploaderP
   }
 
   return (
-    <div className="space-y-2">
-      {currentImage && <img src={currentImage} alt="" className="w-32 h-32 object-cover rounded-lg" />}
-      <label className="inline-flex items-center px-3 py-2 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 text-sm">
+    <Box>
+      {currentImage && <chakra.img src={currentImage} alt="" w={32} h={32} objectFit="cover" rounded="lg" mb={2} />}
+      <Text as="label" display="inline-flex" alignItems="center" px={3} py={2} bg="gray.100" rounded="lg" cursor="pointer" _hover={{ bg: "gray.200" }} fontSize="sm">
         {uploading ? "Uploading..." : currentImage ? "Change Image" : "Upload Image"}
         <input type="file" accept="image/*" onChange={handleChange} className="hidden" disabled={uploading} />
-      </label>
-    </div>
+      </Text>
+    </Box>
   );
 }

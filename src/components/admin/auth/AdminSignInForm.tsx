@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 
 export function AdminSignInForm() {
   const router = useRouter();
@@ -36,37 +37,41 @@ export function AdminSignInForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-sm">
+    <form onSubmit={handleSubmit}>
+    <VStack gap={4} w="full" maxW="sm">
       {error && (
-        <div className="p-3 text-sm text-red-700 bg-red-50 rounded-lg">{error}</div>
+        <Box p={3} fontSize="sm" color="red.700" bg="red.50" rounded="lg" w="full">{error}</Box>
       )}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input
+      <Box w="full">
+        <Text as="label" display="block" fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>Email</Text>
+        <Input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
         />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-        <input
+      </Box>
+      <Box w="full">
+        <Text as="label" display="block" fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>Password</Text>
+        <Input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
         />
-      </div>
-      <button
+      </Box>
+      <Button
         type="submit"
         disabled={loading}
-        className="w-full py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 font-medium"
+        w="full"
+        bg="amber.600"
+        color="white"
+        _hover={{ bg: "amber.700" }}
+        fontWeight="medium"
       >
         {loading ? "Signing in..." : "Sign In"}
-      </button>
+      </Button>
+    </VStack>
     </form>
   );
 }

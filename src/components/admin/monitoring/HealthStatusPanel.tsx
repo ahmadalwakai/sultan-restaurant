@@ -1,51 +1,56 @@
 "use client";
 
-// ─── Health Status Panel ─────────────────────────────────
-
 import type { HealthReport } from "@/lib/monitoring/health/health-types";
 import { ServiceHealthCard } from "./ServiceHealthCard";
+import { Box, Card, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 
 interface HealthStatusPanelProps {
   health: HealthReport | null;
   isLoading?: boolean;
 }
 
-const statusColors: Record<string, string> = {
-  healthy: "bg-green-100 text-green-800",
-  degraded: "bg-yellow-100 text-yellow-800",
-  unhealthy: "bg-red-100 text-red-800",
+const statusColors: Record<string, { bg: string; color: string }> = {
+  healthy: { bg: "green.100", color: "green.800" },
+  degraded: { bg: "yellow.100", color: "yellow.800" },
+  unhealthy: { bg: "red.100", color: "red.800" },
 };
 
 export function HealthStatusPanel({ health, isLoading }: HealthStatusPanelProps) {
   if (isLoading || !health) {
     return (
-      <div className="bg-white border rounded-lg p-6">
-        <div className="h-6 w-40 bg-gray-100 rounded animate-pulse mb-4" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-20 bg-gray-100 rounded animate-pulse" />
-          ))}
-        </div>
-      </div>
+      <Card.Root>
+        <Card.Body p={6}>
+          <Box h={6} w={40} bg="gray.100" borderRadius="md" className="animate-pulse" mb={4} />
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={3}>
+            {[...Array(5)].map((_, i) => (
+              <Box key={i} h={20} bg="gray.100" borderRadius="md" className="animate-pulse" />
+            ))}
+          </SimpleGrid>
+        </Card.Body>
+      </Card.Root>
     );
   }
 
+  const colors = statusColors[health.status] ?? { bg: "gray.100", color: "gray.800" };
+
   return (
-    <div className="bg-white border rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">System Health</h3>
-        <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[health.status] ?? "bg-gray-100"}`}>
-          {health.status.toUpperCase()}
-        </span>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {health.services.map((service) => (
-          <ServiceHealthCard key={service.service} service={service} />
-        ))}
-      </div>
-      <p className="mt-4 text-xs text-gray-400">
-        Version {health.version} &middot; Uptime {Math.floor(health.uptime / 3600)}h {Math.floor((health.uptime % 3600) / 60)}m
-      </p>
-    </div>
+    <Card.Root>
+      <Card.Body p={6}>
+        <Flex align="center" justify="space-between" mb={4}>
+          <Heading as="h3" fontSize="lg" fontWeight={600} color="gray.900">System Health</Heading>
+          <Text as="span" fontSize="xs" fontWeight="medium" px={2.5} py={1} borderRadius="full" bg={colors.bg} color={colors.color}>
+            {health.status.toUpperCase()}
+          </Text>
+        </Flex>
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={3}>
+          {health.services.map((service) => (
+            <ServiceHealthCard key={service.service} service={service} />
+          ))}
+        </SimpleGrid>
+        <Text mt={4} fontSize="xs" color="gray.400">
+          Version {health.version} &middot; Uptime {Math.floor(health.uptime / 3600)}h {Math.floor((health.uptime % 3600) / 60)}m
+        </Text>
+      </Card.Body>
+    </Card.Root>
   );
 }

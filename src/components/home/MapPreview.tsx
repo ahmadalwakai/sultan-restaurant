@@ -1,10 +1,11 @@
+import { Box } from "@chakra-ui/react";
 import { SITE_CONFIG } from "@/lib/constants/site";
 
 export function MapPreview() {
   return (
-    <section className="py-16">
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="overflow-hidden rounded-xl shadow-lg">
+    <Box as="section" py={16}>
+      <Box maxW="7xl" mx="auto" px={4}>
+        <Box overflow="hidden" rounded="xl" shadow="lg">
           <iframe
             title="Sultan Restaurant Location"
             src={`https://www.google.com/maps/embed/v1/place?key=PLACEHOLDER&q=${encodeURIComponent(SITE_CONFIG.contact.address)}`}
@@ -15,8 +16,8 @@ export function MapPreview() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
-        </div>
-      </div>
-    </section>
+        </Box>
+      </Box>
+    </Box>
   );
 }

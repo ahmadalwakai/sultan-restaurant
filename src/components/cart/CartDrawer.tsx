@@ -5,6 +5,7 @@ import { useCartStore } from "@/lib/cart";
 import { CartItemRow } from "./CartItemRow";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import Link from "next/link";
+import { Flex, Box, VStack, Heading, Text, Button, IconButton } from "@chakra-ui/react";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -31,72 +32,101 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   if (!isOpen) return null;
 
   return (
-    <div
+    <Flex
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex justify-end bg-black/50"
+      position="fixed"
+      inset={0}
+      zIndex={50}
+      justify="flex-end"
+      bg="blackAlpha.600"
       onClick={(e) => {
         if (e.target === overlayRef.current) onClose();
       }}
     >
-      <div className="flex h-full w-full max-w-md flex-col bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b p-4">
-          <h2 className="font-heading text-xl font-bold">Your Cart</h2>
-          <button
-            onClick={onClose}
-            className="text-2xl text-gray-400 hover:text-gray-600"
+      <Flex h="full" w="full" maxW="md" direction="column" bg="bg.surface" shadow="xl">
+        <Flex align="center" justify="space-between" borderBottom="1px solid" borderColor="gray.200" p={4}>
+          <Heading size="lg" fontWeight="bold">Your Cart</Heading>
+          <IconButton
             aria-label="Close cart"
+            variant="ghost"
+            fontSize="2xl"
+            color="gray.400"
+            _hover={{ color: "gray.600" }}
+            onClick={onClose}
           >
             &times;
-          </button>
-        </div>
+          </IconButton>
+        </Flex>
 
         {items.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-            <span className="text-5xl">🛒</span>
-            <p className="mt-4 text-lg font-medium text-gray-600">Your cart is empty</p>
-            <p className="mt-1 text-sm text-gray-400">Add some delicious items!</p>
-            <button
+          <Flex flex={1} direction="column" align="center" justify="center" p={8} textAlign="center">
+            <Text fontSize="5xl">🛒</Text>
+            <Text mt={4} fontSize="lg" fontWeight="medium" color="gray.600">Your cart is empty</Text>
+            <Text mt={1} fontSize="sm" color="gray.400">Add some delicious items!</Text>
+            <Button
+              mt={6}
+              borderRadius="lg"
+              bg="amber.500"
+              px={6}
+              py={2.5}
+              fontWeight="semibold"
+              color="white"
+              _hover={{ bg: "amber.600" }}
               onClick={onClose}
-              className="mt-6 rounded-lg bg-amber-500 px-6 py-2.5 font-semibold text-white hover:bg-amber-600"
             >
               Browse Menu
-            </button>
-          </div>
+            </Button>
+          </Flex>
         ) : (
           <>
-            <div className="flex-1 overflow-y-auto p-4">
-              <div className="space-y-3">
+            <Box flex={1} overflowY="auto" p={4}>
+              <VStack gap={3} align="stretch">
                 {items.map((item) => (
                   <CartItemRow key={item.menuItemId} item={item} />
                 ))}
-              </div>
-            </div>
-            <div className="border-t p-4">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-gray-600">Subtotal</span>
-                <span className="text-lg font-bold">
+              </VStack>
+            </Box>
+            <Box borderTop="1px solid" borderColor="gray.200" p={4}>
+              <Flex align="center" justify="space-between" mb={4}>
+                <Text color="gray.600">Subtotal</Text>
+                <Text fontSize="lg" fontWeight="bold">
                   {formatCurrency(getTotal() / 100)}
-                </span>
-              </div>
-              <div className="flex gap-2">
-                <button
+                </Text>
+              </Flex>
+              <Flex gap={2}>
+                <Button
+                  flex={1}
+                  variant="outline"
+                  borderRadius="lg"
+                  py={2.5}
+                  fontSize="sm"
+                  fontWeight="medium"
+                  color="gray.600"
                   onClick={clearCart}
-                  className="flex-1 rounded-lg border border-gray-300 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50"
                 >
                   Clear
-                </button>
-                <Link
-                  href="/pickup"
-                  onClick={onClose}
-                  className="flex-[2] rounded-lg bg-amber-500 py-2.5 text-center text-sm font-semibold text-white hover:bg-amber-600"
-                >
-                  Checkout
+                </Button>
+                <Link href="/pickup">
+                  <Button
+                    flex={2}
+                    borderRadius="lg"
+                    bg="amber.500"
+                    py={2.5}
+                    textAlign="center"
+                    fontSize="sm"
+                    fontWeight="semibold"
+                    color="white"
+                    _hover={{ bg: "amber.600" }}
+                    onClick={onClose}
+                  >
+                    Checkout
+                  </Button>
                 </Link>
-              </div>
-            </div>
+              </Flex>
+            </Box>
           </>
         )}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }

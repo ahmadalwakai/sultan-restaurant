@@ -1,5 +1,7 @@
 "use client";
 
+import { Button, Flex, HStack, Text } from "@chakra-ui/react";
+
 interface AdminPaginationProps {
   page: number;
   totalPages: number;
@@ -10,26 +12,28 @@ export function AdminPagination({ page, totalPages, onPageChange }: AdminPaginat
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-between mt-4">
-      <p className="text-sm text-gray-500">
+    <Flex align="center" justify="space-between" mt={4}>
+      <Text fontSize="sm" color="gray.500">
         Page {page} of {totalPages}
-      </p>
-      <div className="flex gap-2">
-        <button
+      </Text>
+      <HStack gap={2}>
+        <Button
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          className="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 hover:bg-gray-50"
+          size="sm"
+          variant="outline"
         >
           Previous
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          className="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 hover:bg-gray-50"
+          size="sm"
+          variant="outline"
         >
           Next
-        </button>
-      </div>
-    </div>
+        </Button>
+      </HStack>
+    </Flex>
   );
 }

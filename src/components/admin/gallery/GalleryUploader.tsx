@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { Box, Button } from "@chakra-ui/react";
 
 export function GalleryUploader({ onUploaded }: { onUploaded: () => void }) {
   const [uploading, setUploading] = useState(false);
@@ -23,15 +24,19 @@ export function GalleryUploader({ onUploaded }: { onUploaded: () => void }) {
   };
 
   return (
-    <div>
-      <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleUpload(e.target.files)} />
-      <button
+    <Box>
+      <input ref={inputRef} type="file" accept="image/*" multiple style={{ display: "none" }} onChange={(e) => handleUpload(e.target.files)} />
+      <Button
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50"
+        borderRadius="lg"
+        bg="amber.600"
+        color="white"
+        _hover={{ bg: "amber.700" }}
+        _disabled={{ opacity: 0.5 }}
       >
         {uploading ? "Uploading..." : "Upload Images"}
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 }

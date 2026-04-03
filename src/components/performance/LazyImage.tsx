@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils/cn';
+import { Box } from '@chakra-ui/react';
 
 interface LazyImageProps {
   src: string;
@@ -68,27 +68,44 @@ export default function LazyImage({
   };
 
   return (
-    <div ref={imgRef} className={cn('relative overflow-hidden', className)}>
+    <Box ref={imgRef} position="relative" overflow="hidden" className={className}>
       {/* Placeholder/Loading state */}
       {!isLoaded && !hasError && (
-        <div
-          className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center"
-          style={{ width, height }}
+        <Box
+          position="absolute"
+          inset={0}
+          bg="gray.200"
+          animation="pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          w={width}
+          h={height}
         >
           {placeholder && (
-            <div className="text-gray-400 text-sm">{placeholder}</div>
+            <Box color="gray.400" fontSize="sm">
+              {placeholder}
+            </Box>
           )}
-        </div>
+        </Box>
       )}
 
       {/* Error state */}
       {hasError && (
-        <div
-          className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-400"
-          style={{ width, height }}
+        <Box
+          position="absolute"
+          inset={0}
+          bg="gray.100"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          color="gray.400"
+          w={width}
+          h={height}
         >
           <svg
-            className="w-8 h-8"
+            width={32}
+            height={32}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -100,7 +117,7 @@ export default function LazyImage({
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
             />
           </svg>
-        </div>
+        </Box>
       )}
 
       {/* Actual image */}
@@ -115,13 +132,14 @@ export default function LazyImage({
           blurDataURL={blurDataURL}
           onLoad={handleLoad}
           onError={handleError}
-          className={cn(
-            'transition-opacity duration-300',
-            isLoaded ? 'opacity-100' : 'opacity-0'
-          )}
-          style={{ width, height }}
+          style={{
+            width,
+            height,
+            opacity: isLoaded ? 1 : 0,
+            transition: 'opacity 0.3s ease-in-out',
+          }}
         />
       )}
-    </div>
+    </Box>
   );
 }

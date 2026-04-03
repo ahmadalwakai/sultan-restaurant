@@ -1,7 +1,6 @@
 "use client";
 
-import { brandColors, brandRadii } from "@/theme/branding";
-import { adminLayout } from "@/lib/admin-ui";
+import { HStack, Text, Button } from "@chakra-ui/react";
 
 interface AdminTablePaginationProps {
   page: number;
@@ -12,53 +11,29 @@ interface AdminTablePaginationProps {
 export function AdminTablePagination({ page, totalPages, onPageChange }: AdminTablePaginationProps) {
   if (totalPages <= 1) return null;
 
-  const btnBase: React.CSSProperties = {
-    padding: "0.375rem 0.875rem",
-    fontSize: "0.8125rem",
-    borderRadius: brandRadii.lg,
-    cursor: "pointer",
-    transition: "background 0.15s",
-  };
-
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginTop: "1rem",
-        padding: "0.5rem 0",
-      }}
-    >
-      <span style={{ fontSize: "0.8125rem", color: "#6B7280" }}>
+    <HStack justify="space-between" mt={4} py={2}>
+      <Text fontSize="sm" color="gray.500">
         Page {page} of {totalPages}
-      </span>
-      <div style={{ display: "flex", gap: "0.5rem" }}>
-        <button
+      </Text>
+      <HStack gap={2}>
+        <Button
+          size="sm"
+          variant="outline"
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          style={{
-            ...btnBase,
-            ...adminLayout.ghostBtn,
-            opacity: page <= 1 ? 0.5 : 1,
-            cursor: page <= 1 ? "default" : "pointer",
-          }}
         >
           Previous
-        </button>
-        <button
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          style={{
-            ...btnBase,
-            ...adminLayout.ghostBtn,
-            opacity: page >= totalPages ? 0.5 : 1,
-            cursor: page >= totalPages ? "default" : "pointer",
-          }}
         >
           Next
-        </button>
-      </div>
-    </div>
+        </Button>
+      </HStack>
+    </HStack>
   );
 }

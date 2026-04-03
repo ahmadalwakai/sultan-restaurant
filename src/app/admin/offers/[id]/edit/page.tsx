@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
-import { adminSpacing } from "@/lib/admin-ui";
+import { Card } from "@chakra-ui/react";
 import { OfferForm } from "@/components/forms/OfferForm";
 import type { OfferAdminFormValues } from "@/lib/validators";
 
@@ -30,9 +30,11 @@ export default function EditOfferPage() {
     <AdminShell>
       <AdminPageShell>
         <AdminSectionTitle title="Edit Offer" description="Update offer details" />
-        <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "0.5rem", padding: adminSpacing.card, maxWidth: "42rem" }}>
-          {offer ? <OfferForm defaultValues={offer} onSubmit={handleSubmit} /> : <AdminLoadingState rows={4} height="3rem" />}
-        </div>
+        <Card.Root shadow="sm" borderRadius="xl" maxW="42rem">
+          <Card.Body p={6}>
+            {offer ? <OfferForm defaultValues={offer} onSubmit={handleSubmit} /> : <AdminLoadingState rows={4} height="3rem" />}
+          </Card.Body>
+        </Card.Root>
       </AdminPageShell>
     </AdminShell>
   );

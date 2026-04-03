@@ -1,5 +1,6 @@
 "use client";
 
+import { HStack, Button, Text, Badge } from "@chakra-ui/react";
 import { AdminTable } from "@/components/admin/shared/AdminTable";
 
 interface Review { id: string; userName: string; rating: number; comment: string; status: string; createdAt: string }
@@ -11,20 +12,80 @@ export function ReviewsTable({ reviews, isLoading, onApprove, onReject, onDelete
       keyExtractor={(r) => r.id}
       isLoading={isLoading}
       columns={[
-        { key: "user", header: "User", render: (r) => r.userName },
-        { key: "rating", header: "Rating", render: (r) => <span className="text-amber-500">{"\u2605".repeat(r.rating)}{"\u2606".repeat(5 - r.rating)}</span> },
-        { key: "comment", header: "Comment", render: (r) => <span className="text-sm text-gray-600 truncate max-w-xs inline-block">{r.comment}</span> },
-        { key: "status", header: "Status", render: (r) => {
-          const colors: Record<string, string> = { APPROVED: "bg-green-100 text-green-700", PENDING: "bg-yellow-100 text-yellow-700", REJECTED: "bg-red-100 text-red-700" };
-          return <span className={`text-xs px-2 py-1 rounded font-medium ${colors[r.status] ?? "bg-gray-100"}`}>{r.status}</span>;
-        }},
-        { key: "actions", header: "", className: "text-right", render: (r) => (
-          <div className="flex gap-2 justify-end">
-            {r.status !== "APPROVED" && <button onClick={() => onApprove(r.id)} className="text-xs text-green-600 hover:underline">Approve</button>}
-            {r.status !== "REJECTED" && <button onClick={() => onReject(r.id)} className="text-xs text-yellow-600 hover:underline">Reject</button>}
-            <button onClick={() => onDelete(r.id)} className="text-xs text-red-600 hover:underline">Delete</button>
-          </div>
-        )},
+        {
+          key: "user",
+          header: "User",
+          render: (r) => <Text>{r.userName}</Text>
+        },
+        {
+          key: "rating",
+          header: "Rating",
+          render: (r) => (
+            <Text color="amber.500">
+              {"\u2605".repeat(r.rating)}{"\u2606".repeat(5 - r.rating)}
+            </Text>
+          )
+        },
+        {
+          key: "comment",
+          header: "Comment",
+          render: (r) => (
+            <Text fontSize="sm" color="gray.600" maxW="xs" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+              {r.comment}
+            </Text>
+          )
+        },
+        {
+          key: "status",
+          header: "Status",
+          render: (r) => {
+            const colorScheme = r.status === "APPROVED" ? "green" : r.status === "PENDING" ? "yellow" : r.status === "REJECTED" ? "red" : "gray";
+            return (
+              <Badge colorScheme={colorScheme} fontSize="xs" px={2} py={1} borderRadius="md" fontWeight="medium">
+                {r.status}
+              </Badge>
+            );
+          }
+        },
+        {
+          key: "actions",
+          header: "",
+          render: (r) => (
+            <HStack gap={2} justify="end">
+              {r.status !== "APPROVED" && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  color="green.600"
+                  _hover={{ textDecoration: "underline" }}
+                  onClick={() => onApprove(r.id)}
+                >
+                  Approve
+                </Button>
+              )}
+              {r.status !== "REJECTED" && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  color="yellow.600"
+                  _hover={{ textDecoration: "underline" }}
+                  onClick={() => onReject(r.id)}
+                >
+                  Reject
+                </Button>
+              )}
+              <Button
+                size="sm"
+                variant="ghost"
+                color="red.600"
+                _hover={{ textDecoration: "underline" }}
+                onClick={() => onDelete(r.id)}
+              >
+                Delete
+              </Button>
+            </HStack>
+          )
+        },
       ]}
     />
   );

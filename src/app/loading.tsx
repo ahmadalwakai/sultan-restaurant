@@ -1,10 +1,12 @@
+import { Flex, Spinner, Text, VStack } from "@chakra-ui/react";
+
 export default function RootLoading() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin" />
-        <p className="text-gray-500 text-sm">Loading...</p>
-      </div>
-    </div>
+    <Flex minH="100vh" align="center" justify="center">
+      <VStack gap={4}>
+        <Spinner size="lg" color="orange.500" borderWidth="4px" />
+        <Text color="gray.500" fontSize="sm">Loading...</Text>
+      </VStack>
+    </Flex>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode } from "react";
-import { adminSpacing } from "@/lib/admin-ui";
+import { HStack } from "@chakra-ui/react";
 
 interface AdminTableToolbarProps {
   children: ReactNode;
@@ -10,16 +10,8 @@ interface AdminTableToolbarProps {
 /** Horizontal bar above a table for search / filter / export */
 export function AdminTableToolbar({ children }: AdminTableToolbarProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        alignItems: "center",
-        gap: adminSpacing.md,
-        marginBottom: adminSpacing.md,
-      }}
-    >
+    <HStack gap={4} mb={4} flexWrap="wrap">
       {children}
-    </div>
+    </HStack>
   );
 }

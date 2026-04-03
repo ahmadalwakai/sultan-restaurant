@@ -1,9 +1,15 @@
 "use client";
 
+import { Badge } from "@chakra-ui/react";
+
 export function OfferStatusBadge({ isActive, expiresAt }: { isActive: boolean; expiresAt?: string | null }) {
   const isExpired = expiresAt ? new Date(expiresAt) < new Date() : false;
   const label = isExpired ? "Expired" : isActive ? "Active" : "Inactive";
-  const color = isExpired ? "bg-red-100 text-red-700" : isActive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700";
+  const colorScheme = isExpired ? "red" : isActive ? "green" : "gray";
 
-  return <span className={`text-xs px-2 py-1 rounded font-medium ${color}`}>{label}</span>;
+  return (
+    <Badge colorScheme={colorScheme} fontSize="xs" px={2} py={1} borderRadius="md" fontWeight="medium">
+      {label}
+    </Badge>
+  );
 }

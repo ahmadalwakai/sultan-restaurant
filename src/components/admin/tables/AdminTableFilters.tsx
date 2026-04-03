@@ -1,6 +1,6 @@
 "use client";
 
-import { adminFormStyles } from "@/lib/admin-ui";
+import { NativeSelect } from "@chakra-ui/react";
 
 interface FilterOption {
   label: string;
@@ -17,17 +17,18 @@ interface AdminTableFiltersProps {
 /** Status / filter dropdown for table toolbars */
 export function AdminTableFilters({ value, onChange, options, label = "All" }: AdminTableFiltersProps) {
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      style={{ ...adminFormStyles.select, maxWidth: "12rem" }}
-    >
-      <option value="">{label}</option>
-      {options.map((opt) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+    <NativeSelect.Root size="sm" maxW="12rem">
+      <NativeSelect.Field
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        <option value="">{label}</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </NativeSelect.Field>
+    </NativeSelect.Root>
   );
 }

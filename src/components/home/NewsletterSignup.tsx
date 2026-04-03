@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-import { SectionShell } from "@/components/shared/SectionShell";
+import { Box, Container, VStack, Heading, Text, Flex, Input, Button } from "@chakra-ui/react";
 
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
@@ -14,40 +13,55 @@ export function NewsletterSignup() {
   };
 
   return (
-    <SectionShell bg="bg-stone-100" spacing="compact" size="narrow">
-      <div className="text-center">
-        <h2 className="font-heading text-xl font-bold text-gray-900 sm:text-2xl">
-          Stay Updated
-        </h2>
-        <p className="mt-2 text-sm text-gray-500">
-          Subscribe for exclusive offers and updates
-        </p>
-        {submitted ? (
-          <p className="mt-6 text-sm font-medium text-amber-600">
-            Thank you for subscribing!
-          </p>
-        ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="mt-6 flex flex-col gap-3 sm:flex-row"
-          >
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-            />
-            <button
-              type="submit"
-              className="rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800"
-            >
-              Subscribe
-            </button>
-          </form>
-        )}
-      </div>
-    </SectionShell>
+    <Box as="section" py={{ base: 8, md: 10 }} bg="bg.elevated" color="text.on-dark">
+      <Container maxW="3xl" px={{ base: 4, md: 6, lg: 8 }}>
+        <VStack gap={4} textAlign="center">
+          <Heading as="h2" fontFamily="heading" fontSize={{ base: "xl", sm: "2xl" }} fontWeight="bold">
+            Stay Updated
+          </Heading>
+          <Text mt={2} fontSize="sm" opacity={0.8}>
+            Subscribe for exclusive offers and updates
+          </Text>
+          {submitted ? (
+            <Text mt={6} fontSize="sm" fontWeight="medium" color="amber.400">
+              Thank you for subscribing!
+            </Text>
+          ) : (
+            <Flex as="form" onSubmit={handleSubmit} mt={6} direction={{ base: "column", sm: "row" }} gap={3}>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                flex={1}
+                borderRadius="lg"
+                borderColor="gray.300"
+                bg="white"
+                px={4}
+                py={3}
+                fontSize="sm"
+                color="gray.900"
+                _placeholder={{ color: "gray.400" }}
+                _focus={{ borderColor: "amber.500", ring: "1px", ringColor: "amber.500" }}
+              />
+              <Button
+                type="submit"
+                borderRadius="lg"
+                bg="gray.900"
+                px={6}
+                py={3}
+                fontSize="sm"
+                fontWeight="semibold"
+                color="white"
+                _hover={{ bg: "gray.800" }}
+              >
+                Subscribe
+              </Button>
+            </Flex>
+          )}
+        </VStack>
+      </Container>
+    </Box>
   );
 }

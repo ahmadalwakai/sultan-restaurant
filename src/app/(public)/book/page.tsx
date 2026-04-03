@@ -1,28 +1,29 @@
+"use client";
+
 import { BookingForm } from "@/components/forms/BookingForm";
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { SITE_CONFIG } from "@/lib/constants/site";
-
-export const metadata = {
-  title: "Book a Table",
-  description:
-    "Reserve a table at Sultan Restaurant, 577 Gallowgate, Glasgow. Authentic Middle Eastern & Indian dining for groups of 1 to 20.",
-};
+import { Box, Container, VStack, Card, Text } from "@chakra-ui/react";
 
 export default function BookPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="mx-auto max-w-2xl px-4">
-        <SectionHeader
-          title="Reserve Your Table"
-          subtitle="Book a table at Sultan Restaurant for a memorable dining experience"
-        />
-        <div className="mt-8 rounded-2xl bg-white p-6 shadow-lg sm:p-8">
-          <BookingForm />
-        </div>
-        <div className="mt-8 text-center text-sm text-gray-500">
-          <p>Or call us directly: {SITE_CONFIG.contact.phone}</p>
-        </div>
-      </div>
-    </div>
+    <Box minH="100vh" bg="bg.canvas" py={{ base: 10, md: 16 }}>
+      <Container maxW="2xl" px={{ base: 4, md: 6, lg: 8 }}>
+        <VStack gap={8}>
+          <SectionHeader
+            title="Reserve Your Table"
+            subtitle="Book a table at Sultan Restaurant for a memorable dining experience"
+          />
+          <Card.Root shadow="lg" w="full">
+            <Card.Body p={{ base: 6, sm: 8 }}>
+              <BookingForm />
+            </Card.Body>
+          </Card.Root>
+          <Text color="gray.500" fontSize="sm" textAlign="center">
+            Or call us directly: {SITE_CONFIG.contact.phone}
+          </Text>
+        </VStack>
+      </Container>
+    </Box>
   );
 }

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { menuAdminSchema, type MenuAdminFormValues } from "@/lib/validators";
 import { useAdminCategories } from "@/hooks/admin";
+import { Box, Button, HStack, Input, NativeSelect, SimpleGrid, Text, Textarea, VStack } from "@chakra-ui/react";
 
 interface MenuItemFormProps {
   defaultValues?: Partial<MenuAdminFormValues>;
@@ -41,102 +42,90 @@ export function MenuItemForm({ defaultValues, onSubmit, isLoading }: MenuItemFor
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Item Name</label>
-          <input
-            {...register("name")}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          />
-          {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Price (£)</label>
-          <input
-            {...register("price", { valueAsNumber: true })}
-            type="number"
-            step="0.01"
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          />
-          {errors.price && <p className="mt-1 text-xs text-red-500">{errors.price.message}</p>}
-        </div>
-      </div>
+    <VStack as="form" onSubmit={handleSubmit(handleFormSubmit)} gap={4} align="stretch">
+      <SimpleGrid gap={4} columns={{ base: 1, sm: 2 }}>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Item Name</Text>
+          <Input {...register("name")} size="md" />
+          {errors.name && <Text mt={1} fontSize="xs" color="red.500">{errors.name.message}</Text>}
+        </Box>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Price (£)</Text>
+          <Input {...register("price", { valueAsNumber: true })} type="number" step="0.01" size="md" />
+          {errors.price && <Text mt={1} fontSize="xs" color="red.500">{errors.price.message}</Text>}
+        </Box>
+      </SimpleGrid>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Category</label>
-        <select
-          {...register("categoryId")}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-        >
-          <option value="">Select category</option>
-          {(categories as { id: string; name: string }[] | undefined)?.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-        {errors.categoryId && <p className="mt-1 text-xs text-red-500">{errors.categoryId.message}</p>}
-      </div>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Category</Text>
+        <NativeSelect.Root size="md">
+          <NativeSelect.Field {...register("categoryId")}>
+            <option value="">Select category</option>
+            {(categories as { id: string; name: string }[] | undefined)?.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </NativeSelect.Field>
+        </NativeSelect.Root>
+        {errors.categoryId && <Text mt={1} fontSize="xs" color="red.500">{errors.categoryId.message}</Text>}
+      </Box>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Description</label>
-        <textarea
-          {...register("description")}
-          rows={3}
-          className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-        />
-      </div>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Description</Text>
+        <Textarea {...register("description")} rows={3} size="md" />
+      </Box>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Image</label>
+      <Box>
+        <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Image</Text>
         <input
           type="file"
           accept="image/*"
           onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
-          className="w-full text-sm"
+          style={{ width: "100%", fontSize: "0.875rem" }}
         />
-      </div>
+      </Box>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Spice Level (0-5)</label>
-          <input
-            {...register("spiceLevel", { valueAsNumber: true })}
-            type="number"
-            min={0}
-            max={5}
-            className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          />
-        </div>
-      </div>
+      <SimpleGrid gap={4} columns={{ base: 1, sm: 2 }}>
+        <Box>
+          <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Spice Level (0-5)</Text>
+          <Input {...register("spiceLevel", { valueAsNumber: true })} type="number" min={0} max={5} size="md" />
+        </Box>
+      </SimpleGrid>
 
-      <div className="flex flex-wrap gap-6">
-        <label className="flex items-center gap-2 text-sm">
-          <input {...register("isVegetarian")} type="checkbox" className="rounded" />
-          Vegetarian
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input {...register("isVegan")} type="checkbox" className="rounded" />
-          Vegan
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input {...register("isGlutenFree")} type="checkbox" className="rounded" />
-          Gluten Free
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input {...register("isPopular")} type="checkbox" className="rounded" />
-          Popular
-        </label>
-      </div>
+      <HStack gap={6} flexWrap="wrap">
+        <HStack as="label" gap={2} fontSize="sm">
+          <input {...register("isVegetarian")} type="checkbox" />
+          <Text>Vegetarian</Text>
+        </HStack>
+        <HStack as="label" gap={2} fontSize="sm">
+          <input {...register("isVegan")} type="checkbox" />
+          <Text>Vegan</Text>
+        </HStack>
+        <HStack as="label" gap={2} fontSize="sm">
+          <input {...register("isGlutenFree")} type="checkbox" />
+          <Text>Gluten Free</Text>
+        </HStack>
+        <HStack as="label" gap={2} fontSize="sm">
+          <input {...register("isPopular")} type="checkbox" />
+          <Text>Popular</Text>
+        </HStack>
+      </HStack>
 
-      <button
+      <Button
         type="submit"
         disabled={isLoading}
-        className="rounded-lg bg-amber-500 px-6 py-2.5 font-semibold text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
+        borderRadius="lg"
+        bg="amber.500"
+        px={6}
+        py={2.5}
+        fontWeight="semibold"
+        color="white"
+        _hover={{ bg: "amber.600" }}
+        _disabled={{ opacity: 0.5 }}
       >
         {isLoading ? "Saving..." : defaultValues ? "Update Item" : "Create Item"}
-      </button>
-    </form>
+      </Button>
+    </VStack>
   );
 }

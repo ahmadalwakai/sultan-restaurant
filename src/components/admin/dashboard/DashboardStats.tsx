@@ -1,5 +1,7 @@
 "use client";
 
+import { SimpleGrid, Card, Flex, Box, Text } from "@chakra-ui/react";
+
 interface StatCard {
   label: string;
   value: string | number;
@@ -15,30 +17,32 @@ interface DashboardStatsProps {
 export function DashboardStats({ stats, isLoading }: DashboardStatsProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="h-28 bg-gray-100 rounded-lg animate-pulse" />
+          <Box key={i} h="28" bg="gray.100" borderRadius="lg" animation="pulse 2s infinite" />
         ))}
-      </div>
+      </SimpleGrid>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
       {stats.map((stat) => (
-        <div key={stat.label} className="bg-white border rounded-lg p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-2xl">{stat.icon}</span>
-            {stat.change && (
-              <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded">
-                {stat.change}
-              </span>
-            )}
-          </div>
-          <p className="mt-3 text-2xl font-bold text-gray-900">{stat.value}</p>
-          <p className="text-sm text-gray-500">{stat.label}</p>
-        </div>
+        <Card.Root key={stat.label} bg="bg.surface" shadow="sm" borderRadius="xl">
+          <Card.Body p={5}>
+            <Flex align="center" justify="space-between">
+              <Text fontSize="2xl">{stat.icon}</Text>
+              {stat.change && (
+                <Box fontSize="xs" fontWeight="medium" color="green.600" bg="green.50" px={2} py={1} borderRadius="md">
+                  {stat.change}
+                </Box>
+              )}
+            </Flex>
+            <Text mt={3} fontSize="2xl" fontWeight="bold" color="gray.900">{stat.value}</Text>
+            <Text fontSize="sm" color="gray.500">{stat.label}</Text>
+          </Card.Body>
+        </Card.Root>
       ))}
-    </div>
+    </SimpleGrid>
   );
 }

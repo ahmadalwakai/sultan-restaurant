@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Bell, Settings, Trash2 } from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+import { Box, VStack, HStack, Button, Text } from '@chakra-ui/react';
 import NotificationToast from './NotificationToast';
 
 interface NotificationItem {
@@ -106,159 +106,241 @@ export default function NotificationCenter({ className }: NotificationCenterProp
   };
 
   return (
-    <div className={cn('relative', className)}>
+    <Box position="relative" className={className}>
       {/* Notification Bell */}
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors"
+        p={2}
+        rounded="lg"
+        _hover={{ bg: "gray.100" }}
+        transition="colors"
         aria-label={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ''}`}
+        variant="ghost"
       >
-        <Bell className="w-5 h-5" />
+        <Bell size={20} />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          <Box
+            position="absolute"
+            top="-4px"
+            right="-4px"
+            bg="red.500"
+            color="white"
+            fontSize="xs"
+            rounded="full"
+            w={5}
+            h={5}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
             {unreadCount > 9 ? '9+' : unreadCount}
-          </span>
+          </Box>
         )}
-      </button>
+      </Button>
 
       {/* Notification Panel */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-80 max-h-96 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+        <Box
+          position="absolute"
+          right={0}
+          top="100%"
+          mt={2}
+          w={80}
+          maxH={96}
+          bg="white"
+          rounded="lg"
+          shadow="lg"
+          border="1px"
+          borderColor="gray.200"
+          zIndex={50}
+        >
           {/* Header */}
-          <div className="p-4 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Notifications</h3>
-              <div className="flex items-center space-x-2">
+          <Box p={4} borderBottom="1px" borderColor="gray.200">
+            <HStack justify="space-between">
+              <Text fontSize="lg" fontWeight="semibold">
+                Notifications
+              </Text>
+            <HStack gap={2}>
                 {notifications.length > 0 && (
                   <>
-                    <button
+                    <Button
                       onClick={markAllAsRead}
-                      className="text-sm text-orange-600 hover:text-orange-700"
+                      size="sm"
+                      color="orange.600"
+                      _hover={{ color: "orange.700" }}
+                      variant="ghost"
                     >
                       Mark all read
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={clearAll}
-                      className="p-1 rounded hover:bg-gray-100"
+                      p={1}
+                      rounded="md"
+                      _hover={{ bg: "gray.100" }}
                       aria-label="Clear all notifications"
+                      variant="ghost"
                     >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                      <Trash2 size={16} />
+                    </Button>
                   </>
                 )}
-                <button
+                <Button
                   onClick={() => setIsOpen(false)}
-                  className="p-1 rounded hover:bg-gray-100"
+                  p={1}
+                  rounded="md"
+                  _hover={{ bg: "gray.100" }}
                   aria-label="Close notifications"
+                  variant="ghost"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg width={16} height={16} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                </button>
-              </div>
-            </div>
+                </Button>
+              </HStack>
+            </HStack>
 
             {/* Filter Tabs */}
-            <div className="flex space-x-1 mt-3">
-              <button
+            <HStack gap={1} mt={3}>
+              <Button
                 onClick={() => setFilter('all')}
-                className={cn(
-                  'px-3 py-1 text-sm rounded-md transition-colors',
-                  filter === 'all'
-                    ? 'bg-orange-100 text-orange-700'
-                    : 'text-gray-600 hover:bg-gray-100'
-                )}
+                px={3}
+                py={1}
+                fontSize="sm"
+                rounded="md"
+                transition="colors"
+                bg={filter === 'all' ? 'orange.100' : undefined}
+                color={filter === 'all' ? 'orange.700' : 'gray.600'}
+                _hover={{ bg: filter === 'all' ? 'orange.100' : 'gray.100' }}
+                variant="ghost"
               >
                 All ({notifications.length})
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setFilter('unread')}
-                className={cn(
-                  'px-3 py-1 text-sm rounded-md transition-colors',
-                  filter === 'unread'
-                    ? 'bg-orange-100 text-orange-700'
-                    : 'text-gray-600 hover:bg-gray-100'
-                )}
+                px={3}
+                py={1}
+                fontSize="sm"
+                rounded="md"
+                transition="colors"
+                bg={filter === 'unread' ? 'orange.100' : undefined}
+                color={filter === 'unread' ? 'orange.700' : 'gray.600'}
+                _hover={{ bg: filter === 'unread' ? 'orange.100' : 'gray.100' }}
+                variant="ghost"
               >
                 Unread ({unreadCount})
-              </button>
-            </div>
-          </div>
+              </Button>
+            </HStack>
+          </Box>
 
           {/* Notifications List */}
-          <div className="max-h-64 overflow-y-auto">
+          <Box maxH={64} overflowY="auto">
             {filteredNotifications.length === 0 ? (
-              <div className="p-8 text-center text-gray-500">
-                <Bell className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">No notifications</p>
-              </div>
+              <VStack p={8} textAlign="center" color="gray.500">
+                <Bell size={32} opacity={0.5} />
+                <Text fontSize="sm">No notifications</Text>
+              </VStack>
             ) : (
               filteredNotifications.map((notification) => (
-                <div
+                <Box
                   key={notification.id}
-                  className={cn(
-                    'p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors',
-                    !notification.read && 'bg-blue-50/50'
-                  )}
+                  p={4}
+                  borderBottom="1px"
+                  borderColor="gray.100"
+                  _hover={{ bg: "gray.50" }}
+                  transition="colors"
+                  bg={!notification.read ? "blue.50" : undefined}
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2">
-                        <h4 className="text-sm font-medium text-gray-900 truncate">
+                  <HStack justify="space-between" align="start">
+                    <Box flex={1} minW={0}>
+                      <HStack gap={2} align="center">
+                        <Text
+                          fontSize="sm"
+                          fontWeight="medium"
+                          color="gray.900"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                        >
                           {notification.title}
-                        </h4>
+                        </Text>
                         {!notification.read && (
-                          <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
+                          <Box w={2} h={2} bg="blue.500" rounded="full" flexShrink={0} />
                         )}
-                      </div>
+                      </HStack>
                       {notification.message && (
-                        <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                        <Box
+                          fontSize="sm"
+                          color="gray.600"
+                          mt={1}
+                          maxH="3rem"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                        >
                           {notification.message}
-                        </p>
+                        </Box>
                       )}
-                      <p className="text-xs text-gray-500 mt-1">
+                      <Text fontSize="xs" color="gray.500" mt={1}>
                         {formatTimestamp(notification.timestamp)}
-                      </p>
-                    </div>
+                      </Text>
+                    </Box>
 
-                    <div className="flex items-center space-x-1 ml-2">
+                    <HStack gap={1} ml={2}>
                       {notification.action && (
-                        <button
+                        <Button
                           onClick={() => {
                             notification.action?.onClick();
                             markAsRead(notification.id);
                           }}
-                          className="text-xs text-orange-600 hover:text-orange-700 font-medium"
+                          fontSize="xs"
+                          color="orange.600"
+                          _hover={{ color: "orange.700" }}
+                          fontWeight="medium"
+                          variant="ghost"
                         >
                           {notification.action.label}
-                        </button>
+                        </Button>
                       )}
-                      <button
+                      <Button
                         onClick={() => removeNotification(notification.id)}
-                        className="p-1 rounded hover:bg-gray-200"
+                        p={1}
+                        rounded="md"
+                        _hover={{ bg: "gray.200" }}
                         aria-label="Remove notification"
+                        variant="ghost"
                       >
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg width={12} height={12} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                      </Button>
+                    </HStack>
+                  </HStack>
+                </Box>
               ))
             )}
-          </div>
+          </Box>
 
           {/* Footer */}
-          <div className="p-4 border-t border-gray-200">
-            <button className="w-full flex items-center justify-center space-x-2 p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
-              <Settings className="w-4 h-4" />
-              <span>Notification Settings</span>
-            </button>
-          </div>
-        </div>
+          <Box p={4} borderTop="1px" borderColor="gray.200">
+            <Button
+              w="full"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              p={2}
+              fontSize="sm"
+              color="gray.600"
+              _hover={{ bg: "gray.50" }}
+              rounded="lg"
+              transition="colors"
+              variant="ghost"
+            >
+              <Settings size={16} />
+              <Text>Notification Settings</Text>
+            </Button>
+          </Box>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 

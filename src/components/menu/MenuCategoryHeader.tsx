@@ -1,5 +1,7 @@
 "use client";
 
+import { VStack, HStack, Text, Box } from "@chakra-ui/react";
+
 interface MenuCategoryHeaderProps {
   name: string;
   description?: string;
@@ -8,12 +10,20 @@ interface MenuCategoryHeaderProps {
 
 export default function MenuCategoryHeader({ name, description, itemCount }: MenuCategoryHeaderProps) {
   return (
-    <div className="mb-4 border-b border-gray-100 pb-4">
-      <div className="flex items-baseline justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">{name}</h2>
-        <span className="text-sm text-gray-400">{itemCount} items</span>
-      </div>
-      {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
-    </div>
+    <Box mb={4} borderBottom="1px solid" borderColor="gray.100" pb={4}>
+      <HStack justify="space-between" align="baseline">
+        <Text fontSize="2xl" fontWeight="bold" color="gray.900">
+          {name}
+        </Text>
+        <Text fontSize="sm" color="gray.400">
+          {itemCount} items
+        </Text>
+      </HStack>
+      {description && (
+        <Text mt={1} fontSize="sm" color="gray.500">
+          {description}
+        </Text>
+      )}
+    </Box>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Card, SimpleGrid, Flex, Text } from "@chakra-ui/react";
 
 const actions = [
   { label: "Add Menu Item", href: "/admin/menu/new", icon: "🍽️" },
@@ -11,20 +12,28 @@ const actions = [
 
 export function QuickActions() {
   return (
-    <div className="bg-white border rounded-lg p-5">
-      <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
-      <div className="grid grid-cols-2 gap-3">
-        {actions.map((a) => (
-          <Link
-            key={a.href}
-            href={a.href}
-            className="flex items-center gap-2 p-3 rounded-lg border hover:bg-amber-50 hover:border-amber-200 transition-colors"
-          >
-            <span className="text-xl">{a.icon}</span>
-            <span className="text-sm font-medium">{a.label}</span>
-          </Link>
-        ))}
-      </div>
-    </div>
+    <Card.Root bg="bg.surface" shadow="sm" borderRadius="xl">
+      <Card.Body p={5}>
+        <Text fontWeight="semibold" color="gray.900" mb={4}>Quick Actions</Text>
+        <SimpleGrid columns={2} gap={3}>
+          {actions.map((a) => (
+            <Link key={a.href} href={a.href}>
+              <Flex
+                align="center"
+                gap={2}
+                p={3}
+                borderRadius="lg"
+                borderWidth="1px"
+                transition="all 0.2s"
+                _hover={{ bg: "amber.50", borderColor: "amber.200" }}
+              >
+                <Text fontSize="xl">{a.icon}</Text>
+                <Text fontSize="sm" fontWeight="medium">{a.label}</Text>
+              </Flex>
+            </Link>
+          ))}
+        </SimpleGrid>
+      </Card.Body>
+    </Card.Root>
   );
 }

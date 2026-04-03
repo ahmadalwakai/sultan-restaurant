@@ -1,5 +1,6 @@
 "use client";
 
+import { Input } from "@chakra-ui/react";
 import { AdminFilterBar } from "@/components/admin/shared/AdminFilterBar";
 import { AdminStatusFilter } from "@/components/admin/shared/AdminStatusFilter";
 
@@ -22,11 +23,12 @@ export function BookingFilters({ status, onStatusChange, date, onDateChange }: B
     <AdminFilterBar>
       <AdminStatusFilter value={status} onChange={onStatusChange} options={BOOKING_STATUSES} />
       {onDateChange && (
-        <input
+        <Input
           type="date"
           value={date ?? ""}
           onChange={(e) => onDateChange(e.target.value)}
-          className="px-3 py-2 border rounded-lg text-sm"
+          size="sm"
+          maxW="xs"
         />
       )}
     </AdminFilterBar>

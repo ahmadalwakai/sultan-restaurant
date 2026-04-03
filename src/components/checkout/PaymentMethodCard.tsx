@@ -1,6 +1,7 @@
 "use client";
 
 import type { PaymentMethodType } from "@/types/order";
+import { Flex, Box, Text } from "@chakra-ui/react";
 
 interface PaymentMethodCardProps {
   method: PaymentMethodType;
@@ -17,28 +18,43 @@ export function PaymentMethodCard({ method, selected, onSelect }: PaymentMethodC
   const config = methodConfig[method];
 
   return (
-    <button
+    <Flex
+      as="button"
       onClick={() => onSelect(method)}
-      className={`flex w-full items-center gap-4 rounded-xl border-2 p-4 text-left transition-all ${
-        selected
-          ? "border-amber-500 bg-amber-50"
-          : "border-gray-100 bg-white hover:border-gray-200"
-      }`}
+      w="full"
+      align="center"
+      gap={4}
+      borderRadius="xl"
+      border="2px solid"
+      borderColor={selected ? "amber.500" : "gray.100"}
+      bg={selected ? "amber.50" : "bg.surface"}
+      p={4}
+      textAlign="left"
+      transition="all 0.2s"
+      _hover={!selected ? { borderColor: "gray.200" } : undefined}
     >
-      <span className="text-2xl">{config.icon}</span>
-      <div className="flex-1">
-        <p className={`font-semibold ${selected ? "text-amber-700" : "text-gray-900"}`}>{config.label}</p>
-        <p className="text-sm text-gray-500">{config.description}</p>
-      </div>
-      <div className={`h-5 w-5 rounded-full border-2 ${
-        selected ? "border-amber-500 bg-amber-500" : "border-gray-300"
-      }`}>
+      <Text fontSize="2xl">{config.icon}</Text>
+      <Box flex={1}>
+        <Text fontWeight="semibold" color={selected ? "amber.700" : "gray.900"}>{config.label}</Text>
+        <Text fontSize="sm" color="gray.500">{config.description}</Text>
+      </Box>
+      <Box
+        h={5}
+        w={5}
+        borderRadius="full"
+        border="2px solid"
+        borderColor={selected ? "amber.500" : "gray.300"}
+        bg={selected ? "amber.500" : "transparent"}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         {selected && (
-          <svg className="h-full w-full text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg style={{ width: "100%", height: "100%", color: "white" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </svg>
         )}
-      </div>
-    </button>
+      </Box>
+    </Flex>
   );
 }

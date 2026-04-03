@@ -1,12 +1,13 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { Box, VStack, Table } from "@chakra-ui/react";
 
 interface Column<T> {
   key: string;
   header: string;
   render: (item: T) => ReactNode;
-  className?: string;
+  width?: string;
 }
 
 interface AdminTableProps<T> {
@@ -19,41 +20,49 @@ interface AdminTableProps<T> {
 export function AdminTable<T>({ columns, data, keyExtractor, isLoading }: AdminTableProps<T>) {
   if (isLoading) {
     return (
-      <div className="animate-pulse space-y-3">
+      <VStack gap={3} align="stretch">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-12 bg-gray-100 rounded" />
+          <Box key={i} h={12} bg="gray.100" borderRadius="md" />
         ))}
-      </div>
+      </VStack>
     );
   }
 
   return (
-    <div className="overflow-x-auto border rounded-lg">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
+    <Box overflowX="auto" border="1px solid" borderColor="gray.200" borderRadius="lg">
+      <Table.Root size="sm">
+        <Table.Header>
+          <Table.Row bg="gray.50">
             {columns.map((col) => (
-              <th
+              <Table.ColumnHeader
                 key={col.key}
-                className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${col.className ?? ""}`}
+                px={4}
+                py={3}
+                textAlign="left"
+                fontSize="xs"
+                fontWeight="medium"
+                color="gray.500"
+                textTransform="uppercase"
+                letterSpacing="wider"
+                width={col.width}
               >
                 {col.header}
-              </th>
+              </Table.ColumnHeader>
             ))}
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {data.map((item) => (
-            <tr key={keyExtractor(item)} className="hover:bg-gray-50">
+            <Table.Row key={keyExtractor(item)} _hover={{ bg: "gray.50" }} bg="bg.surface">
               {columns.map((col) => (
-                <td key={col.key} className={`px-4 py-3 text-sm ${col.className ?? ""}`}>
+                <Table.Cell key={col.key} px={4} py={3} fontSize="sm">
                   {col.render(item)}
-                </td>
+                </Table.Cell>
               ))}
-            </tr>
+            </Table.Row>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </Table.Body>
+      </Table.Root>
+    </Box>
   );
 }

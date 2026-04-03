@@ -1,5 +1,7 @@
 "use client";
 
+import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+
 interface MenuDragReorderProps {
   items: Array<{ id: string; name: string; sortOrder: number }>;
   onReorder: (items: Array<{ id: string; sortOrder: number }>) => void;
@@ -21,16 +23,16 @@ export function MenuDragReorder({ items, onReorder }: MenuDragReorderProps) {
   }
 
   return (
-    <div className="space-y-1">
+    <VStack gap={1}>
       {items.map((item, i) => (
-        <div key={item.id} className="flex items-center gap-3 p-3 bg-white border rounded-lg">
-          <div className="flex flex-col gap-1">
-            <button onClick={() => moveUp(i)} disabled={i === 0} className="text-xs text-gray-400 hover:text-gray-600 disabled:opacity-30">▲</button>
-            <button onClick={() => moveDown(i)} disabled={i === items.length - 1} className="text-xs text-gray-400 hover:text-gray-600 disabled:opacity-30">▼</button>
-          </div>
-          <span className="text-sm font-medium">{item.name}</span>
-        </div>
+        <Flex key={item.id} align="center" gap={3} p={3} bg="white" borderWidth="1px" rounded="lg" w="full">
+          <Flex direction="column" gap={1}>
+            <Button variant="ghost" size="xs" onClick={() => moveUp(i)} disabled={i === 0} color="gray.400" _hover={{ color: "gray.600" }}>&#9650;</Button>
+            <Button variant="ghost" size="xs" onClick={() => moveDown(i)} disabled={i === items.length - 1} color="gray.400" _hover={{ color: "gray.600" }}>&#9660;</Button>
+          </Flex>
+          <Text fontSize="sm" fontWeight="medium">{item.name}</Text>
+        </Flex>
       ))}
-    </div>
+    </VStack>
   );
 }

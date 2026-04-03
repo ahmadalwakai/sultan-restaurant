@@ -1,5 +1,7 @@
 "use client";
 
+import { Box, Flex, Heading, Text, chakra } from "@chakra-ui/react";
+
 interface MenuItemPreviewProps {
   name: string;
   description?: string;
@@ -12,20 +14,20 @@ interface MenuItemPreviewProps {
 
 export function MenuItemPreview({ name, description, price, image, isVegetarian, isVegan, isGlutenFree }: MenuItemPreviewProps) {
   return (
-    <div className="bg-white border rounded-lg overflow-hidden max-w-xs">
-      {image && <img src={image} alt={name} className="w-full h-40 object-cover" />}
-      <div className="p-4">
-        <div className="flex items-start justify-between">
-          <h3 className="font-semibold text-sm">{name}</h3>
-          <span className="font-bold text-amber-600">£{(price / 100).toFixed(2)}</span>
-        </div>
-        {description && <p className="text-xs text-gray-500 mt-1">{description}</p>}
-        <div className="flex gap-1 mt-2">
-          {isVegetarian && <span className="text-xs px-1.5 py-0.5 bg-green-100 text-green-700 rounded">V</span>}
-          {isVegan && <span className="text-xs px-1.5 py-0.5 bg-green-100 text-green-700 rounded">VG</span>}
-          {isGlutenFree && <span className="text-xs px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded">GF</span>}
-        </div>
-      </div>
-    </div>
+    <Box bg="white" borderWidth="1px" rounded="lg" overflow="hidden" maxW="xs">
+      {image && <chakra.img src={image} alt={name} w="full" h="40" objectFit="cover" />}
+      <Box p={4}>
+        <Flex align="flex-start" justify="space-between">
+          <Heading size="sm">{name}</Heading>
+          <Text fontWeight="bold" color="amber.600">{String.fromCharCode(163)}{(price / 100).toFixed(2)}</Text>
+        </Flex>
+        {description && <Text fontSize="xs" color="gray.500" mt={1}>{description}</Text>}
+        <Flex gap={1} mt={2}>
+          {isVegetarian && <Box as="span" fontSize="xs" px={1.5} py={0.5} bg="green.100" color="green.700" rounded="md">V</Box>}
+          {isVegan && <Box as="span" fontSize="xs" px={1.5} py={0.5} bg="green.100" color="green.700" rounded="md">VG</Box>}
+          {isGlutenFree && <Box as="span" fontSize="xs" px={1.5} py={0.5} bg="yellow.100" color="yellow.700" rounded="md">GF</Box>}
+        </Flex>
+      </Box>
+    </Box>
   );
 }

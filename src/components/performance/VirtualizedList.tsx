@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useState, useEffect, useRef, useCallback } from 'react';
-import { cn } from '@/lib/utils/cn';
+import { Box } from '@chakra-ui/react';
 
 interface VirtualizedListProps<T> {
   items: T[];
@@ -39,14 +39,15 @@ export default function VirtualizedList<T>({
   }, []);
 
   return (
-    <div
+    <Box
       ref={containerRef}
-      className={cn('overflow-auto', className)}
-      style={{ height: containerHeight }}
+      overflow="auto"
+      className={className}
+      h={containerHeight}
       onScroll={handleScroll}
     >
-      <div style={{ height: totalHeight, position: 'relative' }}>
-        <div
+      <Box h={totalHeight} position="relative">
+        <Box
           style={{
             transform: `translateY(${offsetY}px)`,
             position: 'absolute',
@@ -56,15 +57,15 @@ export default function VirtualizedList<T>({
           }}
         >
           {visibleItems.map((item, index) => (
-            <div
+            <Box
               key={startIndex + index}
-              style={{ height: itemHeight }}
+              h={itemHeight}
             >
               {renderItem(item, startIndex + index)}
-            </div>
+            </Box>
           ))}
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }

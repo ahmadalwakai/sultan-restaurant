@@ -1,6 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Link from "next/link";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 
 interface MobileQuickActionCardProps {
   icon: ReactNode;
@@ -11,22 +13,55 @@ interface MobileQuickActionCardProps {
 }
 
 export function MobileQuickActionCard({ icon, label, onClick, href, badge }: MobileQuickActionCardProps) {
-  const Tag = href ? "a" : "button";
-  return (
-    <Tag
-      href={href}
-      onClick={onClick}
-      className="relative flex flex-col items-center gap-2 rounded-xl bg-white p-4 shadow-sm active:scale-95"
+  const content = (
+    <Box
+      position="relative"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      gap={2}
+      borderRadius="xl"
+      bg="bg.surface"
+      p={4}
+      shadow="sm"
+      _active={{ transform: "scale(0.95)" }}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 text-xl text-amber-600">
+      <Flex h={12} w={12} align="center" justify="center" borderRadius="full" bg="amber.50" fontSize="xl" color="amber.600">
         {icon}
-      </div>
-      <span className="text-xs font-medium text-gray-700">{label}</span>
+      </Flex>
+      <Text fontSize="xs" fontWeight="medium" color="gray.700">{label}</Text>
       {badge !== undefined && badge > 0 && (
-        <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+        <Flex
+          position="absolute"
+          right={2}
+          top={2}
+          h={5}
+          w={5}
+          align="center"
+          justify="center"
+          borderRadius="full"
+          bg="red.500"
+          fontSize="10px"
+          fontWeight="bold"
+          color="white"
+        >
           {badge > 9 ? "9+" : badge}
-        </span>
+        </Flex>
       )}
-    </Tag>
+    </Box>
+  );
+
+  if (href) {
+    return (
+      <Link href={href}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <Box as="button" onClick={onClick}>
+      {content}
+    </Box>
   );
 }

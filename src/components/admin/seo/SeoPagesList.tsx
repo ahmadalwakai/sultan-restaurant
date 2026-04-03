@@ -1,22 +1,41 @@
 "use client";
 
+import { VStack, Button, Text } from "@chakra-ui/react";
+
 interface SeoPage { pageSlug: string; title: string; description?: string }
 
 export function SeoPagesList({ pages, activeSlug, onSelect }: { pages: SeoPage[]; activeSlug: string; onSelect: (slug: string) => void }) {
   return (
-    <nav className="space-y-1">
+    <VStack align="stretch" gap={1}>
       {pages.map((page) => (
-        <button
+        <Button
           key={page.pageSlug}
           onClick={() => onSelect(page.pageSlug)}
-          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-            activeSlug === page.pageSlug ? "bg-amber-50 text-amber-700 font-medium" : "text-gray-600 hover:bg-gray-50"
-          }`}
+          variant="ghost"
+          justifyContent="start"
+          px={3}
+          py={2}
+          borderRadius="lg"
+          fontSize="sm"
+          fontWeight={activeSlug === page.pageSlug ? "medium" : "normal"}
+          bg={activeSlug === page.pageSlug ? "amber.50" : "transparent"}
+          color={activeSlug === page.pageSlug ? "amber.700" : "gray.600"}
+          _hover={{ bg: activeSlug === page.pageSlug ? "amber.50" : "gray.50" }}
+          h="auto"
+          whiteSpace="normal"
         >
-          <span className="block">{page.title || page.pageSlug}</span>
-          {page.description && <span className="block text-xs text-gray-400 truncate">{page.description}</span>}
-        </button>
+          <VStack align="start" gap={0} w="full">
+            <Text fontSize="sm" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+              {page.title || page.pageSlug}
+            </Text>
+            {page.description && (
+              <Text fontSize="xs" color="gray.400" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                {page.description}
+              </Text>
+            )}
+          </VStack>
+        </Button>
       ))}
-    </nav>
+    </VStack>
   );
 }

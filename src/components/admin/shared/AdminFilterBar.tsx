@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { Flex } from "@chakra-ui/react";
 
 interface AdminFilterBarProps {
   children: ReactNode;
@@ -8,8 +9,8 @@ interface AdminFilterBarProps {
 
 export function AdminFilterBar({ children }: AdminFilterBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+    <Flex flexWrap="wrap" align="center" gap={3} mb={4} p={3} bg="gray.50" borderRadius="lg">
       {children}
-    </div>
+    </Flex>
   );
 }

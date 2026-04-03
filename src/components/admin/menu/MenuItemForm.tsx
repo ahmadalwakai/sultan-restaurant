@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Box, Button, Flex, Input, NativeSelect, Text, Textarea, VStack } from "@chakra-ui/react";
 
 interface MenuItemFormProps {
   initialData?: Record<string, unknown>;
@@ -29,23 +30,27 @@ export function AdminMenuItemForm({ initialData, onSubmit }: MenuItemFormProps) 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div><label className="block text-sm font-medium mb-1">Name</label><input name="name" defaultValue={(initialData?.name as string) ?? ""} required className="w-full px-3 py-2 border rounded-lg" /></div>
-      <div><label className="block text-sm font-medium mb-1">Description</label><textarea name="description" defaultValue={(initialData?.description as string) ?? ""} rows={3} className="w-full px-3 py-2 border rounded-lg" /></div>
-      <div><label className="block text-sm font-medium mb-1">Price (pence)</label><input name="price" type="number" defaultValue={(initialData?.price as number) ?? ""} required className="w-full px-3 py-2 border rounded-lg" /></div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Category</label>
-        <select name="categoryId" defaultValue={(initialData?.categoryId as string) ?? ""} className="w-full px-3 py-2 border rounded-lg">
-          <option value="">Select category</option>
-          {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-        </select>
-      </div>
-      <div className="flex gap-4">
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="isVegetarian" defaultChecked={!!initialData?.isVegetarian} /> Vegetarian</label>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="isVegan" defaultChecked={!!initialData?.isVegan} /> Vegan</label>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="isGlutenFree" defaultChecked={!!initialData?.isGlutenFree} /> Gluten Free</label>
-      </div>
-      <button type="submit" className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700">Save</button>
+    <form onSubmit={handleSubmit}>
+    <VStack gap={4} align="stretch">
+      <Box><Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>Name</Text><Input name="name" defaultValue={(initialData?.name as string) ?? ""} required /></Box>
+      <Box><Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>Description</Text><Textarea name="description" defaultValue={(initialData?.description as string) ?? ""} rows={3} /></Box>
+      <Box><Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>Price (pence)</Text><Input name="price" type="number" defaultValue={(initialData?.price as number) ?? ""} required /></Box>
+      <Box>
+        <Text as="label" display="block" fontSize="sm" fontWeight="medium" mb={1}>Category</Text>
+        <NativeSelect.Root>
+          <NativeSelect.Field name="categoryId" defaultValue={(initialData?.categoryId as string) ?? ""}>
+            <option value="">Select category</option>
+            {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </NativeSelect.Field>
+        </NativeSelect.Root>
+      </Box>
+      <Flex gap={4}>
+        <Text as="label" display="flex" alignItems="center" gap={2} fontSize="sm"><input type="checkbox" name="isVegetarian" defaultChecked={!!initialData?.isVegetarian} /> Vegetarian</Text>
+        <Text as="label" display="flex" alignItems="center" gap={2} fontSize="sm"><input type="checkbox" name="isVegan" defaultChecked={!!initialData?.isVegan} /> Vegan</Text>
+        <Text as="label" display="flex" alignItems="center" gap={2} fontSize="sm"><input type="checkbox" name="isGlutenFree" defaultChecked={!!initialData?.isGlutenFree} /> Gluten Free</Text>
+      </Flex>
+      <Button type="submit" bg="amber.600" color="white" _hover={{ bg: "amber.700" }} alignSelf="flex-start">Save</Button>
+    </VStack>
     </form>
   );
 }

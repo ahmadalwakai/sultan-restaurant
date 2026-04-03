@@ -1,5 +1,7 @@
 "use client";
 
+import { VStack, Box, Text, HStack } from "@chakra-ui/react";
+
 interface OrderDetailProps {
   order: {
     orderNumber: string;
@@ -15,28 +17,33 @@ interface OrderDetailProps {
 
 export function OrderDetail({ order }: OrderDetailProps) {
   return (
-    <div className="space-y-6">
-      <div className="bg-white border rounded-lg p-6">
-        <h2 className="font-semibold mb-4">Order Items</h2>
-        <div className="space-y-3">
+    <VStack align="stretch" gap={6}>
+      <Box bg="bg.surface" borderRadius="lg" border="1px solid" borderColor="gray.200" p={6}>
+        <Text fontWeight="semibold" mb={4}>Order Items</Text>
+        <VStack align="stretch" gap={3}>
           {order.items.map((item) => (
-            <div key={item.id} className="flex justify-between text-sm">
-              <span>{item.menuItem.name} x{item.quantity}</span>
-              <span>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</span>
-            </div>
+            <HStack key={item.id} justify="space-between" fontSize="sm">
+              <Text>{item.menuItem.name} x{item.quantity}</Text>
+              <Text>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</Text>
+            </HStack>
           ))}
-          <div className="pt-3 border-t flex justify-between font-semibold">
-            <span>Total</span>
-            <span>£{(Number(order.total) / 100).toFixed(2)}</span>
-          </div>
-        </div>
-      </div>
-      <div className="bg-white border rounded-lg p-6">
-        <h2 className="font-semibold mb-3">Customer</h2>
-        <p className="text-sm">{order.customerName}</p>
-        {order.customerPhone && <p className="text-sm text-gray-500">{order.customerPhone}</p>}
-        <p className="text-sm text-gray-500 mt-1">Type: {order.orderType}</p>
-      </div>
-    </div>
+          <Box borderTop="1px solid" borderColor="gray.200" pt={3}>
+            <HStack justify="space-between" fontWeight="semibold">
+              <Text>Total</Text>
+              <Text>£{(Number(order.total) / 100).toFixed(2)}</Text>
+            </HStack>
+          </Box>
+        </VStack>
+      </Box>
+
+      <Box bg="bg.surface" borderRadius="lg" border="1px solid" borderColor="gray.200" p={6}>
+        <Text fontWeight="semibold" mb={3}>Customer</Text>
+        <VStack align="start" gap={1}>
+          <Text fontSize="sm">{order.customerName}</Text>
+          {order.customerPhone && <Text fontSize="sm" color="gray.500">{order.customerPhone}</Text>}
+          <Text fontSize="sm" color="gray.500">Type: {order.orderType}</Text>
+        </VStack>
+      </Box>
+    </VStack>
   );
 }

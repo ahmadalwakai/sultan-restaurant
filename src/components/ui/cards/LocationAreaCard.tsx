@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Box, Text, HStack } from "@chakra-ui/react";
 
 interface LocationAreaCardProps {
   area: {
@@ -14,16 +15,54 @@ interface LocationAreaCardProps {
 
 export function LocationAreaCard({ area }: LocationAreaCardProps) {
   return (
-    <Link href="/delivery" className="group block overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md">
-      <div className="relative h-28">
-        <Image src={area.image} alt={area.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <p className="absolute bottom-2 left-3 font-semibold text-white">{area.name}</p>
-      </div>
-      <div className="flex items-center justify-between p-3">
-        <span className="text-sm text-gray-600">🕐 {area.deliveryTime}</span>
-        {area.deliveryFee && <span className="text-sm font-medium text-amber-600">{area.deliveryFee}</span>}
-      </div>
+    <Link href="/delivery">
+      <Box
+        display="block"
+        overflow="hidden"
+        rounded="xl"
+        bg="white"
+        shadow="sm"
+        transition="shadow"
+        _hover={{ shadow: "md" }}
+        _groupHover={{ shadow: "md" }}
+      >
+      <Box position="relative" h={28}>
+        <Image
+          src={area.image}
+          alt={area.name}
+          fill
+          style={{
+            objectFit: "cover",
+            transition: "transform 0.3s",
+          }}
+          className="group-hover:scale-105"
+        />
+        <Box
+          position="absolute"
+          inset={0}
+          bgGradient="linear(to-t, blackAlpha.600, transparent)"
+        />
+        <Text
+          position="absolute"
+          bottom={2}
+          left={3}
+          fontWeight="semibold"
+          color="white"
+        >
+          {area.name}
+        </Text>
+      </Box>
+      <HStack justify="space-between" p={3}>
+        <Text fontSize="sm" color="gray.600">
+          🕐 {area.deliveryTime}
+        </Text>
+        {area.deliveryFee && (
+          <Text fontSize="sm" fontWeight="medium" color="amber.600">
+            {area.deliveryFee}
+          </Text>
+        )}
+      </HStack>
+    </Box>
     </Link>
   );
 }

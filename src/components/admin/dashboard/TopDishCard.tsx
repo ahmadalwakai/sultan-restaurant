@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils/format-currency";
+import { HStack, Flex, Box, Text } from "@chakra-ui/react";
 
 interface TopDishCardProps {
   dish: {
@@ -15,22 +16,22 @@ interface TopDishCardProps {
 
 export function TopDishCard({ dish, rank }: TopDishCardProps) {
   return (
-    <div className="flex items-center gap-4 rounded-lg border border-gray-100 bg-white p-3">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-50 text-sm font-bold text-amber-600">
+    <HStack gap={4} borderRadius="lg" border="1px solid" borderColor="gray.100" bg="bg.surface" p={3}>
+      <Flex h={8} w={8} flexShrink={0} align="center" justify="center" borderRadius="full" bg="amber.50" fontSize="sm" fontWeight="bold" color="amber.600">
         #{rank}
-      </span>
-      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg">
+      </Flex>
+      <Box position="relative" h={12} w={12} flexShrink={0} overflow="hidden" borderRadius="lg">
         {dish.image ? (
           <Image src={dish.image} alt={dish.name} fill className="object-cover" sizes="48px" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-amber-50 text-xl">🍛</div>
+          <Flex h="full" w="full" align="center" justify="center" bg="amber.50" fontSize="xl">🍛</Flex>
         )}
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="truncate font-medium text-gray-900">{dish.name}</p>
-        <p className="text-xs text-gray-400">{dish.ordersCount} orders</p>
-      </div>
-      <span className="shrink-0 font-semibold text-gray-900">{formatCurrency(dish.revenue)}</span>
-    </div>
+      </Box>
+      <Box minW={0} flex={1}>
+        <Text truncate fontWeight="medium" color="gray.900">{dish.name}</Text>
+        <Text fontSize="xs" color="gray.400">{dish.ordersCount} orders</Text>
+      </Box>
+      <Text flexShrink={0} fontWeight="semibold" color="gray.900">{formatCurrency(dish.revenue)}</Text>
+    </HStack>
   );
 }

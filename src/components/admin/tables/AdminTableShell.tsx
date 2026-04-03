@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { adminTableStyles } from "@/lib/admin-ui";
+import { Card, Box } from "@chakra-ui/react";
 
 interface AdminTableShellProps {
   children: ReactNode;
@@ -8,10 +8,12 @@ interface AdminTableShellProps {
 /** Table container with white background, border, and rounded corners */
 export function AdminTableShell({ children }: AdminTableShellProps) {
   return (
-    <div style={adminTableStyles.wrapper}>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        {children}
-      </table>
-    </div>
+    <Card.Root shadow="sm" borderRadius="xl" overflow="hidden">
+      <Card.Body p={0}>
+        <Box overflowX="auto">
+          {children}
+        </Box>
+      </Card.Body>
+    </Card.Root>
   );
 }
