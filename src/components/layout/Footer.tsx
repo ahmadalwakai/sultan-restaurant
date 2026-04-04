@@ -3,13 +3,14 @@ import { Box, Container, SimpleGrid, VStack, Text, HStack, Heading } from "@chak
 import { ArabicPatternOverlay } from "@/components/decorative/ArabicPattern";
 import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 import { SOCIAL } from "@/lib/constants/site";
+import { glasgowAreas } from "@/data/seo/glasgow-areas";
 
 export function Footer() {
   return (
     <Box as="footer" bg="bg.elevated" color="fg.on-dark" py={16} position="relative" overflow="hidden">
       <ArabicPatternOverlay opacity={0.02} />
       <Container maxW="7xl" px={{ base: 5, md: 8 }} position="relative" zIndex={1}>
-        <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={10}>
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 5 }} gap={10}>
           {/* Column 1: Brand */}
           <VStack align="start" gap={4}>
             <Heading size="lg" fontFamily="heading" color="brand.primary">Sultan</Heading>
@@ -78,6 +79,26 @@ export function Footer() {
               <Text fontSize="sm" color="whiteAlpha.700">Every Day</Text>
               <Text fontSize="sm" color="whiteAlpha.700">12:00 PM – 9:00 PM</Text>
             </HStack>
+          </VStack>
+
+          {/* Column 5: Areas We Serve */}
+          <VStack align="start" gap={3}>
+            <Text fontWeight="bold" color="fg.on-dark" fontSize="sm" textTransform="uppercase" letterSpacing="wider">Areas We Serve</Text>
+            {glasgowAreas
+              .filter((a) => ["city-centre", "gallowgate", "dennistoun", "parkhead", "shawlands", "partick", "rutherglen"].includes(a.slug))
+              .slice(0, 6)
+              .map((area) => (
+                <Link key={area.slug} href={`/areas/${area.slug}`}>
+                  <Text fontSize="sm" color="whiteAlpha.700" _hover={{ color: "brand.primary" }} transition="color 0.2s">
+                    {area.name}
+                  </Text>
+                </Link>
+              ))}
+            <Link href="/areas">
+              <Text fontSize="sm" color="brand.primary" _hover={{ opacity: 0.8 }} transition="opacity 0.2s">
+                View all areas →
+              </Text>
+            </Link>
           </VStack>
         </SimpleGrid>
 
