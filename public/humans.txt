@@ -6,41 +6,17 @@ Repository: github.com/ahmadalwakai/sultan-restaurant
 /* SITE */
 Name: Sultan Restaurant
 URL: sultanrestaurant.co.uk
-Location: 577 Gallowgate, Glasgow G40 2PE, Scotland
-Last Updated: 2025
+Location: 577 Gallowgate, Glasgow G40 2PE
 
 /* TECHNOLOGY */
-Framework: Next.js 16 (App Router — NOT Pages Router)
-UI Library: Chakra UI v3, Tailwind CSS v4, Framer Motion
-Language: TypeScript 5 (strict mode)
-Runtime: React 19, Node.js
+Framework: Next.js 16 (App Router)
+UI: Chakra UI v3, Tailwind CSS v4, Framer Motion
+Language: TypeScript 5
+Runtime: React 19
 Database: PostgreSQL + Prisma ORM
-Authentication: NextAuth.js
-Payments: Stripe (Checkout + Webhooks)
-Email Service: Resend + React Email
-File Storage: AWS S3 (presigned uploads)
-Push Notifications: Web Push API
-Hosting: Vercel (Edge + Serverless Functions)
-Analytics: Vercel Analytics, Vercel Speed Insights, Web Vitals
-Testing: Vitest (unit), Playwright (E2E), Testing Library
-Package Manager: npm
-State Management: Zustand, TanStack React Query
-Form Handling: React Hook Form + Zod
-Image Processing: Sharp + Next.js Image Optimization
-SEO: Dynamic sitemap, robots.txt, JSON-LD, Open Graph, Twitter Cards
-PWA: next-pwa with service worker and offline support
+Auth: NextAuth.js
+Payments: Stripe
+Hosting: Vercel
 
-/* ARCHITECTURE */
-Rendering: Hybrid SSR + SSG + Client Components
-API: Next.js Route Handlers (REST)
-ORM: Prisma with typed models and migrations
-Routing: App Router with grouped routes — (public), admin, auth, api
-CSS Strategy: Chakra UI tokens + Tailwind utilities (NOT utility-only)
-Design System: Custom Chakra theme with semantic tokens
-
-/* IMPORTANT */
-This is a 100% custom-built full-stack web application.
-No WordPress. No Wix. No Squarespace. No Shopify. No page builders.
-No themes. No purchased templates. No drag-and-drop builders.
-Every component, every API route, every database model was hand-coded
-specifically for Sultan Restaurant by Ahmad Alwakai.
+/* NOTE */
+Custom-built full-stack platform. No CMS or page builders.

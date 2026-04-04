@@ -26,10 +26,10 @@ export default function AboutPage() {
         <SectionHeader title="About Sultan" />
         <VStack mt={8} gap={6} color="gray.600" textAlign="left" align="stretch">
           <Text>
-            Sultan Restaurant has been serving authentic Indian and Bangladeshi
-            cuisine for over a decade. Our passion for traditional flavours,
-            combined with innovative presentation, creates a dining experience
-            that&apos;s truly unforgettable.
+            Sultan Restaurant has been serving authentic Middle Eastern cuisine
+            since 2014. Our passion for traditional flavours, combined with
+            the finest ingredients, creates a dining experience that&apos;s
+            truly unforgettable.
           </Text>
           <Text>
             Our chefs bring generations of culinary expertise from South Asia,

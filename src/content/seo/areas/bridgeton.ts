@@ -32,7 +32,7 @@ export const bridgetonContent = {
     },
     {
       question: "What are your delivery hours for Bridgeton?",
-      answer: "We deliver to Bridgeton daily from 11 AM to 10 PM. Our kitchen closes at 9:30 PM for dine-in and 9:00 PM for delivery orders.",
+      answer: "We deliver to Bridgeton daily from 12:00 PM to 9:00 PM.",
     },
     {
       question: "Is there a minimum order for Bridgeton delivery?",

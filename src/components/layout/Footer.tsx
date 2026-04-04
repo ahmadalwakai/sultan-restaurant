@@ -15,7 +15,7 @@ export function Footer() {
             <Heading size="lg" fontFamily="heading" color="brand.primary">Sultan</Heading>
             <Text fontSize="sm" color="whiteAlpha.700" lineHeight="tall">
               Authentic Middle Eastern & Indian cuisine in the heart of Glasgow's East End.
-              Charcoal grills, fresh spices, and a warm welcome since 2024.
+              Charcoal grills, fresh spices, and a warm welcome since 2014.
             </Text>
             {/* Social Icons */}
             <div style={{ display: "flex", gap: "16px", marginTop: "8px" }}>
@@ -84,9 +84,23 @@ export function Footer() {
         {/* Bottom bar */}
         <Box borderTop="1px solid" borderColor="whiteAlpha.200" mt={12} pt={8}>
           <HStack justify="space-between" flexWrap="wrap" gap={4}>
-            <Text fontSize="xs" color="whiteAlpha.500">
-              © 2025 Sultan Restaurant. All rights reserved. Custom-built by Ahmad Alwakai.
-            </Text>
+            <VStack align="start" gap={1}>
+              <Text fontSize="xs" color="whiteAlpha.500">
+                © 2025 Sultan Restaurant. All rights reserved.
+              </Text>
+              <Text fontSize="xs" color="whiteAlpha.300">
+                Custom-built by{" "}
+                <a
+                  href="https://github.com/ahmadalwakai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "rgba(255,255,255,0.4)" }}
+                >
+                  Ahmad Alwakai
+                </a>
+                {" "}— Next.js, React, TypeScript, PostgreSQL
+              </Text>
+            </VStack>
             <HStack gap={4}>
               <Link href="/privacy"><Text fontSize="xs" color="whiteAlpha.500" _hover={{ color: "brand.primary" }}>Privacy</Text></Link>
               <Link href="/terms"><Text fontSize="xs" color="whiteAlpha.500" _hover={{ color: "brand.primary" }}>Terms</Text></Link>

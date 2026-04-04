@@ -3,7 +3,7 @@ export const glasgowContent = {
   description: "Experience authentic Syrian, Lebanese, and Iraqi cuisine in Glasgow. Order online for delivery or pickup. Traditional Middle Eastern flavors with modern convenience.",
   h1: "Authentic Middle Eastern Food Delivery in Glasgow",
   intro: `Glasgow's premier destination for authentic Middle Eastern cuisine. At Sultan Restaurant, we bring you the rich culinary traditions of Syria, Lebanon, and Iraq right to your doorstep. From tender shawarma wraps to crispy falafel, our dishes are crafted with traditional recipes and the finest ingredients.`,
-  deliveryInfo: `We offer comprehensive delivery service throughout Glasgow and surrounding areas within a 10-mile radius. Our delivery operates daily from 11 AM to 10 PM, with most orders delivered within 30-45 minutes. Minimum order £15, free delivery over £25.`,
+  deliveryInfo: `We offer comprehensive delivery service throughout Glasgow and surrounding areas within a 10-mile radius. Our delivery operates daily from 12:00 PM to 9:00 PM, with most orders delivered within 30-45 minutes. Minimum order £15, free delivery over £25.`,
   menuHighlights: `Our Glasgow menu features:
 • Signature shawarma plates with garlic sauce
 • Fresh falafel wraps with tahini and salad

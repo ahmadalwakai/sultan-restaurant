@@ -28,7 +28,7 @@ export const gallowgateContent = {
     },
     {
       question: "Do you offer delivery in Gallowgate?",
-      answer: "Yes, we deliver throughout Gallowgate, Merchant City, and surrounding areas. Delivery is available daily from 11 AM to 10 PM.",
+      answer: "Yes, we deliver throughout Gallowgate, Merchant City, and surrounding areas. Delivery is available daily from 12:00 PM to 9:00 PM.",
     },
     {
       question: "Can I dine in at your Gallowgate restaurant?",
@@ -36,7 +36,7 @@ export const gallowgateContent = {
     },
     {
       question: "What are your opening hours in Gallowgate?",
-      answer: "We're open daily from 11 AM to 10 PM in our Gallowgate location. Perfect for lunch breaks, after-work dining, or weekend meals.",
+      answer: "We're open daily from 12:00 PM to 9:00 PM in our Gallowgate location. Perfect for lunch breaks, after-work dining, or weekend meals.",
     },
     {
       question: "Do you cater for events in Gallowgate?",

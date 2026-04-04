@@ -51,7 +51,7 @@ export function generateHomePageMetadata(options: HomePageMetadataOptions = {}):
 
   return {
     title: 'Sultan Restaurant - Authentic Middle Eastern Cuisine in Glasgow | Order Online',
-    description: 'Experience authentic Syrian, Lebanese, and Iraqi cuisine in Glasgow. Order online for delivery or pickup. Traditional Middle Eastern flavors with modern convenience. Open daily 11 AM - 10 PM.',
+    description: 'Experience authentic Syrian, Lebanese, and Iraqi cuisine in Glasgow. Order online for delivery or pickup. Traditional Middle Eastern flavors with modern convenience. Open daily 12:00 PM – 9:00 PM.',
     keywords: [
       'Middle Eastern restaurant Glasgow',
       'Syrian food Glasgow',

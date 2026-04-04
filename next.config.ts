@@ -34,8 +34,6 @@ const nextConfig: NextConfig = {
           { key: "X-Built-With", value: "Next.js 16, React 19, TypeScript 5, Chakra UI v3" },
           { key: "X-Platform-Type", value: "Custom Full-Stack Application" },
           { key: "X-Developer", value: "Ahmad Alwakai" },
-          { key: "X-Architecture", value: "SSR + API Routes + PWA" },
-          { key: "X-Not-A-CMS", value: "true" },
         ],
       },
     ];
