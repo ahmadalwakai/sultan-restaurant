@@ -133,18 +133,20 @@ export default function AdminShishaPage() {
             >
               <Box
                 p={5}
-                bg="linear-gradient(135deg, rgba(139,92,246,0.2), rgba(139,92,246,0.05))"
+                bg="purple.50"
+                _dark={{ bg: "linear-gradient(135deg, rgba(139,92,246,0.2), rgba(139,92,246,0.05))", borderColor: "rgba(139,92,246,0.3)" }}
                 borderRadius="xl"
-                border="1px solid rgba(139,92,246,0.3)"
+                border="1px solid"
+                borderColor="purple.200"
               >
                 <HStack justify="space-between">
                   <VStack align="start" gap={0}>
-                    <Text fontSize="xs" color="whiteAlpha.600">Tables</Text>
-                    <Text fontSize="2xl" fontWeight="700" color="white">
+                    <Text fontSize="xs" color="purple.600" _dark={{ color: "purple.300" }}>Tables</Text>
+                    <Text fontSize="2xl" fontWeight="700" color="purple.700" _dark={{ color: "white" }}>
                       {stats?.tables.total || 0}
                     </Text>
                   </VStack>
-                  <Box p={2} bg="rgba(139,92,246,0.2)" borderRadius="lg">
+                  <Box p={2} bg="purple.100" _dark={{ bg: "rgba(139,92,246,0.2)" }} borderRadius="lg">
                     <LuUsers size={24} color="#8B5CF6" />
                   </Box>
                 </HStack>
@@ -152,18 +154,20 @@ export default function AdminShishaPage() {
 
               <Box
                 p={5}
-                bg="linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.05))"
+                bg="blue.50"
+                _dark={{ bg: "linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.05))", borderColor: "rgba(59,130,246,0.3)" }}
                 borderRadius="xl"
-                border="1px solid rgba(59,130,246,0.3)"
+                border="1px solid"
+                borderColor="blue.200"
               >
                 <HStack justify="space-between">
                   <VStack align="start" gap={0}>
-                    <Text fontSize="xs" color="whiteAlpha.600">Today&apos;s Bookings</Text>
-                    <Text fontSize="2xl" fontWeight="700" color="white">
+                    <Text fontSize="xs" color="blue.600" _dark={{ color: "blue.300" }}>Today&apos;s Bookings</Text>
+                    <Text fontSize="2xl" fontWeight="700" color="blue.700" _dark={{ color: "white" }}>
                       {stats?.bookings.today || 0}
                     </Text>
                   </VStack>
-                  <Box p={2} bg="rgba(59,130,246,0.2)" borderRadius="lg">
+                  <Box p={2} bg="blue.100" _dark={{ bg: "rgba(59,130,246,0.2)" }} borderRadius="lg">
                     <LuCalendar size={24} color="#3B82F6" />
                   </Box>
                 </HStack>
@@ -171,18 +175,20 @@ export default function AdminShishaPage() {
 
               <Box
                 p={5}
-                bg="linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05))"
+                bg="green.50"
+                _dark={{ bg: "linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05))", borderColor: "rgba(16,185,129,0.3)" }}
                 borderRadius="xl"
-                border="1px solid rgba(16,185,129,0.3)"
+                border="1px solid"
+                borderColor="green.200"
               >
                 <HStack justify="space-between">
                   <VStack align="start" gap={0}>
-                    <Text fontSize="xs" color="whiteAlpha.600">Menu Items</Text>
-                    <Text fontSize="2xl" fontWeight="700" color="white">
+                    <Text fontSize="xs" color="green.600" _dark={{ color: "green.300" }}>Menu Items</Text>
+                    <Text fontSize="2xl" fontWeight="700" color="green.700" _dark={{ color: "white" }}>
                       {stats?.menu.items || 0}
                     </Text>
                   </VStack>
-                  <Box p={2} bg="rgba(16,185,129,0.2)" borderRadius="lg">
+                  <Box p={2} bg="green.100" _dark={{ bg: "rgba(16,185,129,0.2)" }} borderRadius="lg">
                     <LuMenu size={24} color="#10B981" />
                   </Box>
                 </HStack>
@@ -190,18 +196,20 @@ export default function AdminShishaPage() {
 
               <Box
                 p={5}
-                bg="linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.05))"
+                bg="orange.50"
+                _dark={{ bg: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.05))", borderColor: "rgba(245,158,11,0.3)" }}
                 borderRadius="xl"
-                border="1px solid rgba(245,158,11,0.3)"
+                border="1px solid"
+                borderColor="orange.200"
               >
                 <HStack justify="space-between">
                   <VStack align="start" gap={0}>
-                    <Text fontSize="xs" color="whiteAlpha.600">Categories</Text>
-                    <Text fontSize="2xl" fontWeight="700" color="white">
+                    <Text fontSize="xs" color="orange.600" _dark={{ color: "orange.300" }}>Categories</Text>
+                    <Text fontSize="2xl" fontWeight="700" color="orange.700" _dark={{ color: "white" }}>
                       {stats?.menu.categories || 0}
                     </Text>
                   </VStack>
-                  <Box p={2} bg="rgba(245,158,11,0.2)" borderRadius="lg">
+                  <Box p={2} bg="orange.100" _dark={{ bg: "rgba(245,158,11,0.2)" }} borderRadius="lg">
                     <LuFolders size={24} color="#F59E0B" />
                   </Box>
                 </HStack>
@@ -214,9 +222,10 @@ export default function AdminShishaPage() {
                 <Link key={section.href} href={section.href}>
                   <Box
                     p={6}
-                    bg="rgba(255,255,255,0.03)"
+                    bg="bg.subtle"
                     borderRadius="xl"
-                    border="1px solid rgba(255,255,255,0.08)"
+                    border="1px solid"
+                    borderColor="border.subtle"
                     transition="all 0.3s"
                     _hover={{
                       transform: "translateY(-4px)",
@@ -231,8 +240,8 @@ export default function AdminShishaPage() {
                           <section.icon size={24} color={section.color} />
                         </Box>
                         <VStack align="start" gap={1}>
-                          <Heading size="md" color="white">{section.title}</Heading>
-                          <Text fontSize="sm" color="whiteAlpha.600">
+                          <Heading size="md">{section.title}</Heading>
+                          <Text fontSize="sm" color="fg.muted">
                             {section.description}
                           </Text>
                         </VStack>
@@ -243,7 +252,7 @@ export default function AdminShishaPage() {
                                 <Text fontSize="lg" fontWeight="700" color={section.color}>
                                   {stat.value}
                                 </Text>
-                                <Text fontSize="xs" color="whiteAlpha.500">
+                                <Text fontSize="xs" color="fg.muted">
                                   {stat.label}
                                 </Text>
                               </VStack>
@@ -251,7 +260,7 @@ export default function AdminShishaPage() {
                           </HStack>
                         )}
                       </VStack>
-                      <Box color="whiteAlpha.400">
+                      <Box color="fg.subtle">
                         <LuArrowRight size={20} />
                       </Box>
                     </HStack>
@@ -264,14 +273,16 @@ export default function AdminShishaPage() {
             <Box
               mt={8}
               p={6}
-              bg="rgba(139,92,246,0.1)"
+              bg="purple.50"
+              _dark={{ bg: "rgba(139,92,246,0.1)", borderColor: "rgba(139,92,246,0.2)" }}
               borderRadius="xl"
-              border="1px solid rgba(139,92,246,0.2)"
+              border="1px solid"
+              borderColor="purple.200"
             >
               <HStack justify="space-between" flexWrap="wrap" gap={4}>
                 <VStack align="start" gap={1}>
-                  <Text fontWeight="600" color="white">Quick Actions</Text>
-                  <Text fontSize="sm" color="whiteAlpha.600">
+                  <Text fontWeight="600">Quick Actions</Text>
+                  <Text fontSize="sm" color="fg.muted">
                     Common tasks for managing your shisha lounge
                   </Text>
                 </VStack>

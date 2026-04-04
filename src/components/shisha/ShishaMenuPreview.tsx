@@ -44,7 +44,8 @@ export function ShishaMenuPreview() {
         const res = await fetch("/api/shisha/menu?featured=true");
         const data = await res.json();
         if (data.success) {
-          setCategories(data.data);
+          // API returns { categories, menu, featuredItems } - use menu array
+          setCategories(data.data?.menu ?? []);
         }
       } catch (error) {
         console.error("Error fetching menu:", error);
@@ -66,8 +67,8 @@ export function ShishaMenuPreview() {
 
   // Get featured items from all categories
   const featuredItems: (MenuItem & { categoryName: string })[] = [];
-  categories.forEach((cat) => {
-    cat.items.forEach((item) => {
+  (categories ?? []).forEach((cat) => {
+    (cat.items ?? []).forEach((item) => {
       if (item.isFeatured) {
         featuredItems.push({ ...item, categoryName: cat.name });
       }
@@ -77,7 +78,7 @@ export function ShishaMenuPreview() {
   // If no featured items, get first 6 items
   const displayItems = featuredItems.length > 0 
     ? featuredItems.slice(0, 6) 
-    : categories.flatMap((cat) => cat.items.slice(0, 2).map((item) => ({ ...item, categoryName: cat.name }))).slice(0, 6);
+    : (categories ?? []).flatMap((cat) => (cat.items ?? []).slice(0, 2).map((item) => ({ ...item, categoryName: cat.name }))).slice(0, 6);
 
   if (displayItems.length === 0) {
     return (
@@ -256,7 +257,7 @@ export function ShishaMenuPreview() {
         pt={4}
         borderTop="1px solid rgba(255,255,255,0.08)"
       >
-        {categories.slice(0, 5).map((cat) => (
+        {(categories ?? []).slice(0, 5).map((cat) => (
           <Link key={cat.id} href={`/shisha/menu#${cat.slug}`}>
             <Box
               px={4}

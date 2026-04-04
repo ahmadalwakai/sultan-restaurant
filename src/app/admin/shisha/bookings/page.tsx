@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { AdminTableShell } from "@/components/admin/tables";
-import { VStack, HStack, Text, Box, Button, Badge, Input } from "@chakra-ui/react";
+import { VStack, HStack, Text, Box, Button, Badge, Input, NativeSelect } from "@chakra-ui/react";
 import { LuCalendar, LuClock, LuUsers, LuPhone, LuMail, LuCheck, LuX, LuTrash2, LuWind } from "react-icons/lu";
 import toast from "react-hot-toast";
 import Link from "next/link";
@@ -129,44 +129,38 @@ export default function AdminShishaBookingsPage() {
         {/* Filters */}
         <Box
           p={5}
-          bg="rgba(139,92,246,0.1)"
+          bg="purple.50"
+          _dark={{ bg: "rgba(139,92,246,0.1)", borderColor: "rgba(139,92,246,0.2)" }}
           borderRadius="xl"
-          border="1px solid rgba(139,92,246,0.2)"
+          border="1px solid"
+          borderColor="purple.200"
           mb={6}
         >
           <HStack gap={6} flexWrap="wrap">
             <Box>
-              <Text fontSize="sm" color="whiteAlpha.700" mb={1}>Date</Text>
+              <Text fontSize="sm" color="fg.muted" mb={1}>Date</Text>
               <Input
                 type="date"
                 value={dateFilter}
                 onChange={(e) => setDateFilter(e.target.value)}
                 size="sm"
-                bg="rgba(0,0,0,0.3)"
-                border="1px solid rgba(255,255,255,0.1)"
               />
             </Box>
             <Box>
-              <Text fontSize="sm" color="whiteAlpha.700" mb={1}>Status</Text>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                style={{
-                  padding: "6px 12px",
-                  background: "rgba(0,0,0,0.3)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "6px",
-                  color: "white",
-                  fontSize: "14px",
-                }}
-              >
-                <option value="ALL" style={{ background: "#1A0F0A" }}>All Statuses</option>
-                <option value="PENDING" style={{ background: "#1A0F0A" }}>Pending</option>
-                <option value="CONFIRMED" style={{ background: "#1A0F0A" }}>Confirmed</option>
-                <option value="COMPLETED" style={{ background: "#1A0F0A" }}>Completed</option>
-                <option value="CANCELLED" style={{ background: "#1A0F0A" }}>Cancelled</option>
-                <option value="NO_SHOW" style={{ background: "#1A0F0A" }}>No Show</option>
-              </select>
+              <Text fontSize="sm" color="fg.muted" mb={1}>Status</Text>
+              <NativeSelect.Root size="sm">
+                <NativeSelect.Field
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                >
+                  <option value="ALL">All Statuses</option>
+                  <option value="PENDING">Pending</option>
+                  <option value="CONFIRMED">Confirmed</option>
+                  <option value="COMPLETED">Completed</option>
+                  <option value="CANCELLED">Cancelled</option>
+                  <option value="NO_SHOW">No Show</option>
+                </NativeSelect.Field>
+              </NativeSelect.Root>
             </Box>
             <Button
               onClick={fetchBookings}
@@ -182,21 +176,21 @@ export default function AdminShishaBookingsPage() {
 
         {/* Stats */}
         <HStack gap={4} mb={6} flexWrap="wrap">
-          <Box px={4} py={2} bg="rgba(255,255,255,0.05)" borderRadius="lg">
-            <Text fontSize="xs" color="whiteAlpha.600">Total</Text>
-            <Text fontSize="xl" fontWeight="700" color="white">{stats.total}</Text>
+          <Box px={4} py={2} bg="bg.subtle" borderRadius="lg">
+            <Text fontSize="xs" color="fg.muted">Total</Text>
+            <Text fontSize="xl" fontWeight="700">{stats.total}</Text>
           </Box>
-          <Box px={4} py={2} bg="rgba(234,179,8,0.1)" borderRadius="lg">
-            <Text fontSize="xs" color="yellow.300">Pending</Text>
-            <Text fontSize="xl" fontWeight="700" color="yellow.400">{stats.pending}</Text>
+          <Box px={4} py={2} bg="yellow.50" _dark={{ bg: "rgba(234,179,8,0.1)" }} borderRadius="lg">
+            <Text fontSize="xs" color="yellow.600" _dark={{ color: "yellow.300" }}>Pending</Text>
+            <Text fontSize="xl" fontWeight="700" color="yellow.600" _dark={{ color: "yellow.400" }}>{stats.pending}</Text>
           </Box>
-          <Box px={4} py={2} bg="rgba(59,130,246,0.1)" borderRadius="lg">
-            <Text fontSize="xs" color="blue.300">Confirmed</Text>
-            <Text fontSize="xl" fontWeight="700" color="blue.400">{stats.confirmed}</Text>
+          <Box px={4} py={2} bg="blue.50" _dark={{ bg: "rgba(59,130,246,0.1)" }} borderRadius="lg">
+            <Text fontSize="xs" color="blue.600" _dark={{ color: "blue.300" }}>Confirmed</Text>
+            <Text fontSize="xl" fontWeight="700" color="blue.600" _dark={{ color: "blue.400" }}>{stats.confirmed}</Text>
           </Box>
-          <Box px={4} py={2} bg="rgba(34,197,94,0.1)" borderRadius="lg">
-            <Text fontSize="xs" color="green.300">Completed</Text>
-            <Text fontSize="xl" fontWeight="700" color="green.400">{stats.completed}</Text>
+          <Box px={4} py={2} bg="green.50" _dark={{ bg: "rgba(34,197,94,0.1)" }} borderRadius="lg">
+            <Text fontSize="xs" color="green.600" _dark={{ color: "green.300" }}>Completed</Text>
+            <Text fontSize="xl" fontWeight="700" color="green.600" _dark={{ color: "green.400" }}>{stats.completed}</Text>
           </Box>
         </HStack>
 
@@ -205,7 +199,7 @@ export default function AdminShishaBookingsPage() {
           <AdminLoadingState />
         ) : bookings.length === 0 ? (
           <Box textAlign="center" py={12}>
-            <Text color="whiteAlpha.600">No bookings found for the selected filters.</Text>
+            <Text color="fg.muted">No bookings found for the selected filters.</Text>
           </Box>
         ) : (
           <AdminTableShell>
@@ -228,7 +222,7 @@ export default function AdminShishaBookingsPage() {
                   <VStack align="start" gap={0}>
                     <Text fontWeight="600">Table {booking.tableNumber}</Text>
                     {booking.tableName && (
-                      <Text fontSize="xs" color="whiteAlpha.600">{booking.tableName}</Text>
+                      <Text fontSize="xs" color="fg.muted">{booking.tableName}</Text>
                     )}
                   </VStack>
                 </td>
@@ -237,11 +231,11 @@ export default function AdminShishaBookingsPage() {
                 </td>
                 <td>
                   <VStack align="start" gap={0}>
-                    <HStack gap={1} fontSize="xs" color="whiteAlpha.700">
+                    <HStack gap={1} fontSize="xs" color="fg.muted">
                       <LuMail size={12} />
                       <Text>{booking.email}</Text>
                     </HStack>
-                    <HStack gap={1} fontSize="xs" color="whiteAlpha.700">
+                    <HStack gap={1} fontSize="xs" color="fg.muted">
                       <LuPhone size={12} />
                       <Text>{booking.phone}</Text>
                     </HStack>
@@ -253,7 +247,7 @@ export default function AdminShishaBookingsPage() {
                       <LuCalendar size={14} />
                       <Text>{new Date(booking.bookingDate).toLocaleDateString()}</Text>
                     </HStack>
-                    <HStack gap={1} fontSize="xs" color="whiteAlpha.700">
+                    <HStack gap={1} fontSize="xs" color="fg.muted">
                       <LuClock size={12} />
                       <Text>{booking.bookingTime} - {booking.endTime}</Text>
                     </HStack>
@@ -266,27 +260,18 @@ export default function AdminShishaBookingsPage() {
                   </HStack>
                 </td>
                 <td>
-                  <select
-                    value={booking.status}
-                    onChange={(e) => updateStatus(booking.id, e.target.value)}
-                    style={{
-                      padding: "4px 8px",
-                      background: "rgba(0,0,0,0.3)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      borderRadius: "4px",
-                      color: booking.status === "CONFIRMED" ? "#60A5FA" :
-                             booking.status === "COMPLETED" ? "#22C55E" :
-                             booking.status === "PENDING" ? "#FBBF24" :
-                             booking.status === "CANCELLED" ? "#EF4444" : "#9CA3AF",
-                      fontSize: "12px",
-                    }}
-                  >
-                    <option value="PENDING" style={{ background: "#1A0F0A" }}>Pending</option>
-                    <option value="CONFIRMED" style={{ background: "#1A0F0A" }}>Confirmed</option>
-                    <option value="COMPLETED" style={{ background: "#1A0F0A" }}>Completed</option>
-                    <option value="CANCELLED" style={{ background: "#1A0F0A" }}>Cancelled</option>
-                    <option value="NO_SHOW" style={{ background: "#1A0F0A" }}>No Show</option>
-                  </select>
+                  <NativeSelect.Root size="xs">
+                    <NativeSelect.Field
+                      value={booking.status}
+                      onChange={(e) => updateStatus(booking.id, e.target.value)}
+                    >
+                      <option value="PENDING">Pending</option>
+                      <option value="CONFIRMED">Confirmed</option>
+                      <option value="COMPLETED">Completed</option>
+                      <option value="CANCELLED">Cancelled</option>
+                      <option value="NO_SHOW">No Show</option>
+                    </NativeSelect.Field>
+                  </NativeSelect.Root>
                 </td>
                 <td>
                   <HStack gap={2}>
@@ -325,19 +310,20 @@ export default function AdminShishaBookingsPage() {
                 <Box
                   key={booking.id}
                   p={4}
-                  bg="rgba(255,255,255,0.03)"
+                  bg="bg.subtle"
                   borderRadius="lg"
-                  border="1px solid rgba(255,255,255,0.08)"
+                  border="1px solid"
+                  borderColor="border.subtle"
                 >
                   <HStack justify="space-between" mb={2}>
-                    <Text fontWeight="600" color="white">
+                    <Text fontWeight="600">
                       Table {booking.tableNumber} - {booking.customerName}
                     </Text>
-                    <Text fontSize="xs" color="whiteAlpha.500">
+                    <Text fontSize="xs" color="fg.muted">
                       {booking.bookingTime}
                     </Text>
                   </HStack>
-                  <Text fontSize="sm" color="whiteAlpha.700">{booking.notes}</Text>
+                  <Text fontSize="sm" color="fg.muted">{booking.notes}</Text>
                 </Box>
               ))}
             </VStack>
