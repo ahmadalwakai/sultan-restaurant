@@ -26,7 +26,6 @@ import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { StickyMobileOrder } from "@/components/mobile/StickyMobileOrder";
 import { ChefProfiles } from "@/components/sections/ChefProfiles";
 import { HowItsMade } from "@/components/sections/HowItsMade";
-import { InstagramFeed } from "@/components/sections/InstagramFeed";
 import { LoyaltyPreview } from "@/components/sections/LoyaltyPreview";
 import { PressAwards } from "@/components/sections/PressAwards";
 import { BlogTeaser } from "@/components/sections/BlogTeaser";
@@ -67,7 +66,6 @@ export default function HomePage() {
       <ReviewsSection />
       <PressAwards />
       <GalleryPreview />
-      <InstagramFeed />
       
       {/* Loyalty & Conversion */}
       <LoyaltyPreview />

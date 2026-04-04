@@ -90,7 +90,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               <Flex align="center" justify="space-between" mb={4}>
                 <Text color="gray.600">Subtotal</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  {formatCurrency(getTotal() / 100)}
+                  {formatCurrency(getTotal())}
                 </Text>
               </Flex>
               <Flex gap={2}>

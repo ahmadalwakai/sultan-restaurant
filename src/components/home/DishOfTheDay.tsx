@@ -6,9 +6,11 @@ import { useDishOfDay } from "@/hooks/api";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import { Box, Container, SimpleGrid, Heading, Text, VStack, Button, Badge, HStack } from "@chakra-ui/react";
 import { ScaleIn } from "@/components/animation";
+import { useOrderModal } from "@/hooks/useOrderModal";
 
 export function DishOfTheDay() {
   const { data: dish } = useDishOfDay();
+  const { open: openOrderModal } = useOrderModal();
 
   if (!dish) return null;
 
@@ -65,12 +67,16 @@ export function DishOfTheDay() {
                     )}
                   </Box>
                   <HStack gap={3} pt={2}>
-                    <Link href={`/menu/${dish.menuItemSlug}`}>
-                      <Button bg="brand.primary" color="bg.elevated" borderRadius="full" px={6}
-                        _hover={{ bg: "yellow.500" }}>
-                        Order Now
-                      </Button>
-                    </Link>
+                    <Button 
+                      bg="brand.primary" 
+                      color="bg.elevated" 
+                      borderRadius="full" 
+                      px={6}
+                      _hover={{ bg: "yellow.500" }}
+                      onClick={openOrderModal}
+                    >
+                      Order Now
+                    </Button>
                     <Link href="/menu">
                       <Button variant="outline" borderColor="brand.dark" color="fg.default" borderRadius="full" px={6}>
                         View Full Menu

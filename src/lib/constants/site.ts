@@ -9,9 +9,9 @@ export const CONTACT = {
 } as const;
 
 export const SOCIAL = {
-  facebook: "https://facebook.com/sultanrestaurant",
-  instagram: "https://instagram.com/sultanrestaurant",
-  twitter: "https://twitter.com/sultanrest",
+  facebook: "https://www.facebook.com/share/1HDKRSvdoC/",
+  instagram: "https://www.instagram.com/sultan.restaurants?igsh=MWw3b3YwZmFjcHh6Zg==",
+  tiktok: "https://www.tiktok.com/@sultanrestaurant.glasgow?_r=1&_t=ZN-95F3iqpZPde",
 } as const;
 
 export const BOOKING = {

@@ -12,6 +12,7 @@ export function toBookingPublic(b: Booking): BookingPublic {
     date: b.date.toISOString(),
     time: b.time,
     guests: b.guests,
+    bookingType: b.bookingType,
     specialRequests: b.specialRequests,
     status: b.status,
     createdAt: b.createdAt.toISOString(),

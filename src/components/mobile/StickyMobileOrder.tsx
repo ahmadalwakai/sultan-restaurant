@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LuShoppingBag, LuClock, LuMapPin } from "react-icons/lu";
+import { LuShoppingBag, LuClock } from "react-icons/lu";
 import Link from "next/link";
+import { useOrderModal } from "@/hooks/useOrderModal";
 
 /**
  * Sticky order button for mobile devices
@@ -12,6 +13,7 @@ import Link from "next/link";
 export function StickyMobileOrder() {
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { open: openOrderModal } = useOrderModal();
 
   useEffect(() => {
     // Check if mobile
@@ -55,30 +57,29 @@ export function StickyMobileOrder() {
             gap: "12px",
           }}
         >
-          <Link href="/menu" style={{ flex: 1, textDecoration: "none" }}>
-            <motion.button
-              whileTap={{ scale: 0.98 }}
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                background: "linear-gradient(135deg, #C8A951 0%, #E8D48A 50%, #C8A951 100%)",
-                color: "#1A0F0A",
-                padding: "14px 24px",
-                borderRadius: "12px",
-                border: "none",
-                fontSize: "15px",
-                fontWeight: 700,
-                cursor: "pointer",
-                boxShadow: "0 4px 15px rgba(200, 169, 81, 0.3)",
-              }}
-            >
-              <LuShoppingBag size={20} />
-              Order Now
-            </motion.button>
-          </Link>
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={openOrderModal}
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              background: "linear-gradient(135deg, #C8A951 0%, #E8D48A 50%, #C8A951 100%)",
+              color: "#1A0F0A",
+              padding: "14px 24px",
+              borderRadius: "12px",
+              border: "none",
+              fontSize: "15px",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 4px 15px rgba(200, 169, 81, 0.3)",
+            }}
+          >
+            <LuShoppingBag size={20} />
+            Order Now
+          </motion.button>
           <Link href="/book" style={{ textDecoration: "none" }}>
             <motion.button
               whileTap={{ scale: 0.98 }}

@@ -302,6 +302,12 @@ const categoryImages: Record<string, number> = {
   "mocktails": 1132558,
 };
 
+// Menu item name → Local image path (overrides Pexels)
+const localMenuImages: Record<string, string> = {
+  "tashreeb lamb": "/images/menu/tashreeb-lamb.webp",
+  "bamieh (okra)": "/images/menu/bamieh-okra.jpg",
+};
+
 export function getCategoryImage(slug: string): string {
   const id = categoryImages[slug];
   if (id) return pexelsUrl(id, 800, 600);
@@ -310,6 +316,11 @@ export function getCategoryImage(slug: string): string {
 
 export function getMenuItemImage(name: string, category: string): string {
   const key = name.toLowerCase();
+  
+  // Check for local image override first
+  const localPath = localMenuImages[key];
+  if (localPath) return localPath;
+  
   const id = menuItemImages[key];
   if (id) return pexelsUrl(id);
 

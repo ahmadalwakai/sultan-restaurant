@@ -7,3 +7,5 @@ export { default as OrderReceiptDownload } from "./OrderReceiptDownload";
 export { default as OrderStatusBadge } from "./OrderStatusBadge";
 export { default as OrderStatusTracker } from "./OrderStatusTracker";
 export { default as OrderTimeline } from "./OrderTimeline";
+export { OrderMethodModal } from "./OrderMethodModal";
+export { OrderModalProvider } from "./OrderModalProvider";

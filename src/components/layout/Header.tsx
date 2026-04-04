@@ -8,9 +8,11 @@ import { PUBLIC_NAV } from "@/lib/constants/navigation";
 import { Logo } from "@/components/shared/Logo";
 import { brandColors, brandTypography, brandShadows } from "@/theme/branding";
 import { zIndex } from "@/lib/design";
+import { useOrderModal } from "@/hooks/useOrderModal";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const { open: openOrderModal } = useOrderModal();
 
   return (
     <Box
@@ -48,6 +50,40 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <Link href="/shisha">
+              <Button
+                size="sm"
+                variant="outline"
+                borderColor="#8B5CF6"
+                color="#7C3AED"
+                borderRadius="full"
+                px={5}
+                fontWeight={brandTypography.weights.semibold}
+                fontSize={brandTypography.sizes.small}
+                letterSpacing={brandTypography.letterSpacing.wide}
+                textTransform="uppercase"
+                _hover={{ bg: "#F5F3FF", borderColor: "#7C3AED" }}
+              >
+                🌬️ Shisha
+              </Button>
+            </Link>
+            <Link href="/book/wedding">
+              <Button
+                size="sm"
+                variant="outline"
+                borderColor={brandColors.gold[500]}
+                color={brandColors.gold[600]}
+                borderRadius="full"
+                px={5}
+                fontWeight={brandTypography.weights.semibold}
+                fontSize={brandTypography.sizes.small}
+                letterSpacing={brandTypography.letterSpacing.wide}
+                textTransform="uppercase"
+                _hover={{ bg: brandColors.gold[50], borderColor: brandColors.gold[600] }}
+              >
+                💒 Weddings
+              </Button>
+            </Link>
             <Link href="/pickup">
               <Button
                 size="sm"
@@ -60,6 +96,10 @@ export function Header() {
                 letterSpacing={brandTypography.letterSpacing.wide}
                 textTransform="uppercase"
                 _hover={{ bg: brandColors.gold[700], boxShadow: brandShadows.cta }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  openOrderModal();
+                }}
               >
                 Order Now
               </Button>
@@ -97,6 +137,34 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
+              <Link href="/shisha" onClick={() => setIsOpen(false)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  borderColor="#8B5CF6"
+                  color="#7C3AED"
+                  w="full"
+                  borderRadius="full"
+                  mb={2}
+                  _hover={{ bg: "#F5F3FF" }}
+                >
+                  🌬️ Shisha Lounge
+                </Button>
+              </Link>
+              <Link href="/book/wedding" onClick={() => setIsOpen(false)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  borderColor={brandColors.gold[500]}
+                  color={brandColors.gold[600]}
+                  w="full"
+                  borderRadius="full"
+                  mb={2}
+                  _hover={{ bg: brandColors.gold[50] }}
+                >
+                  💒 Book Wedding
+                </Button>
+              </Link>
               <Link href="/pickup" onClick={() => setIsOpen(false)}>
                 <Button
                   size="sm"
@@ -105,6 +173,11 @@ export function Header() {
                   w="full"
                   borderRadius="full"
                   _hover={{ bg: brandColors.gold[700] }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsOpen(false);
+                    openOrderModal();
+                  }}
                 >
                   Order Now
                 </Button>

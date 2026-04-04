@@ -5,8 +5,11 @@ import { Box, Container, VStack, Text, Heading, SimpleGrid, Button } from "@chak
 import { Smartphone, ChefHat, ShoppingBag } from "lucide-react";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/animation";
 import { ArabicPatternOverlay } from "@/components/decorative/ArabicPattern";
+import { useOrderModal } from "@/hooks/useOrderModal";
 
 export function PickupCTA() {
+  const { open: openOrderModal } = useOrderModal();
+  
   return (
     <Box as="section" py={{ base: 14, md: 20 }} bg="bg.elevated" color="fg.on-dark" position="relative" overflow="hidden">
       <ArabicPatternOverlay opacity={0.02} />
@@ -62,12 +65,19 @@ export function PickupCTA() {
           </StaggerContainer>
 
           <FadeInUp delay={0.6}>
-            <Link href="/menu">
-              <Button bg="brand.primary" color="bg.elevated" size="lg" borderRadius="full" px={10} mt={4}
-                _hover={{ bg: "yellow.500", transform: "translateY(-2px)" }} transition="all 0.2s">
-                Order for Pickup
-              </Button>
-            </Link>
+            <Button 
+              bg="brand.primary" 
+              color="bg.elevated" 
+              size="lg" 
+              borderRadius="full" 
+              px={10} 
+              mt={4}
+              _hover={{ bg: "yellow.500", transform: "translateY(-2px)" }} 
+              transition="all 0.2s"
+              onClick={openOrderModal}
+            >
+              Order for Pickup
+            </Button>
           </FadeInUp>
         </VStack>
       </Container>

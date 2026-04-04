@@ -10,14 +10,19 @@ import {
   HiOutlineTag, HiOutlineStar, HiOutlinePhotograph,
   HiOutlineMail, HiOutlineCog, HiOutlineUsers, HiOutlineChatAlt,
   HiOutlineGift, HiOutlineTicket, HiOutlineGlobe, HiOutlineCollection,
+  HiOutlineCalendar, HiOutlineHeart,
 } from "react-icons/hi";
+import { LuWind } from "react-icons/lu";
 
 const iconMap: Record<string, React.ElementType> = {
   dashboard: HiOutlineViewGrid,
   orders: HiOutlineShoppingCart,
   menu: HiOutlineBookOpen,
   categories: HiOutlineCollection,
+  tables: HiOutlineCalendar,
   bookings: HiOutlineBookOpen,
+  wedding: HiOutlineHeart,
+  shisha: LuWind,
   offers: HiOutlineGift,
   coupons: HiOutlineTicket,
   reviews: HiOutlineStar,

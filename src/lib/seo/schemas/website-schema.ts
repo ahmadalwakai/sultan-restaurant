@@ -99,9 +99,9 @@ export const sultanWebSiteData: WebSiteData = {
     url: 'https://sultanrestaurant.co.uk',
   },
   sameAs: [
-    'https://www.facebook.com/sultanrestaurantglasgow',
-    'https://www.instagram.com/sultanrestaurantglasgow',
-    'https://twitter.com/sultanrestglasg',
+    'https://www.facebook.com/share/1HDKRSvdoC/',
+    'https://www.instagram.com/sultan.restaurants?igsh=MWw3b3YwZmFjcHh6Zg==',
+    'https://www.tiktok.com/@sultanrestaurant.glasgow?_r=1&_t=ZN-95F3iqpZPde',
   ],
   mainEntity: {
     name: 'Sultan Restaurant',

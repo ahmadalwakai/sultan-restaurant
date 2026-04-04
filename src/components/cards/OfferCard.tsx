@@ -4,12 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import type { OfferPublic } from "@/types/offer";
 import { Card, Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { useOrderModal } from "@/hooks/useOrderModal";
 
 interface OfferCardProps {
   offer: OfferPublic;
 }
 
 export function OfferCard({ offer }: OfferCardProps) {
+  const { open: openOrderModal } = useOrderModal();
+  
   return (
     <Card.Root
       overflow="hidden"
@@ -76,22 +79,23 @@ export function OfferCard({ offer }: OfferCardProps) {
             </Text>
           )}
           <Flex mt={2} align="center" justify="space-between" gap={4} w="full" pt={2}>
-            <Link href="/menu">
-              <Box
-                display="inline-block"
-                borderRadius="full"
-                bg="brand.primary"
-                px={6}
-                py={3}
-                fontSize="sm"
-                fontWeight="bold"
-                color="black"
-                transition="all 0.2s"
-                _hover={{ bg: "yellow.400", transform: "translateY(-2px)" }}
-              >
-                Order Now
-              </Box>
-            </Link>
+            <Box
+              as="button"
+              onClick={openOrderModal}
+              display="inline-block"
+              borderRadius="full"
+              bg="brand.primary"
+              px={6}
+              py={3}
+              fontSize="sm"
+              fontWeight="bold"
+              color="black"
+              transition="all 0.2s"
+              cursor="pointer"
+              _hover={{ bg: "yellow.400", transform: "translateY(-2px)" }}
+            >
+              Order Now
+            </Box>
             {offer.validUntil && (
               <Text fontSize="sm" color="whiteAlpha.700">
                 Until{" "}

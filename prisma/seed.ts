@@ -18,6 +18,7 @@ import { seedSampleOrders } from "./seeds/sample-orders";
 import { seedSampleMessages } from "./seeds/sample-messages";
 import { seedCombos } from "./seeds/combos";
 import { seedDishOfDay } from "./seeds/dish-of-day";
+import { seedTables } from "./seeds/tables";
 
 const prisma = new PrismaClient();
 
@@ -44,6 +45,7 @@ async function main() {
     await seedAdminUser(prisma);
     await seedOpeningHours(prisma);
     await seedSiteSettings(prisma);
+    await seedTables(prisma);
 
     // Full mode: add offers, coupons, etc.
     if (mode === "full" || mode === "dev") {

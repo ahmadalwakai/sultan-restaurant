@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Box, Container, SimpleGrid, VStack, Text, HStack, Heading } from "@chakra-ui/react";
 import { ArabicPatternOverlay } from "@/components/decorative/ArabicPattern";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { SOCIAL } from "@/lib/constants/site";
 
 export function Footer() {
   return (
@@ -13,8 +15,38 @@ export function Footer() {
             <Heading size="lg" fontFamily="heading" color="brand.primary">Sultan</Heading>
             <Text fontSize="sm" color="whiteAlpha.700" lineHeight="tall">
               Authentic Middle Eastern & Indian cuisine in the heart of Glasgow's East End.
-              Charcoal grills, fresh spices, and a warm welcome since 2014.
+              Charcoal grills, fresh spices, and a warm welcome since 2024.
             </Text>
+            {/* Social Icons */}
+            <div style={{ display: "flex", gap: "16px", marginTop: "8px" }}>
+              <a 
+                href={SOCIAL.facebook} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Facebook"
+                style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.2s" }}
+              >
+                <FaFacebook size={24} />
+              </a>
+              <a 
+                href={SOCIAL.instagram} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Instagram"
+                style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.2s" }}
+              >
+                <FaInstagram size={24} />
+              </a>
+              <a 
+                href={SOCIAL.tiktok} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="TikTok"
+                style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.2s" }}
+              >
+                <FaTiktok size={24} />
+              </a>
+            </div>
           </VStack>
 
           {/* Column 2: Quick Links */}

@@ -49,7 +49,7 @@ function restaurantSchema() {
       { "@type": "LocationFeatureSpecification", "name": "Takeout", "value": true },
       { "@type": "LocationFeatureSpecification", "name": "Delivery", "value": true },
     ],
-    sameAs: [SOCIAL.facebook, SOCIAL.instagram, SOCIAL.twitter],
+    sameAs: [SOCIAL.facebook, SOCIAL.instagram, SOCIAL.tiktok],
     openingHoursSpecification: [
       { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], opens: "12:00", closes: "21:00" },
     ],

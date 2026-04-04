@@ -1,3 +1,5 @@
+export type BookingType = "TABLE" | "WEDDING";
+
 export type BookingPublic = {
   id: string;
   name: string;
@@ -6,6 +8,7 @@ export type BookingPublic = {
   date: string;
   time: string;
   guests: number;
+  bookingType: BookingType;
   specialRequests: string | null;
   status: BookingStatusType;
   createdAt: string;
@@ -25,6 +28,7 @@ export type CreateBookingInput = {
   date: string;
   time: string;
   guests: number;
+  bookingType?: BookingType;
   specialRequests?: string;
 };
 

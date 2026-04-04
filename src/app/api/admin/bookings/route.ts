@@ -8,9 +8,11 @@ export async function GET(req: NextRequest) {
   const { page, limit, skip } = parsePagination(req.nextUrl.searchParams);
   const status = req.nextUrl.searchParams.get("status") ?? undefined;
   const date = req.nextUrl.searchParams.get("date") ?? undefined;
+  const type = req.nextUrl.searchParams.get("type") ?? undefined;
 
   const where = {
     ...(status && { status: status as never }),
+    ...(type && { bookingType: type as never }),
     ...(date && {
       date: {
         gte: new Date(date),

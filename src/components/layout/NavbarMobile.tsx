@@ -5,9 +5,11 @@ import { HiMenu, HiX } from "react-icons/hi";
 import Link from "next/link";
 import { useState } from "react";
 import { PUBLIC_NAV } from "@/lib/constants/navigation";
+import { useOrderModal } from "@/hooks/useOrderModal";
 
 export default function NavbarMobile() {
   const [isOpen, setIsOpen] = useState(false);
+  const { open: openOrderModal } = useOrderModal();
 
   return (
     <Box display={{ base: "block", md: "none" }}>
@@ -38,9 +40,17 @@ export default function NavbarMobile() {
                 <Flex py={2} fontWeight={500}>{item.label}</Flex>
               </Link>
             ))}
-            <Link href="/pickup" onClick={() => setIsOpen(false)}>
-              <Button size="sm" colorPalette="brand" w="full">Order Now</Button>
-            </Link>
+            <Button 
+              size="sm" 
+              colorPalette="brand" 
+              w="full"
+              onClick={() => {
+                setIsOpen(false);
+                openOrderModal();
+              }}
+            >
+              Order Now
+            </Button>
           </VStack>
         </Box>
       )}

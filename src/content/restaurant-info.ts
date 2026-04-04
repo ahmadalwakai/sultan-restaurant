@@ -12,8 +12,8 @@ export const RESTAURANT_INFO = {
   fullAddress: "577 Gallowgate, Glasgow G40 2PE",
   mapUrl: "https://maps.google.com/?q=Sultan+Restaurant+577+Gallowgate+Glasgow",
   social: {
-    facebook: "https://facebook.com/sultanrestaurant",
-    instagram: "https://instagram.com/sultanrestaurant",
-    twitter: "https://twitter.com/sultanrest",
+    facebook: "https://www.facebook.com/share/1HDKRSvdoC/",
+    instagram: "https://www.instagram.com/sultan.restaurants?igsh=MWw3b3YwZmFjcHh6Zg==",
+    tiktok: "https://www.tiktok.com/@sultanrestaurant.glasgow?_r=1&_t=ZN-95F3iqpZPde",
   },
 } as const;

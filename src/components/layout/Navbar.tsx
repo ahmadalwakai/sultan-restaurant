@@ -4,8 +4,11 @@ import { Box, Flex, Container, Button, HStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { PUBLIC_NAV } from "@/lib/constants/navigation";
 import { SITE_NAME } from "@/lib/constants/site";
+import { useOrderModal } from "@/hooks/useOrderModal";
 
 export default function Navbar() {
+  const { open: openOrderModal } = useOrderModal();
+  
   return (
     <Box as="nav" bg="white" borderBottomWidth="1px" position="sticky" top={0} zIndex={50}>
       <Container maxW="7xl">
@@ -19,9 +22,7 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
-            <Link href="/pickup">
-              <Button size="sm" colorPalette="brand">Order Now</Button>
-            </Link>
+            <Button size="sm" colorPalette="brand" onClick={openOrderModal}>Order Now</Button>
           </HStack>
         </Flex>
       </Container>

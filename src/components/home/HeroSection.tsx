@@ -85,7 +85,7 @@ export function HeroSection() {
             <FadeInUp delay={0.4}>
               <Text fontSize={{ base: "md", md: "xl" }} color="whiteAlpha.900" maxW="xl">
                 Charcoal-grilled kebabs, hand-ground spices, and recipes passed down through generations.
-                Glasgow's home for authentic Eastern cuisine since 2014.
+                Glasgow's home for authentic Eastern cuisine since 2024.
               </Text>
             </FadeInUp>
 

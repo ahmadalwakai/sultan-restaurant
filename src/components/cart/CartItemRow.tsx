@@ -33,7 +33,7 @@ export function CartItemRow({ item }: CartItemRowProps) {
       <Box flex={1} minW={0}>
         <Text fontWeight="medium" color="gray.900" truncate>{item.name}</Text>
         <Text fontSize="sm" color="amber.600" fontWeight="semibold">
-          {formatCurrency(item.price / 100)}
+          {formatCurrency(item.price)}
         </Text>
       </Box>
       <HStack gap={1}>

@@ -6,8 +6,9 @@ export const bookingSchema = z.object({
   phone: z.string().min(10, "Valid phone number required").max(20),
   date: z.string().min(1, "Date is required"),
   time: z.string().min(1, "Time is required"),
-  guests: z.number().int().min(1, "At least 1 guest").max(20, "Maximum 20 guests"),
-  specialRequests: z.string().max(500).optional(),
+  guests: z.number().int().min(1, "At least 1 guest").max(200, "Maximum 200 guests"),
+  bookingType: z.enum(["TABLE", "WEDDING"]),
+  specialRequests: z.string().max(1000).optional(),
 });
 
 export type BookingFormValues = z.infer<typeof bookingSchema>;
