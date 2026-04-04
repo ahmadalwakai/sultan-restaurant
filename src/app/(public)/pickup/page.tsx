@@ -21,11 +21,13 @@ import {
   Text,
   Flex,
   Button,
+  Badge,
 } from "@chakra-ui/react";
 
 export default function PickupPage() {
   const items = useCartStore((s) => s.items);
   const getTotal = useCartStore((s) => s.getTotal);
+  const tableContext = useCartStore((s) => s.tableContext);
   const { isEmpty, isBelowMinimum, minOrderAmount } = useValidateCart();
   const { checkout, isLoading, isSuccess, order } = useCashCheckout();
   const router = useRouter();
@@ -71,20 +73,30 @@ export default function PickupPage() {
     );
   }
 
+  // Determine order type based on table context
+  const orderType = tableContext ? "TABLE" : "PICKUP";
+  const isTableOrder = !!tableContext;
+
   const handleSubmit = (data: CheckoutFormValues) => {
     checkout({
-      type: "PICKUP",
+      type: orderType,
       paymentMethod: "CASH",
       customerName: data.customerName,
       customerEmail: data.customerEmail,
       customerPhone: data.customerPhone,
-      pickupTime: data.pickupTime,
+      pickupTime: isTableOrder ? undefined : data.pickupTime,
       specialRequests: data.specialRequests,
       items: items.map((item) => ({
         menuItemId: item.menuItemId,
         quantity: item.quantity,
         price: item.price,
       })),
+      // Include table context if ordering from a table
+      ...(tableContext && {
+        tableNumber: tableContext.tableNumber,
+        menuType: tableContext.menuType,
+        orderSource: "TABLE_SCAN" as const,
+      }),
     });
   };
 
@@ -92,7 +104,17 @@ export default function PickupPage() {
     <Box minH="100vh" bg="gray.50" py={{ base: 8, md: 12 }}>
       <Container maxW="6xl" px={{ base: 4, md: 6, lg: 8 }}>
         <VStack gap={8} align="stretch">
-          <SectionHeader title="Checkout" subtitle="Review your order and complete" />
+          <SectionHeader 
+            title={isTableOrder ? `Table ${tableContext.tableNumber} Order` : "Checkout"} 
+            subtitle={isTableOrder ? `${tableContext.menuType === "SHISHA" ? "Shisha Lounge" : "Restaurant"} - Order from your table` : "Review your order and complete"} 
+          />
+          
+          {isTableOrder && (
+            <Badge colorPalette="green" size="lg" p={2} textAlign="center">
+              🪑 Ordering from Table {tableContext.tableNumber} ({tableContext.menuType === "SHISHA" ? "Shisha" : "Restaurant"})
+            </Badge>
+          )}
+          
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap={8}>
             <Card.Root shadow="lg">
               <Card.Body p={6}>

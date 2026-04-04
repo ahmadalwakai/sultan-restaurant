@@ -27,7 +27,7 @@ export default function AboutPage() {
         <VStack mt={8} gap={6} color="gray.600" textAlign="left" align="stretch">
           <Text>
             Sultan Restaurant has been serving authentic Middle Eastern cuisine
-            since 2014. Our passion for traditional flavours, combined with
+            since 2024. Our passion for traditional flavours, combined with
             the finest ingredients, creates a dining experience that&apos;s
             truly unforgettable.
           </Text>

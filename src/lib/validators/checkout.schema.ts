@@ -4,7 +4,7 @@ export const checkoutSchema = z.object({
   customerName: z.string().min(2, "Name is required").max(100),
   customerEmail: z.string().email("Invalid email"),
   customerPhone: z.string().min(10, "Valid phone number required").max(20),
-  type: z.enum(["PICKUP", "DELIVERY"]),
+  type: z.enum(["PICKUP", "DELIVERY", "TABLE"]),
   paymentMethod: z.enum(["CASH", "STRIPE"]),
   items: z.array(
     z.object({
@@ -15,6 +15,10 @@ export const checkoutSchema = z.object({
   couponCode: z.string().optional(),
   pickupTime: z.string().optional(),
   specialRequests: z.string().max(500).optional(),
+  // Table scan ordering fields
+  tableNumber: z.number().int().min(1).max(100).optional(),
+  menuType: z.enum(["RESTAURANT", "SHISHA"]).optional(),
+  orderSource: z.enum(["ONLINE", "TABLE_SCAN"]).optional(),
 });
 
 export type CheckoutFormValues = z.infer<typeof checkoutSchema>;

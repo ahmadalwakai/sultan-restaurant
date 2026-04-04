@@ -37,7 +37,7 @@ const trustBadges = [
   {
     icon: LuAward,
     title: "Award Winning",
-    subtitle: "Since 2014",
+    subtitle: "Since 2024",
   },
   {
     icon: LuHeart,

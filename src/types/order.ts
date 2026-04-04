@@ -45,9 +45,15 @@ export type CreateOrderInput = {
   couponCode?: string;
   pickupTime?: string;
   specialRequests?: string;
+  // Table scan ordering fields
+  tableNumber?: number;
+  menuType?: MenuTypeValue;
+  orderSource?: OrderSourceValue;
 };
 
-export type OrderTypeValue = "PICKUP" | "DELIVERY";
+export type OrderTypeValue = "PICKUP" | "DELIVERY" | "TABLE";
+export type MenuTypeValue = "RESTAURANT" | "SHISHA";
+export type OrderSourceValue = "ONLINE" | "TABLE_SCAN";
 export type OrderStatusType = "PENDING" | "CONFIRMED" | "PREPARING" | "READY" | "COMPLETED" | "CANCELLED" | "REFUNDED";
 export type PaymentMethodType = "CASH" | "STRIPE";
 export type PaymentStatusType = "PENDING" | "PAID" | "FAILED" | "REFUNDED";

@@ -53,6 +53,10 @@ export const orderService = {
       pickupTime: input.pickupTime ? new Date(input.pickupTime) : undefined,
       specialRequests: input.specialRequests,
       items: { create: orderItems },
+      // Table scan ordering fields
+      tableNumber: input.tableNumber,
+      menuType: input.menuType,
+      orderSource: input.orderSource ?? "ONLINE",
       ...(userId && { user: { connect: { id: userId } } }),
     });
 

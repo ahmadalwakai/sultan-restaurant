@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import type { OrderStatus } from "@prisma/client";
+import type { OrderStatus, MenuType, OrderSource, OrderType } from "@prisma/client";
 
 function generateOrderNumber(): string {
   const prefix = "ORD";
@@ -12,13 +12,17 @@ export async function createOrder(data: {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
-  type: "PICKUP" | "DELIVERY";
+  type: OrderType;
   paymentMethod: "CASH" | "STRIPE";
   items: Array<{ menuItemId: string; quantity: number }>;
   couponCode?: string;
   pickupTime?: string;
   specialRequests?: string;
   userId?: string;
+  // Table scan ordering fields
+  tableNumber?: number;
+  menuType?: MenuType;
+  orderSource?: OrderSource;
 }) {
   const menuItems = await prisma.menuItem.findMany({ where: { id: { in: data.items.map((i) => i.menuItemId) } } });
 
@@ -56,6 +60,10 @@ export async function createOrder(data: {
       specialRequests: data.specialRequests,
       userId: data.userId,
       items: { create: orderItems },
+      // Table scan ordering fields
+      tableNumber: data.tableNumber,
+      menuType: data.menuType,
+      orderSource: data.orderSource ?? "ONLINE",
     },
     include: { items: true },
   });

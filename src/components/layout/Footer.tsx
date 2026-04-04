@@ -16,7 +16,7 @@ export function Footer() {
             <Heading size="lg" fontFamily="heading" color="brand.primary">Sultan</Heading>
             <Text fontSize="sm" color="whiteAlpha.700" lineHeight="tall">
               Authentic Middle Eastern & Indian cuisine in the heart of Glasgow's East End.
-              Charcoal grills, fresh spices, and a warm welcome since 2014.
+              Charcoal grills, fresh spices, and a warm welcome since 2024.
             </Text>
             {/* Social Icons */}
             <div style={{ display: "flex", gap: "16px", marginTop: "8px" }}>
