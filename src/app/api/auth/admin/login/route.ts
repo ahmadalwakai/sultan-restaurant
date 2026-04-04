@@ -8,7 +8,8 @@ import { UnauthorizedError } from "@/lib/errors";
 
 export const POST = withErrorHandler(async (req: NextRequest) => {
   const { email, password } = await parseBody(req, adminLoginSchema);
-  const admin = await adminRepository.findByEmail(email);
+  const normalizedEmail = email.toLowerCase().trim();
+  const admin = await adminRepository.findByEmail(normalizedEmail);
   if (!admin) throw new UnauthorizedError("Invalid credentials");
 
   const valid = await verifyPassword(password, admin.passwordHash);
