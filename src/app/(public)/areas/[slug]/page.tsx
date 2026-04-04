@@ -61,7 +61,7 @@ export default async function AreaPage({ params }: Props) {
       "@type": "PostalAddress",
       streetAddress: "577 Gallowgate",
       addressLocality: "Glasgow",
-      postalCode: "G31 1NG",
+      postalCode: "G40 2PE",
       addressCountry: "GB",
     },
     servesCuisine: ["Middle Eastern", "Halal", "Kebab", "Syrian", "Lebanese"],
@@ -123,7 +123,7 @@ export default async function AreaPage({ params }: Props) {
                     <Heading size="sm">Delivery to {area.name}</Heading>
                   </HStack>
                   <Text fontSize="sm" color="fg.muted">
-                    Approx. {area.deliveryTime ?? "20-30 min"} from our kitchen at 577 Gallowgate, Glasgow G31 1NG.
+                    Approx. {area.deliveryTime ?? "20-30 min"} from our kitchen at 577 Gallowgate, Glasgow G40 2PE.
                   </Text>
                 </VStack>
               </Card.Body>

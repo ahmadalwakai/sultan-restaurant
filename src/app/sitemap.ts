@@ -32,5 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [...corePages, ...areaPages, ...cuisinePages];
+  const deliveryPages: MetadataRoute.Sitemap = glasgowAreas.map((area) => ({
+    url: `${baseUrl}/delivery/${area.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.5,
+  }));
+
+  return [...corePages, ...areaPages, ...cuisinePages, ...deliveryPages];
 }

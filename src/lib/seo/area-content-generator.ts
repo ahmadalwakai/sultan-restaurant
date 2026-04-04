@@ -38,7 +38,7 @@ export function generateAreaContent(area: AreaData): AreaContent {
     intro: `Sultan Restaurant delivers the best charcoal-grilled kebabs, mezze platters, biryanis, and shawarmas to ${area.name}, ${distanceText}. Fresh halal ingredients, authentic Middle Eastern recipes, and fast delivery straight to your door.`,
     deliveryLine: `We deliver to ${area.name} (${area.postcode}) in approximately ${deliveryTime}. Order online or call us on 0141 391 8883.`,
     ctaText: `Order Now — Delivered to ${area.name} in ${deliveryTime}`,
-    nearText: `${area.name} is part of the greater Glasgow area we're proud to serve from our kitchen at 577 Gallowgate, Glasgow G31 1NG.`,
+    nearText: `${area.name} is part of the greater Glasgow area we're proud to serve from our kitchen at 577 Gallowgate, Glasgow G40 2PE.`,
   };
 }
 

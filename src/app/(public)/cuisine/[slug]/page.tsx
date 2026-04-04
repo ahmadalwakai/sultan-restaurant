@@ -79,7 +79,7 @@ export default async function CuisineAreaPage({ params }: Props) {
       "@type": "PostalAddress",
       streetAddress: "577 Gallowgate",
       addressLocality: "Glasgow",
-      postalCode: "G31 1NG",
+      postalCode: "G40 2PE",
       addressCountry: "GB",
     },
     servesCuisine: cuisine.name,
@@ -133,7 +133,7 @@ export default async function CuisineAreaPage({ params }: Props) {
                   <MapPin size={18} />
                   <Text fontWeight="semibold" fontSize="sm">Location</Text>
                 </HStack>
-                <Text fontSize="sm" color="fg.muted">577 Gallowgate, Glasgow G31 1NG</Text>
+                <Text fontSize="sm" color="fg.muted">577 Gallowgate, Glasgow G40 2PE</Text>
               </VStack>
             </Box>
             <Box p={6} bg="bg.surface" rounded="md" shadow="sm">
