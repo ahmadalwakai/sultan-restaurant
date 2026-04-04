@@ -1,11 +1,11 @@
 /**
- * Generate QR Codes and PDF for Table Scan Ordering
+ * Generate QR Codes and PDFs for Table Scan Ordering
  *
  * Usage: npx tsx scripts/generate-table-codes.ts
  *
  * This script generates:
  * - Individual QR code PNG files for each table
- * - A single PDF document with all QR codes for printing
+ * - Two PDF documents: one for restaurant tables, one for shisha tables
  */
 
 import * as QRCode from "qrcode";
@@ -79,7 +79,12 @@ async function generateQRCodes(tables: TableQR[]): Promise<void> {
   }
 }
 
-async function generatePDF(tables: TableQR[]): Promise<void> {
+async function generateSinglePDF(
+  tables: TableQR[],
+  title: string,
+  subtitle: string,
+  filename: string
+): Promise<void> {
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -97,24 +102,23 @@ async function generatePDF(tables: TableQR[]): Promise<void> {
 
   // Calculate grid
   const cols = Math.floor((pageWidth - 2 * margin) / cardWidth);
-  const rows = Math.floor((pageHeight - 2 * margin) / cardHeight);
+  const rows = Math.floor((pageHeight - 2 * margin - 30) / cardHeight); // 30mm for title area
   const itemsPerPage = cols * rows;
 
   // Center the grid
   const gridWidth = cols * cardWidth;
-  const gridHeight = rows * cardHeight;
   const startX = (pageWidth - gridWidth) / 2;
-  const startY = (pageHeight - gridHeight) / 2;
+  const startY = 45; // Start after title area
 
-  let currentItem = 0;
-
-  // Generate Restaurant tables section
+  // Title
   doc.setFontSize(20);
   doc.setFont("helvetica", "bold");
-  doc.text("Sultan Restaurant - Table QR Codes", pageWidth / 2, 20, { align: "center" });
+  doc.text(title, pageWidth / 2, 20, { align: "center" });
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
-  doc.text("Scan to order from your table", pageWidth / 2, 28, { align: "center" });
+  doc.text(subtitle, pageWidth / 2, 28, { align: "center" });
+
+  let currentItem = 0;
 
   for (let i = 0; i < tables.length; i++) {
     const table = tables[i];
@@ -122,6 +126,13 @@ async function generatePDF(tables: TableQR[]): Promise<void> {
     // Check if we need a new page
     if (currentItem > 0 && currentItem % itemsPerPage === 0) {
       doc.addPage();
+      // Re-add title on new page
+      doc.setFontSize(20);
+      doc.setFont("helvetica", "bold");
+      doc.text(title, pageWidth / 2, 20, { align: "center" });
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "normal");
+      doc.text(subtitle, pageWidth / 2, 28, { align: "center" });
       currentItem = 0;
     }
 
@@ -129,7 +140,7 @@ async function generatePDF(tables: TableQR[]): Promise<void> {
     const col = currentItem % cols;
     const row = Math.floor(currentItem / cols) % rows;
     const x = startX + col * cardWidth;
-    const y = startY + row * cardHeight + (i === 0 ? 20 : 0); // Extra offset for title on first page
+    const y = startY + row * cardHeight;
 
     // Draw card border
     doc.setDrawColor(200, 200, 200);
@@ -148,22 +159,44 @@ async function generatePDF(tables: TableQR[]): Promise<void> {
     // Add label
     doc.setFontSize(10);
     doc.setFont("helvetica", "bold");
-    const label = table.type === "restaurant" ? `Table ${table.number}` : `Shisha ${table.number}`;
+    const label = `Table ${table.number}`;
     doc.text(label, x + cardWidth / 2, y + qrSize + cardPadding * 2 + 3, { align: "center" });
 
     doc.setFontSize(7);
     doc.setFont("helvetica", "normal");
-    const typeLabel = table.type === "restaurant" ? "Restaurant" : "Shisha Lounge";
+    const typeLabel = table.type === "restaurant" ? "Scan to Order" : "Scan to Order";
     doc.text(typeLabel, x + cardWidth / 2, y + qrSize + cardPadding * 2 + 8, { align: "center" });
 
     currentItem++;
   }
 
   // Save PDF
-  const pdfPath = path.join(process.cwd(), CONFIG.outputDir, "table-qr-codes.pdf");
+  const pdfPath = path.join(process.cwd(), CONFIG.outputDir, filename);
   const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
   fs.writeFileSync(pdfPath, pdfBuffer);
-  console.log(`\n📄 Generated PDF: ${pdfPath}`);
+  console.log(`📄 Generated PDF: ${filename}`);
+}
+
+async function generatePDFs(tables: TableQR[]): Promise<void> {
+  // Split tables by type
+  const restaurantTables = tables.filter((t) => t.type === "restaurant");
+  const shishaTables = tables.filter((t) => t.type === "shisha");
+
+  // Generate restaurant PDF
+  await generateSinglePDF(
+    restaurantTables,
+    "Sultan Restaurant - Table QR Codes",
+    "Scan to order from your table",
+    "restaurant-table-codes.pdf"
+  );
+
+  // Generate shisha PDF
+  await generateSinglePDF(
+    shishaTables,
+    "Sultan Shisha Lounge - Table QR Codes",
+    "Scan to order shisha from your table",
+    "shisha-table-codes.pdf"
+  );
 }
 
 async function main() {
@@ -177,13 +210,14 @@ async function main() {
   console.log("\n📱 Generating QR Code PNG files...");
   await generateQRCodes(tables);
 
-  console.log("\n📑 Generating printable PDF...");
-  await generatePDF(tables);
+  console.log("\n📑 Generating printable PDFs...");
+  await generatePDFs(tables);
 
   console.log("\n✨ Done! QR codes are ready for printing.\n");
   console.log("Files generated:");
   console.log(`  - ${CONFIG.restaurantTables + CONFIG.shishaTables} PNG files`);
-  console.log("  - 1 PDF document (table-qr-codes.pdf)");
+  console.log("  - restaurant-table-codes.pdf (Restaurant tables)");
+  console.log("  - shisha-table-codes.pdf (Shisha lounge tables)");
   console.log(`\nLocation: ${path.join(process.cwd(), CONFIG.outputDir)}`);
 }
 

@@ -16,7 +16,7 @@ export default function MobileMenuCard({ item, onClick }: MobileMenuCardProps) {
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addItem({ menuItemId: item.id, name: item.name, price: item.price, image: item.image ?? null });
+    addItem({ menuItemId: item.id, name: item.name, price: item.price, image: item.image ?? null, itemType: "RESTAURANT" });
   };
 
   return (

@@ -26,6 +26,7 @@ export function MenuItemCard({ item }: MenuItemCardProps) {
       name: item.name,
       price: item.price,
       image: item.image ?? null,
+      itemType: "RESTAURANT",
     });
   };
 

@@ -80,4 +80,9 @@ export const menuRepository = {
       )
     );
   },
+
+  // Shisha menu items
+  findShishaByIds(ids: string[]) {
+    return prisma.shishaMenuItem.findMany({ where: { id: { in: ids } } });
+  },
 };

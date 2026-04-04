@@ -266,18 +266,22 @@ model Order {
 }
 
 model OrderItem {
-  id         String  @id @default(cuid())
-  orderId    String
-  menuItemId String
-  name       String
-  price      Decimal @db.Decimal(10, 2)
-  quantity   Int
-  subtotal   Decimal @db.Decimal(10, 2)
+  id               String  @id @default(cuid())
+  orderId          String
+  menuItemId       String?
+  shishaMenuItemId String?
+  name             String
+  price            Decimal @db.Decimal(10, 2)
+  quantity         Int
+  subtotal         Decimal @db.Decimal(10, 2)
 
-  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  menuItem MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem       MenuItem?       @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
+  shishaMenuItem ShishaMenuItem? @relation(fields: [shishaMenuItemId], references: [id], onDelete: Restrict)
 
   @@index([orderId])
+  @@index([menuItemId])
+  @@index([shishaMenuItemId])
 }
 
 enum OrderType {
@@ -632,7 +636,8 @@ model ShishaMenuItem {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  category ShishaCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category   ShishaCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
 
   @@index([categoryId])
   @@index([slug])

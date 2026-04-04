@@ -19,7 +19,7 @@ export default function MobileMenuItemSheet({ item, isOpen, onClose }: MobileMen
   if (!item) return null;
 
   const handleAdd = () => {
-    addItem({ menuItemId: item.id, name: item.name, price: item.price, image: item.image ?? null });
+    addItem({ menuItemId: item.id, name: item.name, price: item.price, image: item.image ?? null, itemType: "RESTAURANT" });
     onClose();
   };
 

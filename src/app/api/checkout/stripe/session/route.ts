@@ -13,7 +13,14 @@ export const POST = withErrorHandler(async (req: NextRequest) => {
   const body = await parseBody(req, sessionSchema);
   const order = await prisma.order.findUnique({
     where: { id: body.orderId },
-    include: { items: { include: { menuItem: { select: { name: true } } } } },
+    include: { 
+      items: { 
+        include: { 
+          menuItem: { select: { name: true } },
+          shishaMenuItem: { select: { name: true } },
+        } 
+      } 
+    },
   });
   if (!order) throw new NotFoundError("Order not found");
   
@@ -21,7 +28,7 @@ export const POST = withErrorHandler(async (req: NextRequest) => {
     orderId: order.id,
     orderNumber: order.orderNumber,
     items: order.items.map((i) => ({
-      name: i.menuItem.name,
+      name: i.menuItem?.name || i.shishaMenuItem?.name || "Item",
       price: Number(i.price),
       quantity: i.quantity,
     })),

@@ -1,9 +1,12 @@
+export type ItemType = "RESTAURANT" | "SHISHA";
+
 export type CartItem = {
   menuItemId: string;
   name: string;
   price: number;
   quantity: number;
   image: string | null;
+  itemType: ItemType;
 };
 
 export type TableContext = {

@@ -7,22 +7,65 @@ import { v4 as uuid } from "uuid";
 
 export const orderService = {
   async create(input: CreateOrderInput, userId?: string) {
-    const menuItems = await menuRepository.findByIds(input.items.map((i) => i.menuItemId));
-    if (menuItems.length !== input.items.length) throw new BadRequestError("Some items are no longer available");
+    // Separate items by type
+    const restaurantItemInputs = input.items.filter((i) => !i.itemType || i.itemType === "RESTAURANT");
+    const shishaItemInputs = input.items.filter((i) => i.itemType === "SHISHA");
+
+    // Fetch restaurant items
+    const restaurantItems = restaurantItemInputs.length > 0
+      ? await menuRepository.findByIds(restaurantItemInputs.map((i) => i.menuItemId))
+      : [];
+
+    // Fetch shisha items
+    const shishaItems = shishaItemInputs.length > 0
+      ? await menuRepository.findShishaByIds(shishaItemInputs.map((i) => i.menuItemId))
+      : [];
+
+    // Validate all items found
+    if (restaurantItems.length !== restaurantItemInputs.length) {
+      throw new BadRequestError("Some restaurant items are no longer available");
+    }
+    if (shishaItems.length !== shishaItemInputs.length) {
+      throw new BadRequestError("Some shisha items are no longer available");
+    }
 
     let subtotal = 0;
-    const orderItems = input.items.map((item) => {
-      const menuItem = menuItems.find((m) => m.id === item.menuItemId)!;
+    const orderItems: Array<{
+      menuItemId?: string;
+      shishaMenuItemId?: string;
+      name: string;
+      price: number;
+      quantity: number;
+      subtotal: number;
+    }> = [];
+
+    // Process restaurant items
+    for (const item of restaurantItemInputs) {
+      const menuItem = restaurantItems.find((m) => m.id === item.menuItemId)!;
       const itemSubtotal = Number(menuItem.price) * item.quantity;
       subtotal += itemSubtotal;
-      return {
+      orderItems.push({
         menuItemId: item.menuItemId,
         name: menuItem.name,
         price: Number(menuItem.price),
         quantity: item.quantity,
         subtotal: itemSubtotal,
-      };
-    });
+      });
+    }
+
+    // Process shisha items
+    for (const item of shishaItemInputs) {
+      const shishaItem = shishaItems.find((m) => m.id === item.menuItemId)!;
+      const itemSubtotal = Number(shishaItem.price) * item.quantity;
+      subtotal += itemSubtotal;
+      orderItems.push({
+        shishaMenuItemId: item.menuItemId,
+        name: shishaItem.name,
+        price: Number(shishaItem.price),
+        quantity: item.quantity,
+        subtotal: itemSubtotal,
+      });
+    }
 
     let discount = 0;
     if (input.couponCode) {

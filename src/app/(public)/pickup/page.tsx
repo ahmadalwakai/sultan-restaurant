@@ -90,6 +90,7 @@ export default function PickupPage() {
         menuItemId: item.menuItemId,
         quantity: item.quantity,
         price: item.price,
+        itemType: item.itemType,
       })),
       // Include table context if ordering from a table
       ...(tableContext && {

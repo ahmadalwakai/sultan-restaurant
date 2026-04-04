@@ -35,13 +35,15 @@ export type OrderItemPublic = {
   subtotal: number;
 };
 
+export type ItemTypeValue = "RESTAURANT" | "SHISHA";
+
 export type CreateOrderInput = {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
   type: OrderTypeValue;
   paymentMethod: PaymentMethodType;
-  items: { menuItemId: string; quantity: number }[];
+  items: { menuItemId: string; quantity: number; itemType?: ItemTypeValue }[];
   couponCode?: string;
   pickupTime?: string;
   specialRequests?: string;

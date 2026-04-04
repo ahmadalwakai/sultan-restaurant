@@ -11,7 +11,12 @@ export async function GET(
   const order = await prisma.order.findUnique({
     where: { id },
     include: {
-      items: { include: { menuItem: true } },
+      items: { 
+        include: { 
+          menuItem: true,
+          shishaMenuItem: true,
+        } 
+      },
       user: { select: { name: true, email: true } },
     },
   });

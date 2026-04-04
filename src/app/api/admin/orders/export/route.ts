@@ -15,13 +15,23 @@ export async function GET(req: NextRequest) {
 
   const orders = await prisma.order.findMany({
     where,
-    include: { items: { include: { menuItem: { select: { name: true } } } } },
+    include: { 
+      items: { 
+        include: { 
+          menuItem: { select: { name: true } },
+          shishaMenuItem: { select: { name: true } },
+        } 
+      } 
+    },
     orderBy: { createdAt: "desc" },
   });
 
   const header = "Order Number,Date,Customer,Items,Total,Status,Payment\n";
   const rows = orders.map((o) => {
-    const items = o.items.map((i) => `${i.menuItem.name}x${i.quantity}`).join("; ");
+    const items = o.items.map((i) => {
+      const itemName = i.menuItem?.name || i.shishaMenuItem?.name || "Unknown";
+      return `${itemName}x${i.quantity}`;
+    }).join("; ");
     return `${o.orderNumber},${o.createdAt.toISOString()},${o.customerName},"${items}",${Number(o.total)},${o.status},${o.paymentStatus}`;
   });
 

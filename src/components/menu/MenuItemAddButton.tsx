@@ -18,6 +18,7 @@ export default function MenuItemAddButton({ item, size = "sm" }: MenuItemAddButt
       name: item.name,
       price: item.price,
       image: item.image ?? null,
+      itemType: "RESTAURANT",
     });
   };
 

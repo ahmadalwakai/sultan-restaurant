@@ -10,6 +10,7 @@ export const checkoutSchema = z.object({
     z.object({
       menuItemId: z.string().min(1),
       quantity: z.number().int().min(1).max(99),
+      itemType: z.enum(["RESTAURANT", "SHISHA"]).optional(),
     })
   ).min(1, "Cart cannot be empty"),
   couponCode: z.string().optional(),

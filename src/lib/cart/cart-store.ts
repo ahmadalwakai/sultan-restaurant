@@ -20,7 +20,9 @@ export const useCartStore = create<CartState>()(
               ),
             };
           }
-          return { items: [...state.items, { ...item, quantity: 1 }] };
+          // Default itemType to RESTAURANT for backward compatibility
+          const itemType = item.itemType ?? "RESTAURANT";
+          return { items: [...state.items, { ...item, itemType, quantity: 1 }] };
         }),
 
       removeItem: (menuItemId) =>
