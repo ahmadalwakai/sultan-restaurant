@@ -35,12 +35,79 @@ export default function PickupPage() {
   const router = useRouter();
   const isSubmittingRef = useRef(false);
 
+  // Determine order type based on table context - must be before useCallback
+  const orderType = tableContext ? "TABLE" as const : "PICKUP" as const;
+  const isTableOrder = !!tableContext;
+
   useEffect(() => {
     if (cashSuccess && cashOrder) {
       router.push(`/checkout/success?orderId=${cashOrder.id}`);
     }
   }, [cashSuccess, cashOrder, router]);
 
+  // useCallback must be called before any early returns
+  const handleSubmit = useCallback(async (data: CheckoutFormValues) => {
+    // Prevent double submission
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+
+    const orderData = {
+      type: orderType,
+      paymentMethod: data.paymentMethod,
+      customerName: data.customerName,
+      customerEmail: data.customerEmail,
+      customerPhone: data.customerPhone,
+      pickupTime: isTableOrder ? undefined : data.pickupTime,
+      specialRequests: data.specialRequests,
+      items: items.map((item) => ({
+        menuItemId: item.menuItemId,
+        quantity: item.quantity,
+        price: item.price,
+        itemType: item.itemType,
+      })),
+      ...(tableContext && {
+        tableNumber: tableContext.tableNumber,
+        menuType: tableContext.menuType,
+        orderSource: "TABLE_SCAN" as const,
+      }),
+    };
+
+    try {
+      if (data.paymentMethod === "CASH") {
+        cashCheckout(orderData);
+      } else {
+        setStripeLoading(true);
+        
+        const orderRes = await fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderData),
+        });
+        const orderJson = await orderRes.json();
+        if (!orderJson.success) throw new Error(orderJson.error);
+        
+        const stripeRes = await fetch("/api/checkout/stripe/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: orderJson.data.id }),
+        });
+        const stripeJson = await stripeRes.json();
+        if (!stripeJson.success) throw new Error(stripeJson.error);
+        
+        clearCart();
+        window.location.href = stripeJson.data.url;
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      setStripeLoading(false);
+      isSubmittingRef.current = false;
+      alert(err instanceof Error ? err.message : "Payment failed. Please try again.");
+    }
+  }, [orderType, isTableOrder, items, tableContext, cashCheckout, clearCart]);
+
+  const isLoading = cashLoading || stripeLoading;
+
+  // Early return AFTER all hooks
   if (isEmpty) {
     return (
       <Flex
@@ -75,77 +142,6 @@ export default function PickupPage() {
       </Flex>
     );
   }
-
-  // Determine order type based on table context
-  const orderType = tableContext ? "TABLE" as const : "PICKUP" as const;
-  const isTableOrder = !!tableContext;
-
-  const handleSubmit = useCallback(async (data: CheckoutFormValues) => {
-    // Prevent double submission
-    if (isSubmittingRef.current) return;
-    isSubmittingRef.current = true;
-
-    const orderData = {
-      type: orderType,
-      paymentMethod: data.paymentMethod,
-      customerName: data.customerName,
-      customerEmail: data.customerEmail,
-      customerPhone: data.customerPhone,
-      pickupTime: isTableOrder ? undefined : data.pickupTime,
-      specialRequests: data.specialRequests,
-      items: items.map((item) => ({
-        menuItemId: item.menuItemId,
-        quantity: item.quantity,
-        price: item.price,
-        itemType: item.itemType,
-      })),
-      // Include table context if ordering from a table
-      ...(tableContext && {
-        tableNumber: tableContext.tableNumber,
-        menuType: tableContext.menuType,
-        orderSource: "TABLE_SCAN" as const,
-      }),
-    };
-
-    try {
-      if (data.paymentMethod === "CASH") {
-        // Cash payment - place order directly
-        cashCheckout(orderData);
-      } else {
-        // Stripe payment - create order then redirect to Stripe
-        setStripeLoading(true);
-        
-        // First create the order
-        const orderRes = await fetch("/api/orders", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(orderData),
-        });
-        const orderJson = await orderRes.json();
-        if (!orderJson.success) throw new Error(orderJson.error);
-        
-        // Then create Stripe session
-        const stripeRes = await fetch("/api/checkout/stripe/session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ orderId: orderJson.data.id }),
-        });
-        const stripeJson = await stripeRes.json();
-        if (!stripeJson.success) throw new Error(stripeJson.error);
-        
-        // Clear cart and redirect to Stripe
-        clearCart();
-        window.location.href = stripeJson.data.url;
-      }
-    } catch (err) {
-      console.error("Checkout error:", err);
-      setStripeLoading(false);
-      isSubmittingRef.current = false;
-      alert(err instanceof Error ? err.message : "Payment failed. Please try again.");
-    }
-  }, [orderType, isTableOrder, items, tableContext, cashCheckout, clearCart]);
-
-  const isLoading = cashLoading || stripeLoading;
 
   return (
     <Box minH="100vh" bg="gray.50" py={{ base: 8, md: 12 }}>
