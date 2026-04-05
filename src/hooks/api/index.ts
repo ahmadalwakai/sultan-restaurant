@@ -11,3 +11,4 @@ export { useReviews } from "./use-reviews";
 export { useCreateOrder } from "./use-order";
 export { useValidateCoupon } from "./use-validate-coupon";
 export { useOpeningHours } from "./use-site-settings";
+export { useOrderAvailability } from "./use-order-availability";

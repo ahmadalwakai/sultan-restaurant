@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LuX, LuShoppingBag, LuTruck, LuExternalLink, LuArrowLeft } from "react-icons/lu";
+import { LuX, LuShoppingBag, LuTruck, LuExternalLink, LuArrowLeft, LuCircleAlert } from "react-icons/lu";
 import Link from "next/link";
 import { DELIVERY_PARTNERS } from "@/content/delivery-partners";
 import { useCartStore } from "@/lib/cart";
+import { useOrderAvailability } from "@/hooks/api";
 
 interface OrderMethodModalProps {
   isOpen: boolean;
@@ -16,6 +17,13 @@ export function OrderMethodModal({ isOpen, onClose }: OrderMethodModalProps) {
   const [step, setStep] = useState<"choose" | "delivery">("choose");
   const items = useCartStore((s) => s.items);
   const hasItems = items.length > 0;
+  const { data: availability, isLoading } = useOrderAvailability();
+
+  const pickupEnabled = availability?.pickupEnabled ?? true;
+  const deliveryEnabled = availability?.deliveryEnabled ?? true;
+  const pickupMessage = availability?.pickupPauseMessage || "Pickup is temporarily unavailable";
+  const deliveryMessage = availability?.deliveryPauseMessage || "Delivery is temporarily unavailable";
+  const bothPaused = !pickupEnabled && !deliveryEnabled;
 
   const handleClose = () => {
     setStep("choose");
@@ -123,6 +131,61 @@ export function OrderMethodModal({ isOpen, onClose }: OrderMethodModalProps) {
 
           {/* Body */}
           <div style={{ padding: "24px" }}>
+            {/* Loading State */}
+            {isLoading ? (
+              <div style={{ textAlign: "center", padding: "32px", color: "rgba(255,255,255,0.5)" }}>
+                Loading...
+              </div>
+            ) : bothPaused ? (
+              /* Both Services Paused */
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{
+                  textAlign: "center",
+                  padding: "32px 16px",
+                  background: "rgba(220, 38, 38, 0.1)",
+                  borderRadius: "16px",
+                  border: "2px solid rgba(220, 38, 38, 0.3)",
+                }}
+              >
+                <div
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    background: "rgba(220, 38, 38, 0.2)",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 16px",
+                    color: "#EF4444",
+                  }}
+                >
+                  <LuCircleAlert size={28} />
+                </div>
+                <h3
+                  style={{
+                    color: "#FFFFFF",
+                    fontSize: "18px",
+                    fontWeight: 700,
+                    margin: "0 0 12px",
+                  }}
+                >
+                  Ordering Temporarily Paused
+                </h3>
+                <p
+                  style={{
+                    color: "rgba(255,255,255,0.6)",
+                    fontSize: "14px",
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  We are very busy at the moment. Please try again shortly.
+                </p>
+              </motion.div>
+            ) : (
             <AnimatePresence mode="wait">
               {step === "choose" ? (
                 <motion.div
@@ -133,6 +196,7 @@ export function OrderMethodModal({ isOpen, onClose }: OrderMethodModalProps) {
                   style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}
                 >
                   {/* Pickup Option */}
+                  {pickupEnabled ? (
                   <Link href={hasItems ? "/pickup" : "/menu"} onClick={handleClose} style={{ textDecoration: "none" }}>
                     <div
                       style={{
@@ -191,8 +255,60 @@ export function OrderMethodModal({ isOpen, onClose }: OrderMethodModalProps) {
                       </p>
                     </div>
                   </Link>
+                  ) : (
+                  /* Pickup Disabled */
+                  <div
+                    style={{
+                      background: "rgba(255,255,255,0.02)",
+                      borderRadius: "16px",
+                      border: "2px solid rgba(220, 38, 38, 0.3)",
+                      padding: "24px 16px",
+                      textAlign: "center",
+                      cursor: "not-allowed",
+                      opacity: 0.6,
+                      height: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "56px",
+                        height: "56px",
+                        background: "rgba(220, 38, 38, 0.2)",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto 12px",
+                        color: "#EF4444",
+                      }}
+                    >
+                      <LuShoppingBag size={24} />
+                    </div>
+                    <h3
+                      style={{
+                        color: "#EF4444",
+                        fontSize: "16px",
+                        fontWeight: 700,
+                        margin: "0 0 8px",
+                      }}
+                    >
+                      Pickup Paused
+                    </h3>
+                    <p
+                      style={{
+                        color: "rgba(255,255,255,0.5)",
+                        fontSize: "11px",
+                        lineHeight: 1.4,
+                        margin: 0,
+                      }}
+                    >
+                      {pickupMessage}
+                    </p>
+                  </div>
+                  )}
 
                   {/* Delivery Option */}
+                  {deliveryEnabled ? (
                   <div
                     onClick={() => setStep("delivery")}
                     style={{
@@ -250,6 +366,57 @@ export function OrderMethodModal({ isOpen, onClose }: OrderMethodModalProps) {
                       Get it delivered to your door via our partners
                     </p>
                   </div>
+                  ) : (
+                  /* Delivery Disabled */
+                  <div
+                    style={{
+                      background: "rgba(255,255,255,0.02)",
+                      borderRadius: "16px",
+                      border: "2px solid rgba(220, 38, 38, 0.3)",
+                      padding: "24px 16px",
+                      textAlign: "center",
+                      cursor: "not-allowed",
+                      opacity: 0.6,
+                      height: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "56px",
+                        height: "56px",
+                        background: "rgba(220, 38, 38, 0.2)",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto 12px",
+                        color: "#EF4444",
+                      }}
+                    >
+                      <LuTruck size={24} />
+                    </div>
+                    <h3
+                      style={{
+                        color: "#EF4444",
+                        fontSize: "16px",
+                        fontWeight: 700,
+                        margin: "0 0 8px",
+                      }}
+                    >
+                      Delivery Paused
+                    </h3>
+                    <p
+                      style={{
+                        color: "rgba(255,255,255,0.5)",
+                        fontSize: "11px",
+                        lineHeight: 1.4,
+                        margin: 0,
+                      }}
+                    >
+                      {deliveryMessage}
+                    </p>
+                  </div>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div
@@ -373,6 +540,7 @@ export function OrderMethodModal({ isOpen, onClose }: OrderMethodModalProps) {
                 </motion.div>
               )}
             </AnimatePresence>
+            )}
           </div>
         </div>
       </motion.div>

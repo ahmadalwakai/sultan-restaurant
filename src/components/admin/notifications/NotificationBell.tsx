@@ -40,7 +40,7 @@ export function NotificationBell({ unreadCount, onClick, isActive }: Notificatio
         style={{
           width: "24px",
           height: "24px",
-          color: isActive ? "#B8860B" : "#e5e5e5",
+          color: isActive ? "#B8860B" : "#4B5563",
           transition: "color 0.2s ease",
         }}
       />

@@ -93,11 +93,14 @@ export function useAdminNotifications(): UseAdminNotificationsReturn {
       const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       params.set("since", since);
 
+      console.log("[Notifications] Fetching from API...");
       const response = await fetch(`/api/admin/notifications?${params.toString()}`);
       const result: NotificationsResponse = await response.json();
+      console.log("[Notifications] API Response:", result);
 
       if (result.success && result.data) {
         const newNotifications = result.data;
+        console.log(`[Notifications] Got ${newNotifications.length} notifications`);
         
         // Check for new notifications (ones we haven't seen before)
         const currentIds = new Set(newNotifications.map(n => n.id));
@@ -107,6 +110,7 @@ export function useAdminNotifications(): UseAdminNotificationsReturn {
 
         // If there are new notifications and we've fetched before
         if (newIds.length > 0 && previousIdsRef.current.size > 0) {
+          console.log(`[Notifications] NEW notification detected! IDs: ${newIds.join(", ")}`);
           const newest = newNotifications.find(n => newIds.includes(n.id));
           if (newest) {
             setLatestNotification(newest);
@@ -127,11 +131,12 @@ export function useAdminNotifications(): UseAdminNotificationsReturn {
         setNotifications(notificationsWithReadStatus);
         setError(null);
       } else {
+        console.error("[Notifications] API Error:", result.error);
         setError(result.error || "Failed to fetch notifications");
       }
     } catch (err) {
+      console.error("[Notifications] Network Error:", err);
       setError("Network error fetching notifications");
-      console.error("Error fetching notifications:", err);
     } finally {
       setIsLoading(false);
     }

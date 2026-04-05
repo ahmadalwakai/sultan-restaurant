@@ -1,11 +1,20 @@
 "use client";
 
-import { use } from "react";
+import { use, useRef, useEffect } from "react";
 import { useOrderTracking } from "@/hooks/checkout";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { formatCurrency } from "@/lib/utils/format-currency";
-import Link from "next/link";
-import { Box, Container, Heading, Text, Flex, VStack, HStack, Badge, Card, Link as ChakraLink } from "@chakra-ui/react";
+import OrderStatusTracker from "@/components/order/OrderStatusTracker";
+import toast from "react-hot-toast";
+import { Box, Container, Heading, Text, Flex, VStack, Badge, Card, Link as ChakraLink } from "@chakra-ui/react";
+
+const statusMessages: Record<string, string> = {
+  CONFIRMED: "Your order has been confirmed! 🎉",
+  PREPARING: "Your order is being prepared! 👨‍🍳",
+  READY: "Your order is ready for pickup! 📦",
+  COMPLETED: "Order complete! Thank you! 🌟",
+  CANCELLED: "Your order has been cancelled",
+};
 
 export default function OrderDetailPage({
   params,
@@ -14,6 +23,22 @@ export default function OrderDetailPage({
 }) {
   const { id } = use(params);
   const { data: order, isLoading } = useOrderTracking(id);
+  const prevStatusRef = useRef<string | null>(null);
+
+  // Show toast when status changes
+  useEffect(() => {
+    if (order?.status && prevStatusRef.current && prevStatusRef.current !== order.status) {
+      const message = statusMessages[order.status];
+      if (message) {
+        if (order.status === "CANCELLED") {
+          toast.error(message);
+        } else {
+          toast.success(message, { duration: 5000 });
+        }
+      }
+    }
+    prevStatusRef.current = order?.status ?? null;
+  }, [order?.status]);
 
   if (isLoading) return <LoadingState message="Loading order..." />;
   if (!order) return <Box p={8} textAlign="center">Order not found</Box>;
@@ -32,6 +57,12 @@ export default function OrderDetailPage({
                 {order.status}
               </Badge>
             </Flex>
+
+            {/* Order Status Tracker */}
+            <Box mt={6} p={4} bg="gray.50" borderRadius="lg">
+              <OrderStatusTracker status={order.status} />
+            </Box>
+
             <VStack mt={6} gap={3} align="stretch">
               {order.items?.map((item) => (
                 <Flex key={item.id} justify="space-between" borderBottom="1px" pb={2} borderColor="gray.100">
@@ -48,6 +79,11 @@ export default function OrderDetailPage({
               <Text color="fg.default">Total</Text>
               <Text color="brand.primary">{formatCurrency(Number(order.total))}</Text>
             </Flex>
+
+            {/* Auto-refresh notice */}
+            <Text mt={6} fontSize="xs" color="gray.500" textAlign="center">
+              🔄 This page updates automatically every 30 seconds
+            </Text>
           </Card.Body>
         </Card.Root>
       </Container>

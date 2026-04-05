@@ -3,6 +3,7 @@ import { withErrorHandler, createdResponse, parseBody } from "@/lib/api";
 import { createCheckoutSession } from "@/lib/payments/stripe";
 import { prisma } from "@/lib/db/prisma";
 import { NotFoundError } from "@/lib/errors";
+import { validateOrderType } from "@/lib/checkout/order-availability";
 import { z } from "zod";
 
 const sessionSchema = z.object({
@@ -23,6 +24,9 @@ export const POST = withErrorHandler(async (req: NextRequest) => {
     },
   });
   if (!order) throw new NotFoundError("Order not found");
+  
+  // Validate order type is still available (pickup/delivery not paused)
+  await validateOrderType(order.type);
   
   const result = await createCheckoutSession({
     orderId: order.id,

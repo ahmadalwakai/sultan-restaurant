@@ -11,6 +11,7 @@ import type { CheckoutFormValues } from "@/lib/validators";
 import { useCashCheckout } from "@/hooks/checkout";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef, useCallback } from "react";
+import { useOrderAvailability } from "@/hooks/api";
 import {
   Box,
   Container,
@@ -31,6 +32,7 @@ export default function PickupPage() {
   const tableContext = useCartStore((s) => s.tableContext);
   const { isEmpty, isBelowMinimum, minOrderAmount } = useValidateCart();
   const { checkout: cashCheckout, isLoading: cashLoading, isSuccess: cashSuccess, order: cashOrder } = useCashCheckout();
+  const { data: availability, isLoading: availabilityLoading } = useOrderAvailability();
   const [stripeLoading, setStripeLoading] = useState(false);
   const router = useRouter();
   const isSubmittingRef = useRef(false);
@@ -38,6 +40,10 @@ export default function PickupPage() {
   // Determine order type based on table context - must be before useCallback
   const orderType = tableContext ? "TABLE" as const : "PICKUP" as const;
   const isTableOrder = !!tableContext;
+  
+  // Check if pickup is available (table orders always allowed)
+  const pickupEnabled = isTableOrder || availability?.pickupEnabled !== false;
+  const pauseMessage = availability?.pickupPauseMessage || "Pickup is temporarily unavailable. Please try again later.";
 
   useEffect(() => {
     if (cashSuccess && cashOrder) {
@@ -137,6 +143,42 @@ export default function PickupPage() {
             _hover={{ bg: "amber.600" }}
           >
             Browse Menu
+          </Button>
+        </Link>
+      </Flex>
+    );
+  }
+
+  // Check if pickup is paused (but allow table orders)
+  if (!pickupEnabled && !availabilityLoading) {
+    return (
+      <Flex
+        minH="100vh"
+        direction="column"
+        align="center"
+        justify="center"
+        bg="gray.50"
+        p={4}
+      >
+        <Text fontSize="6xl">⏸️</Text>
+        <Heading size="lg" mt={4} fontFamily="heading" color="red.600">
+          Pickup Temporarily Unavailable
+        </Heading>
+        <Text mt={2} color="gray.600" textAlign="center" maxW="md">
+          {pauseMessage}
+        </Text>
+        <Link href="/menu">
+          <Button
+            mt={6}
+            rounded="lg"
+            bg="amber.500"
+            px={6}
+            py={3}
+            fontWeight="semibold"
+            color="white"
+            _hover={{ bg: "amber.600" }}
+          >
+            Back to Menu
           </Button>
         </Link>
       </Flex>

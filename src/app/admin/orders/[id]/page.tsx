@@ -109,13 +109,28 @@ export default function AdminOrderDetailPage() {
               <Card.Root shadow="sm" borderRadius="xl">
                 <Card.Body p={6}>
                   <Heading size="md" mb={3}>Status</Heading>
-                  <NativeSelect.Root>
+                  <NativeSelect.Root size="lg">
                     <NativeSelect.Field
                       value={order.status}
                       onChange={(e) => updateStatus(e.target.value)}
+                      style={{
+                        padding: "0.75rem 1rem",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        borderRadius: "0.5rem",
+                        border: "2px solid #E5E7EB",
+                        background: order.status === "CANCELLED" ? "#FEE2E2" : 
+                                    order.status === "COMPLETED" ? "#D1FAE5" :
+                                    order.status === "READY" ? "#FEF3C7" : "#F9FAFB",
+                        color: order.status === "CANCELLED" ? "#DC2626" :
+                               order.status === "COMPLETED" ? "#059669" :
+                               order.status === "READY" ? "#D97706" : "#111827",
+                        cursor: "pointer",
+                      }}
                     >
                       {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
                     </NativeSelect.Field>
+                    <NativeSelect.Indicator />
                   </NativeSelect.Root>
                 </Card.Body>
               </Card.Root>

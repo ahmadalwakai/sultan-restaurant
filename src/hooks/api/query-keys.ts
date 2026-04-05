@@ -31,4 +31,5 @@ export const queryKeys = {
     all: ["site-settings"] as const,
     openingHours: ["opening-hours"] as const,
   },
+  orderAvailability: ["order-availability"] as const,
 } as const;

@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle } from "@/components/admin/shared";
+import { AdminSwitch } from "@/components/admin/forms/AdminSwitch";
 import { adminHeadings } from "@/lib/admin-content";
-import { Box, Button, Card, Flex, HStack, Input, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Card, Flex, HStack, Input, Text, VStack, Textarea, Badge } from "@chakra-ui/react";
+import toast from "react-hot-toast";
 
-const TABS = ["General", "Contact", "Social Links", "Opening Hours", "Homepage", "Delivery Partners"] as const;
+const TABS = ["General", "Contact", "Ordering", "Social Links", "Opening Hours", "Homepage", "Delivery Partners"] as const;
 
 export default function AdminSettingsPage() {
   const [tab, setTab] = useState<typeof TABS[number]>("General");
@@ -41,6 +43,7 @@ export default function AdminSettingsPage() {
 
   function renderForm() {
     if (tab === "Opening Hours") return <OpeningHoursTab />;
+    if (tab === "Ordering") return <OrderingControlsTab />;
     if (tab === "Delivery Partners") return <Text fontSize="sm" color="gray.500">Delivery partners management coming soon.</Text>;
 
     const fields: Record<string, string[]> = {
@@ -154,6 +157,224 @@ function OpeningHoursTab() {
       <Box>
         <Button onClick={handleSave} disabled={saving} size="sm" bg="yellow.500" color="white" _hover={{ bg: "yellow.600" }} px={6} opacity={saving ? 0.5 : 1}>
           {saving ? "Saving..." : "Save Hours"}
+        </Button>
+      </Box>
+    </VStack>
+  );
+}
+
+function OrderingControlsTab() {
+  const [pickupEnabled, setPickupEnabled] = useState(true);
+  const [deliveryEnabled, setDeliveryEnabled] = useState(true);
+  const [pickupMessage, setPickupMessage] = useState("");
+  const [deliveryMessage, setDeliveryMessage] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/settings/ordering")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.data) {
+          setPickupEnabled(d.data.pickupEnabled !== "false");
+          setDeliveryEnabled(d.data.deliveryEnabled !== "false");
+          setPickupMessage(d.data.pickupPauseMessage || "");
+          setDeliveryMessage(d.data.deliveryPauseMessage || "");
+        }
+        setLoading(false);
+      });
+  }, []);
+
+  async function handleSave() {
+    setSaving(true);
+    try {
+      await fetch("/api/admin/settings/ordering", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pickupEnabled,
+          deliveryEnabled,
+          pickupPauseMessage: pickupMessage,
+          deliveryPauseMessage: deliveryMessage,
+        }),
+      });
+      toast.success("Ordering settings saved!");
+    } catch {
+      toast.error("Failed to save settings");
+    }
+    setSaving(false);
+  }
+
+  if (loading) return <Text color="gray.500">Loading...</Text>;
+
+  return (
+    <VStack gap={6} align="stretch" maxW="36rem">
+      {/* Status Overview */}
+      <Box p={4} bg={!pickupEnabled || !deliveryEnabled ? "red.50" : "green.50"} borderRadius="lg" borderWidth="1px" borderColor={!pickupEnabled || !deliveryEnabled ? "red.200" : "green.200"}>
+        <HStack gap={4}>
+          <Badge colorPalette={pickupEnabled ? "green" : "red"} size="lg" px={3} py={1}>
+            Pickup: {pickupEnabled ? "Active" : "Paused"}
+          </Badge>
+          <Badge colorPalette={deliveryEnabled ? "green" : "red"} size="lg" px={3} py={1}>
+            Delivery: {deliveryEnabled ? "Active" : "Paused"}
+          </Badge>
+        </HStack>
+        {(!pickupEnabled || !deliveryEnabled) && (
+          <Text mt={2} fontSize="sm" color="red.600" fontWeight={500}>
+            ⚠️ Some order types are currently paused
+          </Text>
+        )}
+      </Box>
+
+      {/* Pickup Control */}
+      <Box p={4} borderWidth="1px" borderColor="gray.200" borderRadius="lg">
+        <Flex align="center" justify="space-between" mb={3}>
+          <Box>
+            <Text fontWeight={600} color="gray.800">Pickup Orders</Text>
+            <Text fontSize="sm" color="gray.500">Allow customers to place pickup orders</Text>
+          </Box>
+          <HStack gap={2}>
+            <AdminSwitch
+              checked={pickupEnabled}
+              onChange={setPickupEnabled}
+            />
+            <Text fontWeight={500} color={pickupEnabled ? "green.600" : "red.600"}>
+              {pickupEnabled ? "Active" : "Paused"}
+            </Text>
+          </HStack>
+        </Flex>
+        {!pickupEnabled && (
+          <Box mt={3}>
+            <Text as="label" fontSize="sm" fontWeight={500} color="gray.700" mb={1} display="block">
+              Pause Message (shown to customers)
+            </Text>
+            <Textarea
+              value={pickupMessage}
+              onChange={(e) => setPickupMessage(e.target.value)}
+              placeholder="Pickup is temporarily unavailable..."
+              size="sm"
+              rows={2}
+              borderColor="gray.300"
+              _focus={{ borderColor: "yellow.500" }}
+            />
+          </Box>
+        )}
+      </Box>
+
+      {/* Delivery Control */}
+      <Box p={4} borderWidth="1px" borderColor="gray.200" borderRadius="lg">
+        <Flex align="center" justify="space-between" mb={3}>
+          <Box>
+            <Text fontWeight={600} color="gray.800">Delivery Orders</Text>
+            <Text fontSize="sm" color="gray.500">Allow customers to place delivery orders</Text>
+          </Box>
+          <HStack gap={2}>
+            <AdminSwitch
+              checked={deliveryEnabled}
+              onChange={setDeliveryEnabled}
+            />
+            <Text fontWeight={500} color={deliveryEnabled ? "green.600" : "red.600"}>
+              {deliveryEnabled ? "Active" : "Paused"}
+            </Text>
+          </HStack>
+        </Flex>
+        {!deliveryEnabled && (
+          <Box mt={3}>
+            <Text as="label" fontSize="sm" fontWeight={500} color="gray.700" mb={1} display="block">
+              Pause Message (shown to customers)
+            </Text>
+            <Textarea
+              value={deliveryMessage}
+              onChange={(e) => setDeliveryMessage(e.target.value)}
+              placeholder="Delivery is temporarily unavailable..."
+              size="sm"
+              rows={2}
+              borderColor="gray.300"
+              _focus={{ borderColor: "yellow.500" }}
+            />
+          </Box>
+        )}
+      </Box>
+
+      {/* Quick Pause All */}
+      {(pickupEnabled || deliveryEnabled) && (
+        <Button
+          onClick={async () => { 
+            setPickupEnabled(false); 
+            setDeliveryEnabled(false);
+            setSaving(true);
+            try {
+              await fetch("/api/admin/settings/ordering", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  pickupEnabled: false,
+                  deliveryEnabled: false,
+                  pickupPauseMessage: pickupMessage,
+                  deliveryPauseMessage: deliveryMessage,
+                }),
+              });
+              toast.success("All orders paused!");
+            } catch {
+              toast.error("Failed to pause orders");
+            }
+            setSaving(false);
+          }}
+          disabled={saving}
+          colorPalette="red"
+          variant="outline"
+          size="sm"
+        >
+          ⏸️ Pause All Orders
+        </Button>
+      )}
+
+      {/* Quick Resume All */}
+      {(!pickupEnabled || !deliveryEnabled) && (
+        <Button
+          onClick={async () => { 
+            setPickupEnabled(true); 
+            setDeliveryEnabled(true);
+            setSaving(true);
+            try {
+              await fetch("/api/admin/settings/ordering", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  pickupEnabled: true,
+                  deliveryEnabled: true,
+                  pickupPauseMessage: pickupMessage,
+                  deliveryPauseMessage: deliveryMessage,
+                }),
+              });
+              toast.success("All orders resumed!");
+            } catch {
+              toast.error("Failed to resume orders");
+            }
+            setSaving(false);
+          }}
+          disabled={saving}
+          colorPalette="green"
+          variant="outline"
+          size="sm"
+        >
+          ▶️ Resume All Orders
+        </Button>
+      )}
+
+      {/* Save Button */}
+      <Box>
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          size="sm"
+          bg="yellow.500"
+          color="white"
+          _hover={{ bg: "yellow.600" }}
+          px={6}
+          opacity={saving ? 0.5 : 1}
+        >
+          {saving ? "Saving..." : "Save Changes"}
         </Button>
       </Box>
     </VStack>
