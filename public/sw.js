@@ -10,9 +10,6 @@ const CRITICAL_ASSETS = [
   '/manifest.json',
   '/offline',
   '/menu',
-  '/fonts/poppins-regular.woff2',
-  '/fonts/poppins-semibold.woff2',
-  '/fonts/poppins-bold.woff2',
 ];
 
 // Menu-specific assets for offline access

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useRef } from "react";
 import {
   LuPlus,
   LuMinus,
@@ -71,6 +72,8 @@ export function BuildYourPlatter() {
     sides: [],
     extras: [],
   });
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   const currentCategory = categories[currentStep];
 
@@ -131,14 +134,20 @@ export function BuildYourPlatter() {
 
   return (
     <section
+      ref={sectionRef}
       style={{
         padding: "80px 0",
         background: "linear-gradient(180deg, #0D0906 0%, #1A0F0A 100%)",
       }}
     >
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 24px" }}>
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+        {/* Header with scroll animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 40, rotateX: 10 }}
+          animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: "center", marginBottom: "48px", perspective: "1000px" }}
+        >
           <span
             style={{
               color: "#C8A951",
@@ -160,7 +169,7 @@ export function BuildYourPlatter() {
           >
             Build Your Own Platter
           </h2>
-        </div>
+        </motion.div>
 
         {/* Progress steps */}
         <div

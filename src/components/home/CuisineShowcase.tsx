@@ -2,7 +2,7 @@
 
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { Box, Container, VStack, SimpleGrid, Text, Heading } from "@chakra-ui/react";
-import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/animation";
+import { FadeInUp, StaggerContainer, StaggerItem, ScaleIn } from "@/components/animation";
 
 const cuisines = [
   {
@@ -39,17 +39,20 @@ export function CuisineShowcase() {
           />
         </FadeInUp>
 
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} mt={12} w="full">
-          {cuisines.map((cuisine) => (
-            <Box
-              key={cuisine.title}
-              position="relative"
-              h={{ base: "260px", md: "350px" }}
-              borderRadius="xl"
-              overflow="hidden"
-              role="group"
-              cursor="pointer"
-            >
+        <StaggerContainer staggerDelay={0.15}>
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} mt={12} w="full">
+            {cuisines.map((cuisine, index) => (
+              <StaggerItem key={cuisine.title}>
+                <Box
+                  position="relative"
+                  h={{ base: "260px", md: "350px" }}
+                  borderRadius="xl"
+                  overflow="hidden"
+                  role="group"
+                  cursor="pointer"
+                  transition="transform 0.4s ease"
+                  _hover={{ transform: "scale(1.02)" }}
+                >
               {/* Use img tag for guaranteed loading */}
               <img
                 src={cuisine.image}
@@ -85,9 +88,11 @@ export function CuisineShowcase() {
                   {cuisine.description}
                 </Text>
               </VStack>
-            </Box>
-          ))}
-        </SimpleGrid>
+                </Box>
+              </StaggerItem>
+            ))}
+          </SimpleGrid>
+        </StaggerContainer>
       </Container>
     </Box>
   );

@@ -4,7 +4,7 @@ export const offerAdminSchema = z.object({
   title: z.string().min(2).max(200),
   description: z.string().max(1000).optional(),
   code: z.string().max(50).optional(),
-  discount: z.number().positive(),
+  discountValue: z.number().positive(),
   discountType: z.enum(["PERCENTAGE", "FIXED"]).optional(),
   image: z.string().optional(),
   isActive: z.boolean().optional(),

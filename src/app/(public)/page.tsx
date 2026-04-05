@@ -22,7 +22,6 @@ import { CateringSection } from "@/components/sections/CateringSection";
 
 // Premium Enhancement Components
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { StickyMobileOrder } from "@/components/mobile/StickyMobileOrder";
 import { ChefProfiles } from "@/components/sections/ChefProfiles";
 import { HowItsMade } from "@/components/sections/HowItsMade";
@@ -80,8 +79,7 @@ export default function HomePage() {
       <BlogTeaser />
       <NewsletterSignup />
       
-      {/* Floating UI elements */}
-      <WhatsAppButton />
+      {/* Mobile sticky order bar */}
       <StickyMobileOrder />
     </>
   );

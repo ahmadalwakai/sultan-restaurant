@@ -28,7 +28,7 @@ export function MenuItemsTable({ items, isLoading, onToggle, onDelete }: MenuIte
       columns={[
         { key: "name", header: "Name", render: (item) => <Text as="span" fontWeight="medium">{item.name}</Text> },
         { key: "category", header: "Category", render: (item) => item.category?.name ?? "-" },
-        { key: "price", header: "Price", render: (item) => `£${(item.price / 100).toFixed(2)}` },
+        { key: "price", header: "Price", render: (item) => `£${Number(item.price).toFixed(2)}` },
         {
           key: "status",
           header: "Status",

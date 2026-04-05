@@ -3,6 +3,16 @@
 import Image from "next/image";
 import { Card, Flex, Text, Box, HStack, VStack } from "@chakra-ui/react";
 
+// Format date consistently for SSR/client
+function formatReviewDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const day = date.getUTCDate();
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+  return `${day} ${month} ${year}`;
+}
+
 interface ReviewCardProps {
   review: {
     id: string;
@@ -47,11 +57,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
           {review.comment}
         </Text>
         <Text fontSize="xs" color="gray.400">
-          {new Date(review.createdAt).toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })}
+          {formatReviewDate(review.createdAt)}
         </Text>
       </Card.Body>
     </Card.Root>

@@ -6,6 +6,7 @@ import { CategoryTabs } from "@/components/menu/CategoryTabs";
 import { MenuGrid } from "@/components/menu/MenuGrid";
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { Box, Container, VStack, Flex, Input } from "@chakra-ui/react";
+import { FadeInUp } from "@/components/animation";
 
 export default function MenuPage() {
   const searchParams = useSearchParams();
@@ -20,10 +21,12 @@ export default function MenuPage() {
     <Box minH="100vh" bg="bg.canvas">
       <Box bg="bg.surface" py={{ base: 8, md: 12 }}>
         <Container maxW="7xl" px={{ base: 4, md: 6, lg: 8 }}>
-          <SectionHeader
-            title="Our Menu"
-            subtitle="Explore our authentic dishes"
-          />
+          <FadeInUp>
+            <SectionHeader
+              title="Our Menu"
+              subtitle="Explore our authentic dishes"
+            />
+          </FadeInUp>
         </Container>
       </Box>
 

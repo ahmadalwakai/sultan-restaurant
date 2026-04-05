@@ -6,6 +6,7 @@ import { MenuItemCard } from "@/components/cards/MenuItemCard";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
+import { StaggerContainer, StaggerItem } from "@/components/animation";
 
 interface MenuGridProps {
   params?: Record<string, string>;
@@ -19,10 +20,14 @@ export function MenuGrid({ params }: MenuGridProps) {
   if (!data?.items?.length) return <EmptyState message="No menu items found" />;
 
   return (
-    <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, xl: 4 }} gap={6}>
-      {data.items.map((item) => (
-        <MenuItemCard key={item.id} item={item} />
-      ))}
-    </SimpleGrid>
+    <StaggerContainer staggerDelay={0.06}>
+      <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, xl: 4 }} gap={6}>
+        {data.items.map((item) => (
+          <StaggerItem key={item.id}>
+            <MenuItemCard item={item} />
+          </StaggerItem>
+        ))}
+      </SimpleGrid>
+    </StaggerContainer>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
+import toast from "react-hot-toast";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { adminFormStyles, adminSpacing, adminLayout } from "@/lib/admin-ui";
@@ -36,19 +37,26 @@ export default function AdminCombosEditPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const res = await fetch(`/api/admin/combos/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        price: parseFloat(form.price),
-        servesCount: parseInt(form.servesCount, 10),
-        items,
-      }),
-    });
-
-    if (res.ok) {
-      router.push("/admin/combos");
+    try {
+      const res = await fetch(`/api/admin/combos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          price: parseFloat(form.price),
+          servesCount: parseInt(form.servesCount, 10),
+          items,
+        }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        toast.success("Combo updated successfully");
+        router.push("/admin/combos");
+      } else {
+        toast.error(result.error || "Failed to update combo");
+      }
+    } catch {
+      toast.error("Failed to update combo");
     }
     setLoading(false);
   }

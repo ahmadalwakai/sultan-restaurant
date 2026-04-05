@@ -16,7 +16,7 @@ export function DishOfDayCard({ dish }: DishOfDayCardProps) {
   return (
     <Box overflow="hidden" borderRadius="2xl" bg="linear-gradient(to bottom right, var(--chakra-colors-orange-400), var(--chakra-colors-orange-500))" shadow="lg" role="group">
       <Flex direction={{ base: "column", sm: "row" }}>
-        <Box position="relative" css={{ aspectRatio: "1" }} sm={{ w: "50%" }}>
+        <Box position="relative" h={{ base: "200px", sm: "auto" }} minH={{ sm: "200px" }} w={{ base: "100%", sm: "50%" }} css={{ aspectRatio: "1" }}>
           {dish.menuItemImage ? (
             <Image src={dish.menuItemImage} alt={dish.menuItemName} fill className="object-cover" />
           ) : (

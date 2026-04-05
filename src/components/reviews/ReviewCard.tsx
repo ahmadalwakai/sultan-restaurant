@@ -3,6 +3,14 @@
 import { Box, Text, VStack, HStack } from "@chakra-ui/react";
 import ReviewStars from "./ReviewStars";
 
+// Format date consistently for SSR/client
+function formatReviewDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const day = date.getUTCDate();
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${day} ${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
+
 interface ReviewCardProps {
   name: string;
   rating: number;
@@ -21,7 +29,7 @@ export default function ReviewCard({ name, rating, comment, date, source }: Revi
         </HStack>
         <ReviewStars rating={rating} />
         <Text fontSize="sm" color="gray.600" lineClamp={3}>{comment}</Text>
-        <Text fontSize="xs" color="gray.400">{new Date(date).toLocaleDateString("en-GB")}</Text>
+        <Text fontSize="xs" color="gray.400">{formatReviewDate(date)}</Text>
       </VStack>
     </Box>
   );

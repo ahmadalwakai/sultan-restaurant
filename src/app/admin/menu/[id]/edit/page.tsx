@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+import toast from "react-hot-toast";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { Card } from "@chakra-ui/react";
@@ -17,13 +18,23 @@ export default function EditMenuItemPage() {
   }, [params.id]);
 
   async function handleSubmit(formData: FormData) {
-    const data = Object.fromEntries(formData.entries());
-    await fetch(`/api/admin/menu/${params.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    router.push("/admin/menu");
+    try {
+      const data = Object.fromEntries(formData.entries());
+      const res = await fetch(`/api/admin/menu/${params.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (result.success) {
+        toast.success("Menu item updated successfully");
+        router.push("/admin/menu");
+      } else {
+        toast.error(result.error || "Failed to update menu item");
+      }
+    } catch {
+      toast.error("Failed to update menu item");
+    }
   }
 
   return (

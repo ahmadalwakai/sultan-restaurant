@@ -19,7 +19,7 @@ export function MenuItemPreview({ name, description, price, image, isVegetarian,
       <Box p={4}>
         <Flex align="flex-start" justify="space-between">
           <Heading size="sm">{name}</Heading>
-          <Text fontWeight="bold" color="amber.600">{String.fromCharCode(163)}{(price / 100).toFixed(2)}</Text>
+          <Text fontWeight="bold" color="amber.600">{String.fromCharCode(163)}{Number(price).toFixed(2)}</Text>
         </Flex>
         {description && <Text fontSize="xs" color="gray.500" mt={1}>{description}</Text>}
         <Flex gap={1} mt={2}>

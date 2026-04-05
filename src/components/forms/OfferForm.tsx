@@ -46,9 +46,9 @@ export function OfferForm({ defaultValues, onSubmit, isLoading }: OfferFormProps
         </Box>
         <Box>
           <Text mb={1} fontSize="sm" fontWeight="medium" color="gray.700">Discount Value</Text>
-          <Input {...register("discount", { valueAsNumber: true })} type="number" size="md" />
-          {errors.discount && (
-            <Text mt={1} fontSize="xs" color="red.500">{errors.discount.message}</Text>
+          <Input {...register("discountValue", { valueAsNumber: true })} type="number" size="md" />
+          {errors.discountValue && (
+            <Text mt={1} fontSize="xs" color="red.500">{errors.discountValue.message}</Text>
           )}
         </Box>
       </SimpleGrid>

@@ -1,13 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import type { OfferPublic } from "@/types/offer";
 import { Card, Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import { useOrderModal } from "@/hooks/useOrderModal";
 
 interface OfferCardProps {
   offer: OfferPublic;
+}
+
+// Format date consistently for SSR/client
+function formatOfferDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const day = date.getUTCDate();
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+  return `${day} ${month} ${year}`;
 }
 
 export function OfferCard({ offer }: OfferCardProps) {
@@ -68,7 +77,7 @@ export function OfferCard({ offer }: OfferCardProps) {
           >
             {offer.discountType === "PERCENTAGE"
               ? `${offer.discount}% OFF`
-              : `£${(offer.discount / 100).toFixed(2)} OFF`}
+              : `£${Number(offer.discount).toFixed(2)} OFF`}
           </Box>
           <Heading as="h3" fontSize="2xl" fontWeight="bold" fontFamily="heading" lineHeight="short" color="white">
             {offer.title}
@@ -98,12 +107,7 @@ export function OfferCard({ offer }: OfferCardProps) {
             </Box>
             {offer.validUntil && (
               <Text fontSize="sm" color="whiteAlpha.700">
-                Until{" "}
-                {new Date(offer.validUntil).toLocaleDateString("en-GB", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
+                Until {formatOfferDate(offer.validUntil)}
               </Text>
             )}
           </Flex>

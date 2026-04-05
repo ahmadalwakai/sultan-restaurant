@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+import toast from "react-hot-toast";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { Card } from "@chakra-ui/react";
@@ -18,12 +19,22 @@ export default function EditOfferPage() {
   }, [params.id]);
 
   async function handleSubmit(data: OfferAdminFormValues) {
-    await fetch(`/api/admin/offers/${params.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    router.push("/admin/offers");
+    try {
+      const res = await fetch(`/api/admin/offers/${params.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (result.success) {
+        toast.success("Offer updated successfully");
+        router.push("/admin/offers");
+      } else {
+        toast.error(result.error || "Failed to update offer");
+      }
+    } catch {
+      toast.error("Failed to update offer");
+    }
   }
 
   return (

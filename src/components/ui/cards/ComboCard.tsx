@@ -13,7 +13,7 @@ interface ComboCardProps {
 export function ComboCard({ combo }: ComboCardProps) {
   return (
     <Box overflow="hidden" borderRadius="2xl" bg="white" shadow="md" transition="all 0.2s" _hover={{ shadow: "xl", transform: "translateY(-4px)" }} role="group">
-      <Box position="relative" css={{ aspectRatio: "16/10" }}>
+      <Box position="relative" minH="180px" css={{ aspectRatio: "16/10" }}>
         {combo.image ? (
           <Image src={combo.image} alt={combo.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
         ) : (

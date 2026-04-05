@@ -1,9 +1,10 @@
+"use client";
+
 import { SectionHeader } from "@/components/sections/SectionHeader";
 import { WhyChooseUs } from "@/components/home/WhyChooseUs";
 import Image from "next/image";
 import { Box, Container, Heading, VStack, Text } from "@chakra-ui/react";
-
-export const metadata = { title: "About Us | Sultan Restaurant" };
+import { FadeInUp, ScaleIn } from "@/components/animation";
 
 export default function AboutPage() {
   return (
@@ -18,29 +19,39 @@ export default function AboutPage() {
           unoptimized
         />
         <Box position="absolute" inset={0} display="flex" alignItems="center" justifyContent="center" bg="blackAlpha.500">
-          <Heading fontFamily="heading" size="4xl" fontWeight="bold" color="white">Our Story</Heading>
+          <FadeInUp>
+            <Heading fontFamily="heading" size="4xl" fontWeight="bold" color="white">Our Story</Heading>
+          </FadeInUp>
         </Box>
       </Box>
 
       <Container maxW="4xl" px={4} py={16}>
-        <SectionHeader title="About Sultan" />
+        <FadeInUp>
+          <SectionHeader title="About Sultan" />
+        </FadeInUp>
         <VStack mt={8} gap={6} color="gray.600" textAlign="left" align="stretch">
-          <Text>
-            Sultan Restaurant has been serving authentic Middle Eastern cuisine
-            since 2024. Our passion for traditional flavours, combined with
-            the finest ingredients, creates a dining experience that&apos;s
-            truly unforgettable.
-          </Text>
-          <Text>
-            Our chefs bring generations of culinary expertise from South Asia,
-            using only the finest ingredients and authentic spices to create
-            dishes that transport you to the heart of the subcontinent.
-          </Text>
-          <Text>
-            Whether you&apos;re joining us for a romantic dinner, family celebration,
-            or a quick takeaway, we promise the same dedication to quality and
-            flavour in every dish we serve.
-          </Text>
+          <FadeInUp delay={0.1}>
+            <Text>
+              Sultan Restaurant has been serving authentic Middle Eastern cuisine
+              since 2024. Our passion for traditional flavours, combined with
+              the finest ingredients, creates a dining experience that&apos;s
+              truly unforgettable.
+            </Text>
+          </FadeInUp>
+          <FadeInUp delay={0.2}>
+            <Text>
+              Our chefs bring generations of culinary expertise from South Asia,
+              using only the finest ingredients and authentic spices to create
+              dishes that transport you to the heart of the subcontinent.
+            </Text>
+          </FadeInUp>
+          <FadeInUp delay={0.3}>
+            <Text>
+              Whether you&apos;re joining us for a romantic dinner, family celebration,
+              or a quick takeaway, we promise the same dedication to quality and
+              flavour in every dish we serve.
+            </Text>
+          </FadeInUp>
         </VStack>
       </Container>
 

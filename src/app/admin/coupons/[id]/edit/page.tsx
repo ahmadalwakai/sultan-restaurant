@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+import toast from "react-hot-toast";
 import { AdminShell } from "@/components/admin/layout/AdminShell";
 import { AdminPageShell, AdminSectionTitle, AdminLoadingState } from "@/components/admin/shared";
 import { adminFormStyles, adminSpacing, adminLayout } from "@/lib/admin-ui";
@@ -20,20 +21,30 @@ export default function EditCouponPage() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const data = {
-      code: fd.get("code"),
-      discountType: fd.get("discountType"),
-      discountValue: Number(fd.get("discountValue")),
-      minOrderAmount: fd.get("minOrderAmount") ? Number(fd.get("minOrderAmount")) : undefined,
-      maxUses: fd.get("maxUses") ? Number(fd.get("maxUses")) : undefined,
-    };
-    await fetch(`/api/admin/coupons/${params.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    router.push("/admin/coupons");
+    try {
+      const fd = new FormData(e.currentTarget);
+      const data = {
+        code: fd.get("code"),
+        discountType: fd.get("discountType"),
+        discountValue: Number(fd.get("discountValue")),
+        minOrderAmount: fd.get("minOrderAmount") ? Number(fd.get("minOrderAmount")) : undefined,
+        maxUses: fd.get("maxUses") ? Number(fd.get("maxUses")) : undefined,
+      };
+      const res = await fetch(`/api/admin/coupons/${params.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (result.success) {
+        toast.success("Coupon updated successfully");
+        router.push("/admin/coupons");
+      } else {
+        toast.error(result.error || "Failed to update coupon");
+      }
+    } catch {
+      toast.error("Failed to update coupon");
+    }
   }
 
   if (!coupon) return <AdminShell><AdminPageShell><AdminLoadingState rows={5} height="2.5rem" /></AdminPageShell></AdminShell>;

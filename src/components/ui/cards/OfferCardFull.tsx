@@ -9,9 +9,15 @@ interface OfferCardFullProps {
   offer: OfferPublic;
 }
 
-export function OfferCardFull({ offer }: OfferCardFullProps) {
-  const validUntil = offer.validUntil ? new Date(offer.validUntil) : null;
+// Format date consistently for SSR/client
+function formatExpiryDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const day = date.getUTCDate();
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${day} ${months[date.getUTCMonth()]}`;
+}
 
+export function OfferCardFull({ offer }: OfferCardFullProps) {
   return (
     <Box overflow="hidden" borderRadius="2xl" bg="white" shadow="lg">
       <Box position="relative" h={48}>
@@ -23,7 +29,7 @@ export function OfferCardFull({ offer }: OfferCardFullProps) {
         <Box position="absolute" inset={0} bg="linear-gradient(to top, rgba(0,0,0,0.6), transparent)" />
         <Box position="absolute" bottom={4} left={4} right={4} color="white">
           <Box display="inline-block" borderRadius="full" bg="red.500" px={3} py={1} fontSize="sm" fontWeight="bold">
-            {offer.discountType === "PERCENTAGE" ? `${offer.discount}% OFF` : `£${offer.discount} OFF`}
+            {offer.discountType === "PERCENTAGE" ? `${offer.discount}% OFF` : `£${Number(offer.discount).toFixed(2)} OFF`}
           </Box>
         </Box>
       </Box>
@@ -42,9 +48,9 @@ export function OfferCardFull({ offer }: OfferCardFullProps) {
             )}
           </Box>
           <Box textAlign="right">
-            {validUntil && (
+            {offer.validUntil && (
               <Text fontSize="xs" color="gray.400">
-                Expires {validUntil.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+                Expires {formatExpiryDate(offer.validUntil)}
               </Text>
             )}
           </Box>

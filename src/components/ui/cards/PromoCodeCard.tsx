@@ -3,6 +3,14 @@
 import { useState } from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 
+// Format date consistently for SSR/client
+function formatExpiryDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const day = date.getUTCDate();
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${day} ${months[date.getUTCMonth()]}`;
+}
+
 interface PromoCodeCardProps {
   code: string;
   description: string;
@@ -26,7 +34,7 @@ export function PromoCodeCard({ code, description, discount, expiresAt }: PromoC
           <Text fontSize="2xl" fontWeight="bold" color="amber.600">{discount}</Text>
           {expiresAt && (
             <Text fontSize="xs" color="gray.400">
-              Expires {new Date(expiresAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+              Expires {formatExpiryDate(expiresAt)}
             </Text>
           )}
         </Flex>

@@ -50,7 +50,7 @@ export function ChefsTable() {
         w="50%"
         h="100%"
         opacity={0.03}
-        bgImage="url('/images/pattern-arabesque.svg')"
+        bgImage="url('/images/patterns/arabic-geometric.svg')"
         bgSize="cover"
         pointerEvents="none"
       />

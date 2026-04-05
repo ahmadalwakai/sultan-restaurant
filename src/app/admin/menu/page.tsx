@@ -77,7 +77,7 @@ export default function AdminMenuPage() {
                     <tr key={item.id} style={{ borderTop: "1px solid #F3F4F6", cursor: "pointer" }}>
                       <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", fontWeight: 500 }}>{item.name}</td>
                       <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", color: "#6B7280" }}>{item.category?.name ?? "-"}</td>
-                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>£{(item.price / 100).toFixed(2)}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>£{Number(item.price).toFixed(2)}</td>
                       <td style={{ padding: "0.75rem 1rem" }}>
                         <Button size="xs" variant="plain" p={0} onClick={() => toggleAvailability(item.id)}>
                           <AdminStatusBadge status={item.isAvailable ? "Available" : "Unavailable"} />

@@ -34,7 +34,7 @@ const galleryImages = [
   },
   {
     id: 5,
-    src: "https://images.unsplash.com/photo-1542826438-bd32f43d6460?w=800&q=80",
+    src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
     alt: "Cozy hookah lounge seating area",
     category: "Lounge",
   },
@@ -82,13 +82,13 @@ const galleryImages = [
   },
   {
     id: 13,
-    src: "https://images.unsplash.com/photo-1571950524112-3d5c4a7c87f5?w=800&q=80",
+    src: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800&q=80",
     alt: "Fresh juice selection",
     category: "Drinks",
   },
   {
     id: 14,
-    src: "https://images.unsplash.com/photo-1595623238469-fc18d3f83b7c?w=800&q=80",
+    src: "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=800&q=80",
     alt: "Mint tea preparation",
     category: "Drinks",
   },
