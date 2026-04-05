@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { checkoutSchema, type CheckoutFormValues } from "@/lib/validators";
+import { checkoutFormSchema, type CheckoutFormValues } from "@/lib/validators";
 import { usePickupSlots } from "@/hooks/checkout";
 import { Box, Button, Input, NativeSelect, SimpleGrid, Text, Textarea, VStack } from "@chakra-ui/react";
 
@@ -19,7 +19,7 @@ export function CheckoutForm({ onSubmit, isLoading }: CheckoutFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<CheckoutFormValues>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(checkoutFormSchema),
   });
 
   return (

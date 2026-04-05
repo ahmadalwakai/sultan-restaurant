@@ -1,5 +1,17 @@
 import { z } from "zod";
 
+// Schema for the form inputs only (customer details)
+export const checkoutFormSchema = z.object({
+  customerName: z.string().min(2, "Name is required").max(100),
+  customerEmail: z.string().email("Invalid email"),
+  customerPhone: z.string().min(10, "Valid phone number required").max(20),
+  pickupTime: z.string().optional(),
+  specialRequests: z.string().max(500).optional(),
+});
+
+export type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
+
+// Full schema for API validation (includes items and order details)
 export const checkoutSchema = z.object({
   customerName: z.string().min(2, "Name is required").max(100),
   customerEmail: z.string().email("Invalid email"),
@@ -22,4 +34,4 @@ export const checkoutSchema = z.object({
   orderSource: z.enum(["ONLINE", "TABLE_SCAN"]).optional(),
 });
 
-export type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+export type CheckoutInput = z.infer<typeof checkoutSchema>;
