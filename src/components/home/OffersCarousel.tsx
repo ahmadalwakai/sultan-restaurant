@@ -18,6 +18,7 @@ export function OffersCarousel() {
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -51,6 +52,10 @@ export function OffersCarousel() {
     emblaApi.on("reInit", onSelect);
     emblaApi.on("select", onSelect);
   }, [emblaApi, onInit, onSelect]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!isLoading && (!offers || offers.length === 0)) return null;
 
@@ -139,21 +144,23 @@ export function OffersCarousel() {
               <ChevronRight size={20} />
             </Button>
 
-            {/* Dots indicator */}
-            <HStack justify="center" mt={6} gap={2}>
-              {scrollSnaps.map((_, index) => (
-                <Box
-                  key={index}
-                  w={2}
-                  h={2}
-                  borderRadius="full"
-                  bg={index === selectedIndex ? "brand.primary" : "whiteAlpha.400"}
-                  cursor="pointer"
-                  onClick={() => scrollTo(index)}
-                  transition="all 0.2s"
-                />
-              ))}
-            </HStack>
+            {/* Dots indicator - only render after mount to prevent hydration mismatch */}
+            {mounted && scrollSnaps.length > 0 && (
+              <HStack justify="center" mt={6} gap={2}>
+                {scrollSnaps.map((_, index) => (
+                  <Box
+                    key={index}
+                    w={2}
+                    h={2}
+                    borderRadius="full"
+                    bg={index === selectedIndex ? "brand.primary" : "whiteAlpha.400"}
+                    cursor="pointer"
+                    onClick={() => scrollTo(index)}
+                    transition="all 0.2s"
+                  />
+                ))}
+              </HStack>
+            )}
           </Box>
         </VStack>
       </Container>
