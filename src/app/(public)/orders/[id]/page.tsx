@@ -39,14 +39,14 @@ export default function OrderDetailPage({
                     {item.quantity}x {item.menuItemName || item.name}
                   </Text>
                   <Text fontWeight="medium" color="fg.default">
-                    {formatCurrency((item.price * item.quantity) / 100)}
+                    {formatCurrency(Number(item.price) * item.quantity)}
                   </Text>
                 </Flex>
               ))}
             </VStack>
             <Flex mt={4} justify="space-between" fontSize="lg" fontWeight="bold">
               <Text color="fg.default">Total</Text>
-              <Text color="brand.primary">{formatCurrency(order.total / 100)}</Text>
+              <Text color="brand.primary">{formatCurrency(Number(order.total))}</Text>
             </Flex>
           </Card.Body>
         </Card.Root>

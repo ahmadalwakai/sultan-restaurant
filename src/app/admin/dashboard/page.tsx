@@ -21,7 +21,7 @@ export default function DashboardPage() {
   const statCards = stats
     ? [
         { label: "Total Orders", value: stats.totalOrders, icon: "📦" },
-        { label: "Revenue", value: `£${(stats.totalRevenue / 100).toFixed(2)}`, icon: "💰" },
+        { label: "Revenue", value: `£${Number(stats.totalRevenue).toFixed(2)}`, icon: "💰" },
         { label: "Bookings", value: stats.totalBookings, icon: "📅" },
         { label: "Customers", value: stats.totalCustomers, icon: "👥" },
       ]
@@ -62,7 +62,7 @@ export default function DashboardPage() {
                   {recent.recentOrders.slice(0, 5).map((o) => (
                     <HStack key={o.id} justify="space-between" fontSize="sm">
                       <Text color="gray.700">#{o.orderNumber}</Text>
-                      <Text color="gray.500">£{(Number(o.total) / 100).toFixed(2)}</Text>
+                      <Text color="gray.500">£{Number(o.total).toFixed(2)}</Text>
                     </HStack>
                   ))}
                 </VStack>

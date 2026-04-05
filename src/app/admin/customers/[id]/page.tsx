@@ -39,7 +39,7 @@ export default function AdminCustomerDetailPage() {
                 {(customer.orders as Array<{ id: string; orderNumber: string; total: number; status: string }>).map((o) => (
                   <Link key={o.id} href={`/admin/orders/${o.id}`} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", textDecoration: "none", color: "inherit" }}>
                     <span>#{o.orderNumber}</span>
-                    <span>£{(Number(o.total) / 100).toFixed(2)}</span>
+                    <span>£{Number(o.total).toFixed(2)}</span>
                   </Link>
                 ))}
               </div>

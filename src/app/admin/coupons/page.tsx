@@ -56,7 +56,7 @@ export default function AdminCouponsPage() {
                 {coupons.map((c) => (
                   <tr key={c.id} onMouseEnter={(e) => (e.currentTarget.style.background = adminTableStyles.rowHover.background!)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
                     <td style={{ ...adminTableStyles.cell, fontWeight: 500, fontFamily: "monospace" }}>{c.code}</td>
-                    <td style={adminTableStyles.cell}>{c.discountType === "PERCENTAGE" ? `${c.discountValue}%` : `£${(c.discountValue / 100).toFixed(2)}`}</td>
+                    <td style={adminTableStyles.cell}>{c.discountType === "PERCENTAGE" ? `${c.discountValue}%` : `£${Number(c.discountValue).toFixed(2)}`}</td>
                     <td style={adminTableStyles.cell}>{c.usageCount}</td>
                     <td style={adminTableStyles.cell}>
                       <button onClick={() => toggleCoupon(c.id)} style={{ border: "none", cursor: "pointer", background: "none", padding: 0 }}>

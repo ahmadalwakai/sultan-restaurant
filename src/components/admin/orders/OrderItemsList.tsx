@@ -8,7 +8,7 @@ export function OrderItemsList({ items }: { items: OrderItem[] }) {
       {items.map((item) => (
         <div key={item.id} className="flex justify-between text-sm">
           <span>{item.menuItem.name} <span className="text-gray-400">x{item.quantity}</span></span>
-          <span>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</span>
+          <span>£{(Number(item.price) * item.quantity).toFixed(2)}</span>
         </div>
       ))}
     </div>

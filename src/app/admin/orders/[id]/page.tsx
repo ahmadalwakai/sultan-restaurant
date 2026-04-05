@@ -93,13 +93,13 @@ export default function AdminOrderDetailPage() {
                             <Badge colorPalette="purple" size="sm">Shisha</Badge>
                           )}
                         </HStack>
-                        <Text>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</Text>
+                        <Text>£{(Number(item.price) * item.quantity).toFixed(2)}</Text>
                       </Flex>
                     );
                   })}
                   <Flex justify="space-between" fontWeight="semibold" pt={3} borderTopWidth="1px" borderColor="gray.200">
                     <Text>Total</Text>
-                    <Text>£{(Number(order.total) / 100).toFixed(2)}</Text>
+                    <Text>£{Number(order.total).toFixed(2)}</Text>
                   </Flex>
                 </VStack>
               </Card.Body>

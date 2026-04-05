@@ -7,7 +7,7 @@ interface OfferPreviewProps {
 }
 
 export function OfferPreview({ offer }: OfferPreviewProps) {
-  const discountLabel = offer.discountType === "PERCENTAGE" ? `${offer.discountValue}% OFF` : `£${(offer.discountValue / 100).toFixed(2)} OFF`;
+  const discountLabel = offer.discountType === "PERCENTAGE" ? `${offer.discountValue}% OFF` : `£${Number(offer.discountValue).toFixed(2)} OFF`;
 
   return (
     <Box borderRadius="lg" overflow="hidden" bg="bg.surface" maxW="sm" border="1px solid" borderColor="gray.200">

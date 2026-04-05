@@ -37,7 +37,7 @@ export function OffersTable({ offers, isLoading, onToggle, onDelete }: OffersTab
           header: "Discount",
           render: (o) => (
             <Text>
-              {o.discountType === "PERCENTAGE" ? `${o.discountValue}%` : `£${(o.discountValue / 100).toFixed(2)}`}
+              {o.discountType === "PERCENTAGE" ? `${o.discountValue}%` : `£${Number(o.discountValue).toFixed(2)}`}
             </Text>
           )
         },

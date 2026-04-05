@@ -19,7 +19,7 @@ export function CustomerOrderHistory({ orders }: { orders: Order[] }) {
           </Box>
           <Flex align="center" gap={2}>
             <Box as="span" fontSize="xs" px={2} py={0.5} rounded="md" bg="gray.100">{o.status}</Box>
-            <Text fontSize="sm" fontWeight="medium">{String.fromCharCode(163)}{(Number(o.total) / 100).toFixed(2)}</Text>
+            <Text fontSize="sm" fontWeight="medium">£{Number(o.total).toFixed(2)}</Text>
           </Flex>
         </Flex>
         </Link>

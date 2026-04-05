@@ -15,7 +15,7 @@ export function CouponsTable({ coupons, isLoading, onToggle, onDelete }: { coupo
       isLoading={isLoading}
       columns={[
         { key: "code", header: "Code", render: (c) => <Link href={`/admin/coupons/${c.id}/edit`}><Box fontFamily="mono" fontWeight="medium" color="amber.600" _hover={{ textDecoration: "underline" }}>{c.code}</Box></Link> },
-        { key: "discount", header: "Discount", render: (c) => c.discountType === "PERCENTAGE" ? `${c.discountValue}%` : `£${(c.discountValue / 100).toFixed(2)}` },
+        { key: "discount", header: "Discount", render: (c) => c.discountType === "PERCENTAGE" ? `${c.discountValue}%` : `£${Number(c.discountValue).toFixed(2)}` },
         { key: "usage", header: "Used", render: (c) => `${c.usedCount}${c.maxUses ? ` / ${c.maxUses}` : ""}` },
         { key: "status", header: "Status", render: (c) => <CouponStatusBadge isActive={c.isActive} expiresAt={c.expiresAt} /> },
         { key: "actions", header: "", render: (c) => (

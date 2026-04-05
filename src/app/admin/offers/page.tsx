@@ -56,7 +56,7 @@ export default function AdminOffersPage() {
                   {offers.map((o) => (
                     <tr key={o.id} style={{ borderTop: "1px solid #F3F4F6" }}>
                       <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem", fontWeight: 500 }}>{o.title}</td>
-                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>{o.discountType === "PERCENTAGE" ? `${o.discountValue}%` : `£${(o.discountValue / 100).toFixed(2)}`}</td>
+                      <td style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>{o.discountType === "PERCENTAGE" ? `${o.discountValue}%` : `£${Number(o.discountValue).toFixed(2)}`}</td>
                       <td style={{ padding: "0.75rem 1rem" }}>
                         <Button size="xs" variant="plain" p={0} onClick={() => toggleOffer(o.id)}>
                           <AdminStatusBadge status={o.isActive ? "Active" : "Inactive"} />

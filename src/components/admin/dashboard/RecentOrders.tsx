@@ -30,7 +30,7 @@ export function RecentOrders({ orders }: { orders: Order[] }) {
                   <Text fontSize="xs" color="gray.500">{new Date(order.createdAt).toLocaleDateString()}</Text>
                 </Box>
                 <Box textAlign="right">
-                  <Text fontWeight="medium" fontSize="sm">£{(Number(order.total) / 100).toFixed(2)}</Text>
+                  <Text fontWeight="medium" fontSize="sm">£{Number(order.total).toFixed(2)}</Text>
                   <Box as="span" fontSize="xs" px={2} py={0.5} borderRadius="md" bg="gray.100">{order.status}</Box>
                 </Box>
               </Flex>

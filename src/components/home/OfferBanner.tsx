@@ -19,7 +19,7 @@ export function OfferBanner() {
               🎉 {topOffer.title} —{" "}
               {topOffer.discountType === "PERCENTAGE"
                 ? `${topOffer.discount}% OFF`
-                : `£${(topOffer.discount / 100).toFixed(2)} OFF`}
+                : `£${Number(topOffer.discount).toFixed(2)} OFF`}
             </Text>
             <Text fontSize="sm" color="whiteAlpha.700">→</Text>
           </HStack>

@@ -26,7 +26,7 @@ export function OrdersTable({ orders, isLoading }: { orders: Order[]; isLoading?
         {
           key: "total",
           header: "Total",
-          render: (o) => <Text>£{(Number(o.total) / 100).toFixed(2)}</Text>
+          render: (o) => <Text>£{Number(o.total).toFixed(2)}</Text>
         },
         {
           key: "status",

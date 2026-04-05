@@ -24,13 +24,13 @@ export function OrderDetail({ order }: OrderDetailProps) {
           {order.items.map((item) => (
             <HStack key={item.id} justify="space-between" fontSize="sm">
               <Text>{item.menuItem.name} x{item.quantity}</Text>
-              <Text>£{(Number(item.price) * item.quantity / 100).toFixed(2)}</Text>
+              <Text>£{(Number(item.price) * item.quantity).toFixed(2)}</Text>
             </HStack>
           ))}
           <Box borderTop="1px solid" borderColor="gray.200" pt={3}>
             <HStack justify="space-between" fontWeight="semibold">
               <Text>Total</Text>
-              <Text>£{(Number(order.total) / 100).toFixed(2)}</Text>
+              <Text>£{Number(order.total).toFixed(2)}</Text>
             </HStack>
           </Box>
         </VStack>

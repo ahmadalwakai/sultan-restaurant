@@ -141,7 +141,7 @@ export default function PickupPage() {
                     <Flex justify="space-between" fontSize="lg" fontWeight="bold">
                       <Text>Total</Text>
                       <Text color="amber.600">
-                        {formatCurrency(getTotal() / 100)}
+                        {formatCurrency(getTotal())}
                       </Text>
                     </Flex>
                     {isBelowMinimum && (

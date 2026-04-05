@@ -34,7 +34,7 @@ export function CouponUsageStats({ usedCount, maxUses, totalRevenue }: CouponUsa
             </>
           ) : totalRevenue !== undefined ? (
             <>
-              <Text fontSize="2xl" fontWeight="bold">£{(totalRevenue / 100).toFixed(0)}</Text>
+              <Text fontSize="2xl" fontWeight="bold">£{Number(totalRevenue).toFixed(0)}</Text>
               <Text fontSize="xs" color="gray.500">Revenue</Text>
             </>
           ) : (

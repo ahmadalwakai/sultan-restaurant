@@ -37,7 +37,7 @@ export function RevenueChart({ data }: { data: DataPoint[] }) {
                 transition="background 0.2s"
                 _hover={{ bg: "amber.600" }}
                 style={{ height: `${Math.max(height, 2)}%` }}
-                title={`£${(Number(d.total) / 100).toFixed(2)} - ${new Date(d.createdAt).toLocaleDateString()}`}
+                title={`£${Number(d.total).toFixed(2)} - ${new Date(d.createdAt).toLocaleDateString()}`}
               />
             );
           })}
