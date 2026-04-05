@@ -7,7 +7,12 @@ type Params = { params: Promise<{ id: string }> };
 
 export const GET = withErrorHandler(async (_req: NextRequest, ctx) => {
   const { id } = await (ctx as Params).params;
-  const order = await ordersService.getById(id);
+  
+  // Check if it's an order number (starts with SLT-) or an ID
+  const order = id.startsWith("SLT-")
+    ? await ordersService.getByOrderNumber(id)
+    : await ordersService.getById(id);
+    
   if (!order) throw new NotFoundError("Order not found");
   return successResponse({ status: order.status, paymentStatus: order.paymentStatus });
 });

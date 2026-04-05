@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutFormSchema, type CheckoutFormValues } from "@/lib/validators";
 import { usePickupSlots } from "@/hooks/checkout";
-import { Box, Button, Input, NativeSelect, SimpleGrid, Text, Textarea, VStack, HStack } from "@chakra-ui/react";
+import { Box, Button, Input, NativeSelect, SimpleGrid, Text, Textarea, VStack, HStack, Spinner } from "@chakra-ui/react";
 import { HiCreditCard, HiBanknotes } from "react-icons/hi2";
 
 interface CheckoutFormProps {
@@ -141,9 +141,14 @@ export function CheckoutForm({ onSubmit, isLoading }: CheckoutFormProps) {
         fontWeight="semibold"
         color="white"
         _hover={{ bg: "amber.600" }}
-        _disabled={{ opacity: 0.5 }}
+        _disabled={{ opacity: 0.6, cursor: "not-allowed" }}
       >
-        {isLoading ? "Processing..." : selectedPayment === "STRIPE" ? "Pay Now" : "Place Order"}
+        {isLoading ? (
+          <HStack gap={2} justify="center">
+            <Spinner size="sm" />
+            <Text>Processing...</Text>
+          </HStack>
+        ) : selectedPayment === "STRIPE" ? "Pay Now" : "Place Order"}
       </Button>
     </VStack>
   );
