@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@chakra-ui/react";
-import Link from "next/link";
 import { formatCurrency } from "@/lib/utils/format-currency";
+import { useOrderModal } from "@/hooks/useOrderModal";
 
 interface CartCheckoutButtonProps {
   total: number;
@@ -11,16 +11,17 @@ interface CartCheckoutButtonProps {
 }
 
 export default function CartCheckoutButton({ total, itemCount, disabled }: CartCheckoutButtonProps) {
+  const { open: openOrderModal } = useOrderModal();
+
   return (
-    <Link href="/checkout">
-      <Button
-        w="full"
-        colorPalette="brand"
-        size="lg"
-        disabled={disabled || itemCount === 0}
-      >
-        Checkout ({itemCount} items) · {formatCurrency(total)}
-      </Button>
-    </Link>
+    <Button
+      w="full"
+      colorPalette="brand"
+      size="lg"
+      disabled={disabled || itemCount === 0}
+      onClick={openOrderModal}
+    >
+      Checkout ({itemCount} items) · {formatCurrency(total)}
+    </Button>
   );
 }

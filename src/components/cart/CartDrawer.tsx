@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useCartStore } from "@/lib/cart";
 import { CartItemRow } from "./CartItemRow";
 import { formatCurrency } from "@/lib/utils/format-currency";
-import Link from "next/link";
+import { useOrderModal } from "@/hooks/useOrderModal";
 import { Flex, Box, VStack, Heading, Text, Button, IconButton } from "@chakra-ui/react";
 
 interface CartDrawerProps {
@@ -17,6 +17,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const getTotal = useCartStore((s) => s.getTotal);
   const clearCart = useCartStore((s) => s.clearCart);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const { open: openOrderModal } = useOrderModal();
 
   useEffect(() => {
     if (isOpen) {
@@ -106,22 +107,23 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 >
                   Clear
                 </Button>
-                <Link href="/pickup">
-                  <Button
-                    flex={2}
-                    borderRadius="lg"
-                    bg="amber.500"
-                    py={2.5}
-                    textAlign="center"
-                    fontSize="sm"
-                    fontWeight="semibold"
-                    color="white"
-                    _hover={{ bg: "amber.600" }}
-                    onClick={onClose}
-                  >
-                    Checkout
-                  </Button>
-                </Link>
+                <Button
+                  flex={2}
+                  borderRadius="lg"
+                  bg="amber.500"
+                  py={2.5}
+                  textAlign="center"
+                  fontSize="sm"
+                  fontWeight="semibold"
+                  color="white"
+                  _hover={{ bg: "amber.600" }}
+                  onClick={() => {
+                    onClose();
+                    openOrderModal();
+                  }}
+                >
+                  Checkout
+                </Button>
               </Flex>
             </Box>
           </>

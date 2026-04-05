@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LuX, LuShoppingBag, LuTruck, LuExternalLink, LuArrowLeft } from "react-icons/lu";
 import Link from "next/link";
 import { DELIVERY_PARTNERS } from "@/content/delivery-partners";
+import { useCartStore } from "@/lib/cart";
 
 interface OrderMethodModalProps {
   isOpen: boolean;
@@ -13,6 +14,8 @@ interface OrderMethodModalProps {
 
 export function OrderMethodModal({ isOpen, onClose }: OrderMethodModalProps) {
   const [step, setStep] = useState<"choose" | "delivery">("choose");
+  const items = useCartStore((s) => s.items);
+  const hasItems = items.length > 0;
 
   const handleClose = () => {
     setStep("choose");
@@ -130,7 +133,7 @@ export function OrderMethodModal({ isOpen, onClose }: OrderMethodModalProps) {
                   style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}
                 >
                   {/* Pickup Option */}
-                  <Link href="/menu" onClick={handleClose} style={{ textDecoration: "none" }}>
+                  <Link href={hasItems ? "/pickup" : "/menu"} onClick={handleClose} style={{ textDecoration: "none" }}>
                     <div
                       style={{
                         background: "rgba(255,255,255,0.02)",
