@@ -10,7 +10,7 @@ import Link from "next/link";
 import type { CheckoutFormValues } from "@/lib/validators";
 import { useCashCheckout } from "@/hooks/checkout";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -27,16 +27,18 @@ import {
 export default function PickupPage() {
   const items = useCartStore((s) => s.items);
   const getTotal = useCartStore((s) => s.getTotal);
+  const clearCart = useCartStore((s) => s.clearCart);
   const tableContext = useCartStore((s) => s.tableContext);
   const { isEmpty, isBelowMinimum, minOrderAmount } = useValidateCart();
-  const { checkout, isLoading, isSuccess, order } = useCashCheckout();
+  const { checkout: cashCheckout, isLoading: cashLoading, isSuccess: cashSuccess, order: cashOrder } = useCashCheckout();
+  const [stripeLoading, setStripeLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (isSuccess && order) {
-      router.push(`/checkout/success?orderId=${order.id}`);
+    if (cashSuccess && cashOrder) {
+      router.push(`/checkout/success?orderId=${cashOrder.id}`);
     }
-  }, [isSuccess, order, router]);
+  }, [cashSuccess, cashOrder, router]);
 
   if (isEmpty) {
     return (
@@ -74,13 +76,13 @@ export default function PickupPage() {
   }
 
   // Determine order type based on table context
-  const orderType = tableContext ? "TABLE" : "PICKUP";
+  const orderType = tableContext ? "TABLE" as const : "PICKUP" as const;
   const isTableOrder = !!tableContext;
 
-  const handleSubmit = (data: CheckoutFormValues) => {
-    checkout({
+  const handleSubmit = async (data: CheckoutFormValues) => {
+    const orderData = {
       type: orderType,
-      paymentMethod: "CASH",
+      paymentMethod: data.paymentMethod,
       customerName: data.customerName,
       customerEmail: data.customerEmail,
       customerPhone: data.customerPhone,
@@ -98,8 +100,45 @@ export default function PickupPage() {
         menuType: tableContext.menuType,
         orderSource: "TABLE_SCAN" as const,
       }),
-    });
+    };
+
+    if (data.paymentMethod === "CASH") {
+      // Cash payment - place order directly
+      cashCheckout(orderData);
+    } else {
+      // Stripe payment - create order then redirect to Stripe
+      setStripeLoading(true);
+      try {
+        // First create the order
+        const orderRes = await fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderData),
+        });
+        const orderJson = await orderRes.json();
+        if (!orderJson.success) throw new Error(orderJson.error);
+        
+        // Then create Stripe session
+        const stripeRes = await fetch("/api/checkout/stripe/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: orderJson.data.id }),
+        });
+        const stripeJson = await stripeRes.json();
+        if (!stripeJson.success) throw new Error(stripeJson.error);
+        
+        // Clear cart and redirect to Stripe
+        clearCart();
+        window.location.href = stripeJson.data.url;
+      } catch (err) {
+        console.error("Stripe checkout error:", err);
+        setStripeLoading(false);
+        alert(err instanceof Error ? err.message : "Payment failed. Please try again.");
+      }
+    }
   };
+
+  const isLoading = cashLoading || stripeLoading;
 
   return (
     <Box minH="100vh" bg="gray.50" py={{ base: 8, md: 12 }}>

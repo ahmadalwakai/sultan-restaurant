@@ -7,6 +7,7 @@ export const checkoutFormSchema = z.object({
   customerPhone: z.string().min(10, "Valid phone number required").max(20),
   pickupTime: z.string().optional(),
   specialRequests: z.string().max(500).optional(),
+  paymentMethod: z.enum(["CASH", "STRIPE"]),
 });
 
 export type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
